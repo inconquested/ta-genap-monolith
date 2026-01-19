@@ -11,4 +11,8 @@ class PollResult extends Model
         'is_draw',
         'finalized_option'
     ];
+    public function winningOption()
+    {
+        return $this->belongsTo(PollOption::class, 'finalized_option');
+    }
 }

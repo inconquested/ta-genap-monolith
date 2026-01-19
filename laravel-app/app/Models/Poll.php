@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Poll extends Model
@@ -30,6 +31,10 @@ class Poll extends Model
     public function options(): HasMany
     {
         return $this->hasMany(PollOption::class);
+    }
+    public function votes(): HasManyThrough
+    {
+        return $this->hasManyThrough(Vote::class, PollOption::class);
     }
     public function result(): HasOne
     {

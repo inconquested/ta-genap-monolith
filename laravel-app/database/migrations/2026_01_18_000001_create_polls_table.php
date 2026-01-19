@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
+            $table->boolean('is_finalized')->default(false);
             $table->boolean('is_active')->default(true);
             $table->boolean('allow_comments')->default(false);
             $table->timestamps();

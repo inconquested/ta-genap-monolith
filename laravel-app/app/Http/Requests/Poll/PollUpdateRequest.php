@@ -29,7 +29,7 @@ class PollUpdateRequest extends FormRequest
             'creator_id' => 'required|exists:users,id',
             'end_date' => 'required|date_format:Y-m-d H:i:s|after:start_date',
             'is_active' => 'required|boolean',
-            'allow_multiple_votes' => 'required|boolean',
+            'allow_comments' => 'nullable|boolean',
             'options' => 'required|array',
             'options.*.option_text' => 'required|string|min:1|max:16',
             'options.*.display_order' => 'required|integer',
