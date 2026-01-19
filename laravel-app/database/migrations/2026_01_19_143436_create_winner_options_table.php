@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('poll_results', function (Blueprint $table) {
+        Schema::create('winner_options', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('poll_id')->constrained('polls')->nullable()->onDelete('cascade');
-            $table->boolean('is_draw');
-            $table->unsignedBigInteger('total_votes');
+            $table->foreignUuid('poll_result_id')->constrained('poll_results');
+            $table->foreignUuid('option_id')->constrained('poll_options');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('poll_results');
+        Schema::dropIfExists('winner_options');
     }
 };
