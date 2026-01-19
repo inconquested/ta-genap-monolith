@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Poll extends Model
 {
@@ -20,7 +21,7 @@ class Poll extends Model
         'start_date',
         'end_date',
         'is_active',
-        'allow_multiple_votes',
+        'allow_comments',
     ];
     public function creator(): BelongsTo
     {
@@ -29,5 +30,13 @@ class Poll extends Model
     public function options(): HasMany
     {
         return $this->hasMany(PollOption::class);
+    }
+    public function result(): HasOne
+    {
+        return $this->hasOne(PollResult::class);
+    }
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
     }
 }

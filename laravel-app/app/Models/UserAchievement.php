@@ -9,4 +9,10 @@ class UserAchievement extends Model
 {
     /** @use HasFactory<\Database\Factories\UserAchievementFactory> */
     use HasFactory;
+    protected $fillable = [
+        'id',
+        'user_id',
+        'achievement_type_id',
+        'earned_at'
+    ];
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->boolean('is_active')->default(true);
-            $table->boolean('allow_multiple_votes')->default(false);
+            $table->boolean('allow_comments')->default(false);
             $table->timestamps();
         });
     }
