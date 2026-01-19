@@ -1,4 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
+import { ArrowDownRight } from 'lucide-react';
 
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
@@ -6,13 +7,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import AuthLayout from '@/layouts/auth-layout';
+import AuthCardLayout from '@/layouts/auth/auth-card-layout';
+
 import { login } from '@/routes';
 import { store } from '@/routes/register';
 
 export default function Register() {
     return (
-        <AuthLayout
+        <AuthCardLayout
             title="Create an account"
             description="Enter your details below to create your account"
         >
@@ -27,16 +29,16 @@ export default function Register() {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name">Username</Label>
                                 <Input
-                                    id="name"
+                                    id="username"
                                     type="text"
                                     required
                                     autoFocus
                                     tabIndex={1}
                                     autoComplete="name"
-                                    name="name"
-                                    placeholder="Full name"
+                                    name="username"
+                                    placeholder="Username"
                                 />
                                 <InputError
                                     message={errors.name}
@@ -45,12 +47,30 @@ export default function Register() {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label htmlFor="full_name">Nama Lengkap</Label>
+                                <Input
+                                    id="full_name"
+                                    type="text"
+                                    required
+                                    autoFocus
+                                    tabIndex={2}
+                                    autoComplete="name"
+                                    name="full_name"
+                                    placeholder="Nama Lengkap"
+                                />
+                                <InputError
+                                    message={errors.name}
+                                    className="mt-2"
+                                />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="email">Email</Label>
                                 <Input
                                     id="email"
                                     type="email"
                                     required
-                                    tabIndex={2}
+                                    tabIndex={3}
                                     autoComplete="email"
                                     name="email"
                                     placeholder="email@example.com"
@@ -64,7 +84,7 @@ export default function Register() {
                                     id="password"
                                     type="password"
                                     required
-                                    tabIndex={3}
+                                    tabIndex={4}
                                     autoComplete="new-password"
                                     name="password"
                                     placeholder="Password"
@@ -74,16 +94,16 @@ export default function Register() {
 
                             <div className="grid gap-2">
                                 <Label htmlFor="password_confirmation">
-                                    Confirm password
+                                    Konfirmasi password
                                 </Label>
                                 <Input
                                     id="password_confirmation"
                                     type="password"
                                     required
-                                    tabIndex={4}
+                                    tabIndex={5}
                                     autoComplete="new-password"
                                     name="password_confirmation"
-                                    placeholder="Confirm password"
+                                    placeholder="Konfirmasi password"
                                 />
                                 <InputError
                                     message={errors.password_confirmation}
@@ -92,24 +112,25 @@ export default function Register() {
 
                             <Button
                                 type="submit"
-                                className="mt-2 w-full"
-                                tabIndex={5}
+                                className="group mt-2 w-full items-center font-bold transition-all"
+                                tabIndex={6}
                                 data-test="register-user-button"
                             >
                                 {processing && <Spinner />}
-                                Create account
+                                Buat Akun{' '}
+                                <ArrowDownRight className="size-5 transition-all group-hover:translate-x-1 group-hover:-rotate-45" />
                             </Button>
                         </div>
 
                         <div className="text-center text-sm text-muted-foreground">
-                            Already have an account?{' '}
-                            <TextLink href={login()} tabIndex={6}>
-                                Log in
+                            Sudah punya akun?{' '}
+                            <TextLink href={login()} tabIndex={7}>
+                                Login
                             </TextLink>
                         </div>
                     </>
                 )}
             </Form>
-        </AuthLayout>
+        </AuthCardLayout>
     );
 }

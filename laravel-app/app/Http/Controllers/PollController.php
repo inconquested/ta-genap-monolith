@@ -47,7 +47,7 @@ class PollController extends Controller
      */
     public function show(Poll $poll)
     {
-        return $this->success($poll->With(['options', 'creator:id,username']));
+        return $this->success($poll->load(['options', 'creator:id,username']));
     }
 
     /**
@@ -63,7 +63,7 @@ class PollController extends Controller
      */
     public function update(PollUpdateRequest $req, Poll $poll)
     {
-        $poll = PollService::UpdatePoll($req->validated());
+        $poll = PollService::UpdatePoll(array_merge($req->validated(), ['poll_id' => $poll->id]));
         return response()->json($poll->load('options'));
     }
 

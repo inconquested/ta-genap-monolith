@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('poll_options', function (Blueprint $table) {
+        Schema::create('achievement_types', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('poll_id')->constrained()->onDelete('cascade');
-            $table->string('option_text');
-            $table->unsignedTinyInteger('display_order')->default(0);
+            $table->string('code')->unique();
+            $table->string('name');
+            $table->text('description');
+            $table->string('requirement_type');
+            $table->integer('requirement_value');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('poll_options');
+        Schema::dropIfExists('achievement_types');
     }
 };

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('polls', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('creator_id')->constrained();
+            $table->foreignUuid('creator_id')->constrained('users');
             $table->string('title');
             $table->text('description')->nullable();
             $table->dateTime('start_date');

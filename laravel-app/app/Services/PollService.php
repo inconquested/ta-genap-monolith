@@ -12,7 +12,7 @@ class PollService
     {
         $poll = Poll::create([
             'id' => Str::uuid(),
-            'creator_id' => Auth::id(),
+            'creator_id' => $data['creator_id'],
             'title' => $data['title'],
             'description' => $data['description'],
             'start_date' => $data['start_date'],
@@ -22,7 +22,7 @@ class PollService
         foreach ($data['options'] as $index => $option) {
             $poll->options()->create([
                 'id' => Str::uuid(),
-                'option_text' => $option['text'],
+                'option_text' => $option['option_text'],
                 'display_order' => $index
             ]);
         }
@@ -32,15 +32,18 @@ class PollService
     public static function UpdatePoll(array $data)
     {
         $poll = Poll::updateOrCreate([
+            'id' => $data['poll_id'],
+        ], [
             'title' => $data['title'],
             'description' => $data['description'],
+            'creator_id' => $data['creator_id'],
             'start_date' => $data['start_date'],
-            'end_date' => $data['end_date'],
+            'end_date' => $data['end_date']
         ]);
 
         foreach ($data['options'] as $index => $option) {
             $poll->options()->updateOrCreate([
-                'option_text' => $option['text'],
+                'option_text' => $option['option_text'],
                 'display_order' => $index
             ]);
         }

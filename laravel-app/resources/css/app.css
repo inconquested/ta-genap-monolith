@@ -141,3 +141,19 @@
         @apply bg-background text-foreground;
     }
 }
+#nprogress .bar {
+    background: linear-gradient(
+        to right,
+        theme('colors.gray.700'),
+        theme('colors.rose.500'),
+        theme('colors.orange.400')
+    ) !important; /* Indigo to Purple */
+    height: 2px !important; /* Make it a bit thicker to see the gradient */
+}
+
+/* The glowing shadow at the tip */
+#nprogress .peg {
+    box-shadow:
+        0 0 10px theme('colors.neutral.100'),
+        0 0 5px ('colors.orange.300') !important;
+}
