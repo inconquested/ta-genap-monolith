@@ -25,7 +25,7 @@ class VoteService
             'id' => Str::uuid(),
             'poll_id' => $data['poll_id'],
             'option_id' => $data['option_id'],
-            'user_id' => Auth::id(),
+            'user_id' => $data['user_id'] ?? Auth::id(),
             'voted_at' => now(),
         ]);
         return $vote;

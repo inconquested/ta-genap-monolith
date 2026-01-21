@@ -58,11 +58,11 @@ class User extends Authenticatable
     }
     public function votes()
     {
-        return parent::hasMany(Vote::class);
+        return $this->hasMany(Vote::class);
     }
     public function polls()
     {
-        return parent::hasMany(Poll::class, 'creator_id');
+        return $this->hasMany(Poll::class, 'creator_id');
     }
     public function comments(): HasManyThrough
     {

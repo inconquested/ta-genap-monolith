@@ -29,6 +29,7 @@ class PollStoreRequest extends FormRequest
             'creator_id' => 'required|exists:users,id',
             'end_date' => 'required|date_format:Y-m-d H:i:s|after:start_date',
             'is_active' => 'required|boolean',
+            'is_finalized' => 'required|boolean',
             'allow_comments' => 'nullable|boolean',
             'options' => 'required|array',
             'options.*.option_text' => 'required|string|min:1|max:16',

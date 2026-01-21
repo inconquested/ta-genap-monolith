@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignUuid('achievement_type_id')->constrained('achievement_types')->onDelete('cascade');
+            $table->json('progress_data');
             $table->timestamp('earned_at');
             $table->timestamps();
 

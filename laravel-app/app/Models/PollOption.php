@@ -10,6 +10,7 @@ class PollOption extends Model
 {
     /** @use HasFactory<\Database\Factories\PollOptionFactory> */
     use HasFactory, HasUuids;
+    protected $table = 'poll_options';
 
     protected $fillable = [
         'id',
@@ -20,6 +21,10 @@ class PollOption extends Model
 
     public function poll()
     {
-        return $this->belongsTo(Poll::class);
+        return $this->belongsTo(Poll::class, 'poll_id');
+    }
+    public function votes()
+    {
+        return $this->hasMany(Vote::class, 'option_id');
     }
 }

@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Concerns\ApiResponse;
+use App\Http\Requests\AchievementTypeStoreRequest;
+use App\Http\Requests\AchievementTypeUpdateRequest;
 use App\Models\AchievementType;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class AchievementTypeController extends Controller
 {
+    use ApiResponse;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return $this->success(AchievementType::get());
     }
 
     /**
@@ -20,15 +25,18 @@ class AchievementTypeController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AchievementTypeStoreRequest $req)
     {
-        //
+        return $this->success(
+            data: AchievementType::create($req->validated()),
+            status: 201
+        );
     }
 
     /**
@@ -36,7 +44,7 @@ class AchievementTypeController extends Controller
      */
     public function show(AchievementType $achievementType)
     {
-        //
+        return $this->success($achievementType);
     }
 
     /**
@@ -50,9 +58,12 @@ class AchievementTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AchievementType $achievementType)
+    public function update(AchievementTypeUpdateRequest $req, AchievementType $achievementType)
     {
-        //
+        return $this->success(
+            data: $achievementType->update($req->validated()),
+            status: 201
+        );
     }
 
     /**

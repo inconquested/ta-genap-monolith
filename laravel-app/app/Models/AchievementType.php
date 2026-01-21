@@ -18,8 +18,8 @@ class AchievementType extends Model
         'requirement_value'
     ];
 
-    public function users()
+    public function userAchievements()
     {
-        return $this->belongsToMany(User::class, 'user_achievements');
+        return $this->hasMany(UserAchievement::class);
     }
 }

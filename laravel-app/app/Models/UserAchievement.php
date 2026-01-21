@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserAchievement extends Model
 {
@@ -13,6 +14,19 @@ class UserAchievement extends Model
         'id',
         'user_id',
         'achievement_type_id',
-        'earned_at'
+        'earned_at',
+        'progress_data'
     ];
+    protected $casts = [
+        'progress_data' => 'array'
+    ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function achievementType(): BelongsTo
+    {
+        return $this->belongsTo(AchievementType::class);
+    }
 }

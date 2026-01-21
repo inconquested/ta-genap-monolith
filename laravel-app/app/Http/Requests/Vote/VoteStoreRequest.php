@@ -12,7 +12,7 @@ class VoteStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check();
+        return true;
     }
 
     /**
@@ -24,13 +24,15 @@ class VoteStoreRequest extends FormRequest
     {
         return [
             'poll_id' => 'required|exists:polls,id',
-            'option_id' => 'required|exists:polls_options,id',
+            'user_id' => 'nullable|exists:users,id',
+            'option_id' => 'required|exists:poll_options,id',
         ];
     }
     public function messages()
     {
         return [
             'poll_id.required' => 'Polling tidak ada atau tidak valid',
+            'user_id.exists' => 'User tidak valid',
             'option_id.required' => 'Pilihan ada atau tidak valid',
         ];
     }

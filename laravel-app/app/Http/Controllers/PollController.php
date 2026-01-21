@@ -20,7 +20,7 @@ class PollController extends Controller
     {
         return $this->success(
             Poll::where('is_active', true)
-                ->with(['options', 'creator:id,username'])
+                ->with(['options', 'creator:id,username', ''])
                 ->orderBy('created_at', 'desc')->paginate(20)
         );
     }
@@ -39,7 +39,7 @@ class PollController extends Controller
     public function store(PollStoreRequest $req)
     {
         $poll = PollService::CreatePoll($req->validated());
-        return $this->success(data: $poll->load('options'), status: 201);
+        return $this->success(data: $poll->load(['options', 'votes', 'comments']), status: 201);
     }
 
     /**
@@ -47,7 +47,7 @@ class PollController extends Controller
      */
     public function show(Poll $poll)
     {
-        return $this->success($poll->load(['options', 'creator:id,username']));
+        return $this->success($poll->load(['options', 'creator:id,username', 'votes', 'comments']));
     }
 
     /**

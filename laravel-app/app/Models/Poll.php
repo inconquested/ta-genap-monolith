@@ -30,11 +30,11 @@ class Poll extends Model
     }
     public function options(): HasMany
     {
-        return $this->hasMany(PollOption::class);
+        return $this->hasMany(PollOption::class, 'poll_id');
     }
     public function votes(): HasManyThrough
     {
-        return $this->hasManyThrough(Vote::class, PollOption::class);
+        return $this->hasManyThrough(Vote::class, PollOption::class, 'poll_id', 'option_id', 'id', 'id');
     }
     public function result(): HasOne
     {
