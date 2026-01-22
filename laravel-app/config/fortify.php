@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'guard' => 'web',
+    'guard' => 'sanctum',
 
     /*
     |--------------------------------------------------------------------------
@@ -86,7 +86,7 @@ return [
     |
     */
 
-    'prefix' => '',
+    'prefix' => 'api',
 
     'domain' => null,
 
@@ -101,7 +101,7 @@ return [
     |
     */
 
-    'middleware' => ['web'],
+    'middleware' => ['api'],
 
     /*
     |--------------------------------------------------------------------------
@@ -130,7 +130,7 @@ return [
     |
     */
 
-    'views' => true,
+    'views' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -147,6 +147,8 @@ return [
         Features::registration(),
         Features::resetPasswords(),
         Features::emailVerification(),
+        Features::updateProfileInformation(),
+        Features::updatePasswords(),
         Features::twoFactorAuthentication([
             'confirm' => true,
             'confirmPassword' => true,
