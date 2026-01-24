@@ -13,6 +13,8 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Http\Responses\LoginResponse;
+use Laravel\Fortify\Http\Responses\LogoutResponse;
+use Laravel\Fortify\Http\Responses\RegisterResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -21,7 +23,55 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(LoginResponse::class, function ($app) {
+            return new class implements LoginResponse {
+                public function toResponse($request)
+                {
+                    if ($request->wantsJson()) {
+                        $user = $request->user();
+                        return response()->json([
+                            'token' => $user->createToken('desktop-app')->plainTextToken,
+                            'user' => $user,
+                            'message' => 'Login successful',
+                        ], 200);
+                    }
+                    return redirect()->intended(config('fortify.home'));
+                }
+            };
+        });
+        // 2. Custom Register Response
+        $this->app->singleton(RegisterResponse::class, function ($app) {
+            return new class implements RegisterResponse {
+                public function toResponse($request)
+                {
+                    if ($request->wantsJson()) {
+                        $user = $request->user();
+                        return response()->json([
+                            'token' => $user->createToken('desktop-app')->plainTextToken,
+                            'user' => $user,
+                            'message' => 'Registration successful',
+                        ], 201);
+                    }
+                    return redirect(config('fortify.home'));
+                }
+            };
+        });
+        $this->app->singleton(LogoutResponse::class, function ($app) {
+            return new class implements LogoutResponse {
+                public function toResponse($request)
+                {
+                    if ($request->wantsJson()) {
+                        $user = $request->user();
+                        // Safety check: ensure token exists before deleting
+                        if ($user && $user->currentAccessToken()) {
+                            $user->currentAccessToken()->delete();
+                        }
+                        return response()->json(['message' => 'Logged out'], 200);
+                    }
+                    return redirect('/');
+                }
+            };
+        });
     }
 
     /**
@@ -40,23 +90,8 @@ class FortifyServiceProvider extends ServiceProvider
             }
             return null;
         });
-        /**Customize the login response
-         *  to return a Sanctum token
-         *  for desktop clients' API usage
-         */
-        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
-            public function toResponse($request)
-            {
-                /** @var \App\Models\User $user */
-                $user = \Illuminate\Support\Facades\Auth::user();
-                $token = $user->createToken('desktop_app')->plainTextToken;
-                return response()->json([
-                    'token' => $token,
-                    'user' => $user
-                ], 201);
-            }
-        });
     }
+
 
     /**
      * Configure Fortify actions.
