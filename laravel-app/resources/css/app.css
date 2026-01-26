@@ -12,6 +12,9 @@
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
+    --font-mono:
+        'Fira Code', ui-monospace,
+        'SFMono-Regular', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -157,3 +160,11 @@
         0 0 10px theme('colors.neutral.100'),
         0 0 5px ('colors.orange.300') !important;
 }
+
+@keyframes slide {
+    from { x: 0; y: 0; }
+    to { x: 10; y: 10; }
+  }
+  .animate-pattern {
+    animation: slide 1s linear infinite;
+  }

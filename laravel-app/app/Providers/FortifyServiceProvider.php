@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\LogoutResponse;
+use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
-use Laravel\Fortify\Http\Responses\LoginResponse;
-use Laravel\Fortify\Http\Responses\LogoutResponse;
-use Laravel\Fortify\Http\Responses\RegisterResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -61,9 +61,10 @@ class FortifyServiceProvider extends ServiceProvider
                 public function toResponse($request)
                 {
                     if ($request->wantsJson()) {
-                        $user = $request->user();
-                        // Safety check: ensure token exists before deleting
-                        if ($user && $user->currentAccessToken()) {
+                        // Note: If using session-based logout, $request->user() might be null here.
+                        // For a desktop client sending a Bearer token, ensure the logout route 
+                        // is wrapped in 'auth:sanctum' middleware.
+                        if ($user = $request->user()) {
                             $user->currentAccessToken()->delete();
                         }
                         return response()->json(['message' => 'Logged out'], 200);
