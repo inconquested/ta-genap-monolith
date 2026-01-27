@@ -21,6 +21,7 @@ class Poll extends Model
         'description',
         'start_date',
         'end_date',
+        'is_finalized',
         'is_active',
         'allow_comments',
     ];

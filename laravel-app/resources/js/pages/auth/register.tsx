@@ -113,7 +113,7 @@ export default function Register() {
                                 {/* Left Separator: Gray to Rose */}
                                 <div className="h-px w-full bg-linear-to-r from-gray-800 via-rose-500 via-20% to-orange-400" />
 
-                                <span className="shrink-0 cursor-default text-xs text-neutral-50">
+                                <span className="shrink-0 cursor-default text-xs text-gray-900 dark:text-neutral-50 font-bold">
                                     Atau login dengan
                                 </span>
 

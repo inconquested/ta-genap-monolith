@@ -3,8 +3,44 @@
   "WorkspaceRootPath": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|c:\\users\\acer\\onedrive\\desktop\\ta_xi_ii_electa\\netwinform-app\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|c:\\users\\acer\\onedrive\\desktop\\ta_xi_ii_electa\\netwinform-app\\models\\winneroption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|solutionrelative:models\\winneroption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|c:\\users\\acer\\onedrive\\desktop\\ta_xi_ii_electa\\netwinform-app\\models\\vote.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|solutionrelative:models\\vote.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|c:\\users\\acer\\onedrive\\desktop\\ta_xi_ii_electa\\netwinform-app\\models\\voteauditlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|solutionrelative:models\\voteauditlog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|c:\\users\\acer\\onedrive\\desktop\\ta_xi_ii_electa\\netwinform-app\\models\\userachievement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|solutionrelative:models\\userachievement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|c:\\users\\acer\\onedrive\\desktop\\ta_xi_ii_electa\\netwinform-app\\models\\achievementtype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|solutionrelative:models\\achievementtype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|c:\\users\\acer\\onedrive\\desktop\\ta_xi_ii_electa\\netwinform-app\\models\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|solutionrelative:models\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|c:\\users\\acer\\onedrive\\desktop\\ta_xi_ii_electa\\netwinform-app\\models\\poll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|solutionrelative:models\\poll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|c:\\users\\acer\\onedrive\\desktop\\ta_xi_ii_electa\\netwinform-app\\models\\polloption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|solutionrelative:models\\polloption.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|c:\\users\\acer\\onedrive\\desktop\\ta_xi_ii_electa\\netwinform-app\\models\\pollresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|solutionrelative:models\\pollresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|c:\\users\\acer\\onedrive\\desktop\\ta_xi_ii_electa\\netwinform-app\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{562CDE4B-E7CE-4822-AB65-ECA79C9BF013}|netwinform-app.csproj|solutionrelative:models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -23,14 +59,132 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Form1.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Form1.cs",
-              "RelativeDocumentMoniker": "Form1.cs",
-              "ToolTip": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Form1.cs [Design]",
-              "RelativeToolTip": "Form1.cs [Design]",
+              "Title": "WinnerOption.cs",
+              "DocumentMoniker": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\WinnerOption.cs",
+              "RelativeDocumentMoniker": "Models\\WinnerOption.cs",
+              "ToolTip": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\WinnerOption.cs",
+              "RelativeToolTip": "Models\\WinnerOption.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-15T02:16:58.326Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2026-01-26T02:52:48.412Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "VoteAuditLog.cs",
+              "DocumentMoniker": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\VoteAuditLog.cs",
+              "RelativeDocumentMoniker": "Models\\VoteAuditLog.cs",
+              "ToolTip": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\VoteAuditLog.cs",
+              "RelativeToolTip": "Models\\VoteAuditLog.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAYwBcAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T02:43:24.414Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Vote.cs",
+              "DocumentMoniker": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\Vote.cs",
+              "RelativeDocumentMoniker": "Models\\Vote.cs",
+              "ToolTip": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\Vote.cs",
+              "RelativeToolTip": "Models\\Vote.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T02:36:24.246Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserAchievement.cs",
+              "DocumentMoniker": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\UserAchievement.cs",
+              "RelativeDocumentMoniker": "Models\\UserAchievement.cs",
+              "ToolTip": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\UserAchievement.cs",
+              "RelativeToolTip": "Models\\UserAchievement.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T02:16:30.004Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\User.cs",
+              "RelativeDocumentMoniker": "Models\\User.cs",
+              "ToolTip": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\User.cs",
+              "RelativeToolTip": "Models\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T01:47:54.266Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PollResult.cs",
+              "DocumentMoniker": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\PollResult.cs",
+              "RelativeDocumentMoniker": "Models\\PollResult.cs",
+              "ToolTip": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\PollResult.cs",
+              "RelativeToolTip": "Models\\PollResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T01:41:38.052Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PollOption.cs",
+              "DocumentMoniker": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\PollOption.cs",
+              "RelativeDocumentMoniker": "Models\\PollOption.cs",
+              "ToolTip": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\PollOption.cs",
+              "RelativeToolTip": "Models\\PollOption.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T01:38:10.479Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Poll.cs",
+              "DocumentMoniker": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\Poll.cs",
+              "RelativeDocumentMoniker": "Models\\Poll.cs",
+              "ToolTip": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\Poll.cs",
+              "RelativeToolTip": "Models\\Poll.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T01:29:53.281Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Comment.cs",
+              "DocumentMoniker": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\Comment.cs",
+              "RelativeDocumentMoniker": "Models\\Comment.cs",
+              "ToolTip": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\Comment.cs",
+              "RelativeToolTip": "Models\\Comment.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T01:28:05.626Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AchievementType.cs",
+              "DocumentMoniker": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\AchievementType.cs",
+              "RelativeDocumentMoniker": "Models\\AchievementType.cs",
+              "ToolTip": "C:\\Users\\acer\\OneDrive\\Desktop\\TA_XI_II_Electa\\netwinform-app\\Models\\AchievementType.cs",
+              "RelativeToolTip": "Models\\AchievementType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T01:21:07.544Z",
+              "EditorCaption": ""
             }
           ]
         },

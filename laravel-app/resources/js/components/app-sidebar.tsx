@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, ChartBarBig } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, ChartBarBig, Trophy, History } from 'lucide-react';
 
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -20,15 +20,25 @@ import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Beranda',
         href: dashboard(),
         icon: LayoutGrid,
     },
     {
-        title: 'Polls',
+        title: 'Poll',
         href: '',
         icon: ChartBarBig ,
     },
+    {
+        title: 'Leaderboard',
+        href: '',
+        icon: Trophy
+    },
+    {
+        title: 'Riwayat',
+        href: '',
+        icon: History
+    }
 ];
 
 const footerNavItems: NavItem[] = [
