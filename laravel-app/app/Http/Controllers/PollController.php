@@ -7,6 +7,7 @@ use App\Http\Requests\Poll\PollStoreRequest;
 use App\Http\Requests\Poll\PollUpdateRequest;
 use App\Models\Poll;
 use App\Services\PollService;
+use Inertia\Inertia;
 
 class PollController extends Controller
 {
@@ -20,9 +21,17 @@ class PollController extends Controller
     {
         return $this->success(
             Poll::where('is_active', true)
-                ->with(['options', 'creator:id,username', ''])
+                ->with(['options', 'creator:id,username', 'votes', 'comments'])
                 ->orderBy('created_at', 'desc')->paginate(20)
         );
+    }
+
+    public function indexInertia(){
+        return Inertia::render('polls/index',[
+            'polls'=>Poll::where('is_active', true)
+            ->with(['options', 'creator:id,username', 'votes', 'comments'])
+            ->orderBy('created_at', 'desc')->paginate(20)
+        ]);
     }
 
     /**
@@ -30,7 +39,7 @@ class PollController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('polls/create');
     }
 
     /**
@@ -55,7 +64,7 @@ class PollController extends Controller
      */
     public function edit(Poll $poll)
     {
-        //
+        return Inertia::render('poll/create',['poll'=>$poll->load(['options','creator:id,username','votes','comments'])]);
     }
 
     /**

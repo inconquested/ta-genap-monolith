@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Poll;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -97,5 +96,9 @@ class PollService
         } catch (\Exception $e) {
             throw $e;
         }
+    }
+
+    public static function getTrendingPoll(){
+
     }
 }

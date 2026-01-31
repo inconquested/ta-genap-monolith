@@ -14,6 +14,7 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
+import { indexInertia } from '@/routes/web/polls';
 import { type NavItem } from '@/types';
 
 import AppLogo from './app-logo';
@@ -26,7 +27,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Poll',
-        href: '',
+        href: indexInertia(),
         icon: ChartBarBig ,
     },
     {

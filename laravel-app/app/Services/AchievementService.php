@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Services;
+
 use App\Events\AchievementEarned;
 use App\Models\AchievementType;
 use App\Models\User;
@@ -12,7 +14,7 @@ class AchievementService
      * Check users' progress and
      * award them when criteria is met
      */
-    public function CheckAndAward(User $user, string $trigger)
+    public function CheckAndAward(User $user)
     {
         $newAchievement = [];
         $availableAchivements = AchievementType::WhereNotIn('id', function ($query) use ($user) {
@@ -87,6 +89,11 @@ class AchievementService
         }
         return true;
     }
+    /**
+     * Check whether user has
+     * votes with counts that
+     * exceeded votes requirements
+     */
     private function hasPopularPoll(User $user, int $minVotes)
     {
         return $user->polls()
@@ -95,6 +102,7 @@ class AchievementService
             ->exists();
     }
 
+    // Get user's curent actions count value
     private function getCurrentValue(User $user, AchievementType $achievement)
     {
         return match ($achievement->requirement_type) {
@@ -125,4 +133,12 @@ class AchievementService
             ];
         });
     }
+
+    //Get achievement user has
+    public static function getUserAchievement(User $user) {
+    return [
+        'earned' => UserAchievement::where('user_id', $user->id)->get(),
+        'types'  => AchievementType::all(),
+    ];
+}
 }
