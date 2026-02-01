@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('poll_options', function (Blueprint $table) {
+        Schema::create('poll_categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('poll_id')->constrained()->onDelete('cascade');
-            $table->string('value');
-            $table->unsignedTinyInteger('display_order')->default(0);
+            $table->string('label');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('poll_options');
+        Schema::dropIfExists('poll_categories');
     }
 };

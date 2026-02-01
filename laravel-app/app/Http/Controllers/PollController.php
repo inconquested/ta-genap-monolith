@@ -6,7 +6,9 @@ use App\Concerns\ApiResponse;
 use App\Http\Requests\Poll\PollStoreRequest;
 use App\Http\Requests\Poll\PollUpdateRequest;
 use App\Models\Poll;
+use App\Models\PollCategory;
 use App\Services\PollService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class PollController extends Controller
@@ -17,21 +19,17 @@ class PollController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $req)
     {
-        return $this->success(
-            Poll::where('is_active', true)
+        $polls = Poll::where('is_active', true)
                 ->with(['options', 'creator:id,username', 'votes', 'comments'])
-                ->orderBy('created_at', 'desc')->paginate(20)
+                ->orderBy('created_at', 'desc')->paginate(20);
+        if ($req->is('api/*') || $req->expectsJson()) {
+            return $this->success($polls);
+        }
+        return $this->success(
+            $polls
         );
-    }
-
-    public function indexInertia(){
-        return Inertia::render('polls/index',[
-            'polls'=>Poll::where('is_active', true)
-            ->with(['options', 'creator:id,username', 'votes', 'comments'])
-            ->orderBy('created_at', 'desc')->paginate(20)
-        ]);
     }
 
     /**
@@ -39,7 +37,9 @@ class PollController extends Controller
      */
     public function create()
     {
-        return Inertia::render('polls/create');
+        return Inertia::render('polls/create',[
+            'categories'=>PollCategory::all()
+        ]);
     }
 
     /**
@@ -47,8 +47,12 @@ class PollController extends Controller
      */
     public function store(PollStoreRequest $req)
     {
-        $poll = PollService::CreatePoll($req->validated());
-        return $this->success(data: $poll->load(['options', 'votes', 'comments']), status: 201);
+        $pollData = PollService::CreatePoll($req->validated(), \Illuminate\Support\Facades\Auth::user()->id);
+    
+        if ($req->is('api/*') || $req->expectsJson()) {
+            return $this->success(data: $pollData, status: 201);
+        }
+        return $this->success(data: $pollData->load(['options', 'votes', 'comments']), status: 201);
     }
 
     /**

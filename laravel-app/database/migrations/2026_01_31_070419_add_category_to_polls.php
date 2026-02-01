@@ -12,13 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('polls', function (Blueprint $table) {
-           /**
-            * Determine if poll has maximal
-            * thresholds of vote counts
-            */
-            $table->boolean('allow_quorum')->after('description')->default(false);
-            $table->unsignedBigInteger('quorum_count')->after('allow_quorum')->nullable();
-            
+            $table->foreignUuid('category')->constrained('poll_categories')->after('description');
         });
     }
 
@@ -28,9 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('polls', function (Blueprint $table) {
-            $table->dropColumn('allow_quorum');
-            $table->dropColumn('quorum');
-
+            $table->dropColumn('category');
         });
     }
 };

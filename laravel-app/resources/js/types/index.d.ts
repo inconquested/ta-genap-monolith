@@ -44,39 +44,52 @@ export interface User {
     [key: string]: unknown; // This allows for additional properties...
 }
 
-export interface Poll{
+export interface Poll {
     id: UUID;
     creator_id: UUID;
     title: string;
     description?: string;
-    start_date:string;
-    end_date:string;
-    is_finalized:boolean;
+    start_date: string;
+    end_date: string;
+    is_finalized: boolean;
     is_active: boolean;
-    allow_comments:boolean;
-    is_finalized_vote_counts:boolean;
-    finalized_vote_counts?:number;
+    allow_comments: boolean;
+    is_finalized_vote_counts: boolean;
+    finalized_vote_counts?: number;
+    created_at: string;
+    updated_at: string;
 }
-
+export interface PollCategory {
+    id: UUID;
+    label: string;
+    created_at: string;
+    updated_at: string;
+}
 export interface PollOption {
     id: UUID;
-    poll_id:UUID;
-    option_text:string;
-    display_order?:number;
+    poll_id: UUID;
+    value: string;
+    display_order?: number;
+    created_at: string;
+    updated_at: string;
 }
 export interface Vote {
     id: UUID;
     poll_id: UUID;
     option_id: UUID;
     user_id: UUID;
-    voted_at:string;
+    voted_at: string;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface PollResult {
     id: UUID;
     poll_id: UUID;
     is_draw?: boolean;
-    total_votes:number;
+    total_votes: number;
+    created_at: string;
+    updated_at: string;
 }
 export interface Comments {
     id: UUID;
@@ -91,8 +104,10 @@ export interface AchievementType {
     code: string;
     name: string;
     description: string;
-    requirement_type: string
+    requirement_type: string;
     requirement_value: number;
+    created_at: string;
+    updated_at: string;
 }
 export interface UserAchievement {
     id: UUID;
@@ -100,9 +115,13 @@ export interface UserAchievement {
     achievement_type_id: UUID;
     progress_data: JSON;
     earned_at: string;
+    created_at: string;
+    updated_at: string;
 }
 export interface WinnerOption {
     id: UUID;
     poll_result_id: UUID;
     option_id: UUID;
+    created_at: string;
+    updated_at: string;
 }

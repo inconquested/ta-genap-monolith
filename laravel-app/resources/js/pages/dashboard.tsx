@@ -7,8 +7,8 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
+import {create as createPoll} from '@/routes/polls';
 import { type Poll, type BreadcrumbItem, type SharedData, type UserAchievement, AchievementType} from '@/types';
-
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -64,10 +64,13 @@ export default function Dashboard() {
                         </p>
                     </div>
                     <div className="mb-4 flex h-full items-center md:mb-0">
+                        <Link
+                        href={createPoll().url}>
                         <Button variant={'ctasec'} size={'lg'}>
                             <CirclePlusIcon />
                             Buat Poll
                         </Button>
+                        </Link>
                     </div>
                 </div>
                 <div className="mt-12 w-full md:mt-6">
@@ -120,7 +123,7 @@ export default function Dashboard() {
                             />
                         </Link>
                     </div>
-                    <div className="grid h-auto min-h-64 w-full grid-cols-1 gap-4 md:grid-cols-3">
+                    <div className="grid h-auto min-h-64 w-full grid-cols-1 gap-4 md:grid-cols-3 bg-amber-400">
                         <div
                             className={`row-span-2 md:col-span-2 md:row-span-1 ${trendingPoll ? '' : 'flex flex-col items-center justify-center'}`}
                         >
@@ -145,7 +148,9 @@ export default function Dashboard() {
                         </div>
 
                         <div className="h-full rounded-lg p-4">
+                            <p className='text-lg'>
                             Pencapaian Anda
+                            </p>
                             <div>
                                 <div className="grid grid-cols-2 gap-6 md:grid-cols-4 lg:grid-cols-6">
                                     {types.map((type) => {

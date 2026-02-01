@@ -8,13 +8,13 @@ use Illuminate\Support\Str;
 
 class PollService
 {
-    public static function CreatePoll(array $data)
+    public static function CreatePoll(array $data, string $userId)
     {
         try {
-            return DB::transaction(function () use ($data) {
+            return DB::transaction(function () use ($data, $userId) {
                 $poll = Poll::create([
                     'id' => Str::uuid(),
-                    'creator_id' => $data['creator_id'],
+                    'creator_id' => $userId,
                     'title' => $data['title'],
                     'description' => $data['description'],
                     'start_date' => $data['start_date'],

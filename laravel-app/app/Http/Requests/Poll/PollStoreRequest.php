@@ -26,13 +26,11 @@ class PollStoreRequest extends FormRequest
             'title' => 'required|string|min:3|max:255',
             'description' => 'nullable|string',
             'start_date' => 'required|date_format:Y-m-d H:i:s',
-            'creator_id' => 'required|exists:users,id',
             'end_date' => 'required|date_format:Y-m-d H:i:s|after:start_date',
             'is_active' => 'required|boolean',
-            'is_finalized' => 'required|boolean',
             'allow_comments' => 'nullable|boolean',
             'options' => 'required|array',
-            'options.*.option_text' => 'required|string|min:1|max:16',
+            'options.*.value' => 'required|string|min:1|max:16',
             'options.*.display_order' => 'required|integer',
         ];
     }

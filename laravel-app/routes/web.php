@@ -24,8 +24,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
-    Route::get('/polls', [PollController::class, 'indexInertia'])->name('web.polls.indexInertia');
-    Route::get('/polls/create', [PollController::class, 'create'])->name('web.polls.create');
-    Route::get('/polls/{poll}/edit', [PollController::class, 'edit'])->name('web.polls.edit');
+Route::middleware('auth')->group(function () {
+    Route::resource('polls', PollController::class)->names([
+        'index' => 'polls.index',
+        'create' => 'polls.create',
+        'store' => 'polls.store',
+        'show' => 'polls.show',
+        'edit' => 'polls.edit',
+        'update' => 'polls.update',
+        'destroy' => 'polls.destroy',]);
+});
 
 require __DIR__ . '/settings.php';

@@ -37,6 +37,9 @@ class Poll extends Model
     {
         return $this->hasManyThrough(Vote::class, PollOption::class, 'poll_id', 'option_id', 'id', 'id');
     }
+    public function category (): BelongsTo{
+        return $this->belongsTo(PollCategory::class, 'category');
+    }
     public function result(): HasOne
     {
         return $this->hasOne(PollResult::class);
