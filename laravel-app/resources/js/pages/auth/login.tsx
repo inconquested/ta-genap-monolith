@@ -154,7 +154,10 @@ export default function Login({
                             >
                                 {processing && <Spinner />}
                                 Log in
-                                <ArrowDownRight className="size-5 transition-all group-hover:translate-x-1 group-hover:-rotate-45" />
+                                {
+                                    !processing &&
+                                    <ArrowDownRight className="size-5 transition-all group-hover:translate-x-1 group-hover:-rotate-45" />
+                                }
                             </Button>
                         </div>
 

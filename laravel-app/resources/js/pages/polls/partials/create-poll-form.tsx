@@ -16,10 +16,11 @@ export interface PollFormState {
     options: PollOption[];
     is_active: boolean;
     start_date?: string;
+    deleted_option_ids?: UUID[]; 
     end_date?: string;
     allow_comments: boolean;
     category: string;
-    quorum: boolean;
+    allow_quorum: boolean;
     quorum_count: number;
 }
 
@@ -51,9 +52,9 @@ export default function CreatePollForm({
         if (data.options.length == 5) return;
         const newOption: PollOption = {
             poll_id: crypto.randomUUID() as UUID,
+            id: crypto.randomUUID() as UUID,
             display_order: data.options.length,
             value: `Opsi ${data.options.length + 1}`,
-            id: crypto.randomUUID() as UUID,
             created_at: '',
             updated_at: '',
         };
@@ -76,8 +77,6 @@ export default function CreatePollForm({
             ),
         );
     };
-
-
     return (
         <form
             onSubmit={onSubmit}
@@ -145,6 +144,9 @@ export default function CreatePollForm({
                                             className={`font-mono`}
                                             key={cat.id}
                                             value={cat}
+                                            onChange={() =>
+                                                setData('category', cat.id)
+                                            }
                                         >
                                             {cat.label}
                                         </ComboboxItem>
@@ -247,65 +249,77 @@ export default function CreatePollForm({
                             <SettingCard
                                 label="Quorum"
                                 subtext="Tetapkan quorum untuk Poll ini"
-                                active={data.quorum}
-                                onToggle={() => setData('quorum', !data.quorum)}
+                                active={data.allow_quorum}
+                                onToggle={() =>
+                                    setData('allow_quorum', !data.allow_quorum)
+                                }
                             />
-
+                            {/* Counter: Jumlah Quorum */}
                             {/* Counter: Jumlah Quorum */}
                             <div className="flex h-full items-center justify-between rounded-md border border-zinc-800 p-4 dark:bg-black">
                                 <span className="font-mono text-sm font-bold text-wrap dark:text-neutral-50">
                                     Jumlah Quorum
                                 </span>
+
                                 <div className="flex items-center gap-4">
                                     <Button
                                         type="button"
-                                        disabled={!data.quorum}
-                                        onClick={() =>
+                                        disabled={!data.allow_quorum}
+                                        onClick={() => {
+                                            if (!data.allow_quorum) return null;
                                             setData(
                                                 'quorum_count',
                                                 Math.max(
                                                     0,
                                                     data.quorum_count - 1,
                                                 ),
-                                            )
-                                        }
-                                        variant={'outline'}
+                                            );
+                                        }}
+                                        variant="outline"
                                     >
                                         <Minus size={16} />
                                     </Button>
+
                                     <input
-                                        disabled={!data.quorum}
+                                        disabled={!data.allow_quorum}
                                         value={data.quorum_count}
                                         onChange={(
                                             e: React.ChangeEvent<HTMLInputElement>,
                                         ) => {
+                                            if (!data.allow_quorum) return null;
                                             setData(
                                                 'quorum_count',
                                                 safeParse(
                                                     e.target.value,
                                                     0,
-                                                    1000000,
+                                                    1_000_000,
                                                 ),
                                             );
                                         }}
-                                        className={`w-8 text-center font-mono text-lg font-bold ${data.quorum ? 'text-gray-900 dark:text-neutral-50' : ''} border-0! focus:outline-none`}
+                                        className={`w-8 text-center font-mono text-lg font-bold ${
+                                            data.allow_quorum
+                                                ? 'text-gray-900 dark:text-neutral-50'
+                                                : ''
+                                        } border-0! focus:outline-none`}
                                     />
 
                                     <Button
                                         type="button"
-                                        disabled={!data.quorum}
-                                        onClick={() =>
+                                        disabled={!data.allow_quorum}
+                                        onClick={() => {
+                                            if (!data.allow_quorum) return null;
                                             setData(
                                                 'quorum_count',
                                                 data.quorum_count + 1,
-                                            )
-                                        }
-                                        variant={'outline'}
+                                            );
+                                        }}
+                                        variant="outline"
                                     >
                                         <Plus size={16} />
                                     </Button>
                                 </div>
                             </div>
+                        
                         </div>
                     </div>
 

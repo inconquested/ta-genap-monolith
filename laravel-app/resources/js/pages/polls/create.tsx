@@ -20,7 +20,7 @@ export default function Create({categories} : CreateProps){
         start_date: '',
         end_date: '',
         allow_comments: true,
-        quorum: true,
+        allow_quorum: true,
         quorum_count: 0,
         category: '',
     });
@@ -28,6 +28,7 @@ export default function Create({categories} : CreateProps){
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault(); // Ensure this sends 'data' correctly
         const action = store();
+        console.log(data);
         post(action.url,  {
             onSuccess: () => {
                 // Handle success

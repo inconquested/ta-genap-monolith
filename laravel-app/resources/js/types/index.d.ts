@@ -50,15 +50,18 @@ export interface Poll {
     title: string;
     description?: string;
     start_date: string;
+    category: UUID;
     end_date: string;
+    options?: PollOption[];
     is_finalized: boolean;
     is_active: boolean;
     allow_comments: boolean;
-    is_finalized_vote_counts: boolean;
-    finalized_vote_counts?: number;
+    allow_quorum: boolean;
+    quorum_count?: number;
     created_at: string;
     updated_at: string;
 }
+
 export interface PollCategory {
     id: UUID;
     label: string;

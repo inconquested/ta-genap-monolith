@@ -17,13 +17,19 @@ class PollService
                     'creator_id' => $userId,
                     'title' => $data['title'],
                     'description' => $data['description'],
+                    'category' => $data['category'],
                     'start_date' => $data['start_date'],
                     'end_date' => $data['end_date'],
+                    'allow_comments' => $data['allow_comments'],
+                    'is_active' => $data['is_active'],
+                    'quorum' => $data['quorum'],
+                    'quorum_count' => $data['quorum_count']
+
                 ]);
                 foreach ($data['options'] as $index => $option) {
                     $poll->options()->create([
                         'id' => Str::uuid(),
-                        'option_text' => $option['option_text'],
+                        'value' => $option['value'],
                         'display_order' => $index
                     ]);
                 }
