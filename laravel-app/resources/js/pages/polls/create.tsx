@@ -23,6 +23,7 @@ export default function Create({categories} : CreateProps){
         allow_quorum: true,
         quorum_count: 0,
         category: '',
+        banner: null
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -34,6 +35,7 @@ export default function Create({categories} : CreateProps){
                 // Handle success
                 console.log('Poll created!');
             },
+            forceFormData: true,
             onError: (errors) => {
                 // Validation errors are automatically handled
                 console.log('Validation errors:', errors);
