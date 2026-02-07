@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Poll;
-use GuzzleHttp\Psr7\UploadedFile;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -23,11 +23,11 @@ class PollService
                     'end_date' => $data['end_date'],
                     'allow_comments' => $data['allow_comments'],
                     'is_active' => $data['is_active'],
-                    'quorum' => $data['quorum'],
+                    'allow_quorum' => $data['allow_quorum'],
                     'quorum_count' => $data['quorum_count']
                 ]);
                 if($banner){
-                    $poll->addMedia($banner)->toMediColletion('banner');
+                    $poll->addMedia($banner)->toMediaCollection('banner');
                 }
                 foreach ($data['options'] as $index => $option) {
                     $poll->options()->create([

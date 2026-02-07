@@ -29,7 +29,6 @@ export default function Create({categories} : CreateProps){
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault(); // Ensure this sends 'data' correctly
         const action = store();
-        console.log(data);
         post(action.url,  {
             onSuccess: () => {
                 // Handle success

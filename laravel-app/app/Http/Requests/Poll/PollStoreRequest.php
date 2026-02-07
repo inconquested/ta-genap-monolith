@@ -28,7 +28,7 @@ class PollStoreRequest extends FormRequest
             'start_date' => 'required|date_format:Y-m-d H:i:s',
             'end_date' => 'required|date_format:Y-m-d H:i:s|after:start_date',
             'category' => 'required|exists:poll_categories,id',
-            'quorum' => 'required|boolean',
+            'allow_quorum' => 'required|boolean',
             'quorum_count'=> 'nullable|integer',
             'is_active' => 'required|boolean',
             'allow_comments' => 'nullable|boolean',

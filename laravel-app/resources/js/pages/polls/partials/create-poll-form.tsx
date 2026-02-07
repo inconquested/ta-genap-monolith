@@ -48,9 +48,6 @@ export default function CreatePollForm({
     categories
 }: CreatePollFormProps) {
  
-
-    // --- 2. Refactored Handlers using setData ---
-
     const handleAddOption = () => {
         if (data.options.length == 5) return;
         const newOption: PollOption = {
@@ -81,12 +78,16 @@ export default function CreatePollForm({
         );
     };
 
+    //initialize cropper
     const {open, CropperUI} = useCropper((blob)=>{
        const file = new File([blob], "banner.jpg",{
         type: "image/jpeg",
        });
        setData("banner", file);
     });
+
+    const selectedCategory =
+        categories.find((cat) => cat.id === data.category) ?? null;
 
     return (
         <form
@@ -136,6 +137,7 @@ export default function CreatePollForm({
                         </label>
                         <Combobox
                             items={categories}
+                            value={selectedCategory}
                             onValueChange={(val: PollCategory | null) => {
                                 setData('category', val ? val.id : '');
                             }}
@@ -143,6 +145,7 @@ export default function CreatePollForm({
                         >
                             <ComboboxInput
                                 placeholder="Pilih Kategori"
+                                value={selectedCategory?.label ?? ''}
                                 className="focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                             />
                             <ComboboxContent>
@@ -152,12 +155,8 @@ export default function CreatePollForm({
                                 <ComboboxList>
                                     {categories.map((cat) => (
                                         <ComboboxItem
-                                            className={`font-mono`}
                                             key={cat.id}
                                             value={cat}
-                                            onChange={() =>
-                                                setData('category', cat.id)
-                                            }
                                         >
                                             {cat.label}
                                         </ComboboxItem>
