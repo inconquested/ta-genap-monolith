@@ -9,11 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Poll extends Model
+class Poll extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\PollFactory> */
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, InteractsWithMedia;
     protected $fillable = [
         'id',
         'title',
@@ -28,6 +31,8 @@ class Poll extends Model
         'is_active',
         'allow_comments',
     ];
+
+    //Eloquent relations
     public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -50,5 +55,22 @@ class Poll extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    //Media register
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('banner')
+        ->singleFile()
+        ->withResponsiveImages();
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('banner')
+        ->width(1500)
+        ->height(500)
+        ->sharpen(15)
+        ->performOnCollection('banner');
     }
 }

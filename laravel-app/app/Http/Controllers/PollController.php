@@ -47,7 +47,7 @@ class PollController extends Controller
      */
     public function store(PollStoreRequest $req)
     {
-        $pollData = PollService::CreatePoll($req->validated(), \Illuminate\Support\Facades\Auth::user()->id);
+        $pollData = PollService::CreatePoll($req->validated(), \Illuminate\Support\Facades\Auth::user()->id, $req->file('banner'));
     
         if ($req->is('api/*') || $req->expectsJson()) {
             return $this->success(data: $pollData, status: 201);

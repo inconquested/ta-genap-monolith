@@ -3,15 +3,16 @@
 namespace App\Services;
 
 use App\Models\Poll;
+use GuzzleHttp\Psr7\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class PollService
 {
-    public static function CreatePoll(array $data, string $userId)
+    public static function CreatePoll(array $data, string $userId, ?UploadedFile $banner = null)
     {
         try {
-            return DB::transaction(function () use ($data, $userId) {
+            return DB::transaction(function () use ($data, $userId, $banner) {
                 $poll = Poll::create([
                     'id' => Str::uuid(),
                     'creator_id' => $userId,
@@ -24,8 +25,10 @@ class PollService
                     'is_active' => $data['is_active'],
                     'quorum' => $data['quorum'],
                     'quorum_count' => $data['quorum_count']
-
                 ]);
+                if($banner){
+                    $poll->addMedia($banner)->toMediColletion('banner');
+                }
                 foreach ($data['options'] as $index => $option) {
                     $poll->options()->create([
                         'id' => Str::uuid(),

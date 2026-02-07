@@ -35,6 +35,7 @@ class PollStoreRequest extends FormRequest
             'options' => 'required|array',
             'options.*.value' => 'required|string|min:1|max:16',
             'options.*.display_order' => 'required|integer',
+            'banner' => 'nullable|file'
         ];
     }
     public function messages()
