@@ -1,4 +1,5 @@
 import { SquareChevronRight } from 'lucide-react';
+import { useMemo } from 'react';
 
 import {PollFormState} from "@/pages/polls/partials/create-poll-form";
 import {  PollOption } from '@/types';
@@ -14,6 +15,16 @@ export default function PollPreview({ data }: PollPreviewProps) {
     // Calculate percentages for visual demo (random or evenly distributed for preview)
     const totalVotes = 156;
 
+    const bannerPreview = useMemo(() => {
+        if (!data.banner) return null;
+
+        if (typeof data.banner === 'string') {
+            return data.banner; // existing URL from backend
+        }
+
+        return URL.createObjectURL(data.banner); // File → object URL
+    }, [data.banner]);
+
     return (
         <div className="sticky top-6 w-full max-w-sm p-6">
             <h3 className="text-md mb-3 font-mono font-bold text-gray-900 md:text-lg dark:text-neutral-50">
@@ -23,7 +34,9 @@ export default function PollPreview({ data }: PollPreviewProps) {
             {/* Card Container */}
             <div className="overflow-hidden rounded-lg border border-zinc-800 dark:bg-black">
                 {/* Gradient Header */}
-                <div className="h-24 w-full bg-linear-to-tr from-gray-800 via-rose-500 via-20% via-50% to-orange-400 font-black text-neutral-50 shadow-[0px_0px_8px_rgba(255,255,255,0.2)] transition-all ease-out hover:shadow-[0px_0px_8px_rgba(255,255,255,0.25)]" />
+                <div className="h-24">
+                    <img src={bannerPreview} alt="" />
+                </div>
 
                 <div className="p-5">
                     <h2 className="mb-6 text-xl leading-tight font-bold dark:text-neutral-50">

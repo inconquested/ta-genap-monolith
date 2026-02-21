@@ -25,10 +25,11 @@ class PollStoreRequest extends FormRequest
         return [
             'title' => 'required|string|min:3|max:255',
             'description' => 'nullable|string',
+            'banner' => 'nullable|image|max:5120',
             'start_date' => 'required|date_format:Y-m-d H:i:s',
             'end_date' => 'required|date_format:Y-m-d H:i:s|after:start_date',
             'category' => 'required|exists:poll_categories,id',
-            'quorum' => 'required|boolean',
+            'allow_quorum' => 'required|boolean',
             'quorum_count'=> 'nullable|integer',
             'is_active' => 'required|boolean',
             'allow_comments' => 'nullable|boolean',
@@ -47,7 +48,7 @@ class PollStoreRequest extends FormRequest
             'end_date.after' => 'Tenggat tidak sah',
             'is_active.required' => 'Keaktifan Petisi harus diisi',
             'options.*.option_text.required' => 'Label pilihan harus diisi',
-            'quorum.required' => 'Quorum Kosong',
+            'allow_quorum.required' => 'Quorum Kosong',
             'options.*.option_text.max' => 'Label pilihan terlalu panjang',
             'options.*.display_order.required' => 'Urutan tampil pilihan harus diatur',
         ];

@@ -15,7 +15,7 @@ class FinalizePolls implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct(public Poll $poll)
     {
         //
     }
@@ -25,20 +25,10 @@ class FinalizePolls implements ShouldQueue
      */
     public function handle(): void
     {
-        $polls = Poll::cursor()
-            ->where('end_date', '<=', now())
-            ->where('is_finalized', false)
-            ->with('options')
-            ->get();
-
-        foreach ($polls as $poll) {
-            DB::transaction(function () use ($poll) {
-                //Get options with vote counts
-                //Find highest vote
-                //Get option reaching max number
-                //Create Summary
-                //
-            });
-        }
+        $poll = $this->poll->fresh(); // always refresh from DB
+        // Guard: if poll was extended, stop here
+        if ($poll->end_date->isFuture() || $poll->is_finalized) 
+            return;
+        \App\Services\PollService::finalizePoll($this->poll);
     }
 }

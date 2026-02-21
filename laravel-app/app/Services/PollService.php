@@ -3,15 +3,18 @@
 namespace App\Services;
 
 use App\Models\Poll;
+use App\Models\PollResult;
+use App\Models\WinnerOption;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class PollService
 {
-    public static function CreatePoll(array $data, string $userId)
+    public static function CreatePoll(array $data, string $userId, ?UploadedFile $banner = null): Poll
     {
         try {
-            return DB::transaction(function () use ($data, $userId) {
+            return DB::transaction(function () use ($data, $userId, $banner) {
                 $poll = Poll::create([
                     'id' => Str::uuid(),
                     'creator_id' => $userId,
@@ -26,6 +29,10 @@ class PollService
                     'quorum_count' => $data['quorum_count']
 
                 ]);
+                if($banner){
+                    $poll->addMedia($banner)->toMediaCollection('banner');
+                }
+
                 foreach ($data['options'] as $index => $option) {
                     $poll->options()->create([
                         'id' => Str::uuid(),
@@ -35,6 +42,7 @@ class PollService
                 }
                 return $poll;
             });
+            \App\Jobs\FinalizePolls::dispatch($poll)->delay($poll->end_date);
         } catch (\Exception $e) {
             throw $e;
         }
@@ -59,6 +67,9 @@ class PollService
                         'is_finalized' => $data['is_finalized']
                     ]
                 );
+                if($poll->wasChanged('end_date')){
+                    \App\Jobs\FinalizePolls::dispatch($poll)->delay($poll->end_date)->afterCommit();
+                }
 
                 // 2. Map incoming options to extract IDs (only existing ones)
                 $incomingOptionIds = collect($data['options'])
@@ -107,4 +118,33 @@ class PollService
     public static function getTrendingPoll(){
 
     }
+    public static function finalizePoll(Poll $poll){
+        $options = $poll->options()
+        ->withCount('votes')
+        ->get();
+        $maxVotes = $options->max('votes_count');
+        $winners = $options->where('votes_count', $maxVotes);
+        $totalVotes = $options->sum('votes_count');
+        $isDraw = $winners->count() > 1;
+
+        DB::transaction(function () use ($winners, $isDraw, $poll, $totalVotes){
+            $pollResult = PollResult::create([
+                'id' => Str::uuid(),
+                'poll_id' => $poll->id,
+                'is_draw'=> $isDraw,
+                'total_votes' => $totalVotes,
+            ]);
+            $pollResult->save();
+            $poll->update([
+                'is_finalized' => true
+            ]);
+            foreach( $winners as $option ){
+                WinnerOption::create([
+                    'id' => Str::uuid(),
+                    'poll_result_id' => $pollResult->id,
+                    'option_id' => $option->id,
+                ]);
+            }
+        }); 
+     }
 }

@@ -3,6 +3,7 @@ import { useForm } from '@inertiajs/react';
 import { Check, ChevronRight, Minus, Plus, X } from 'lucide-react';
 import React from 'react';
 
+import { useImageCropper } from '@/components/image-cropper';
 import { Button } from '@/components/ui/button';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxList, ComboboxItem, ComboboxInput } from '@/components/ui/combobox';
 import { DatePickerTime } from '@/components/ui/datetime-picker';
@@ -22,6 +23,7 @@ export interface PollFormState {
     category: string;
     allow_quorum: boolean;
     quorum_count: number;
+    banner?: File;
 }
 
 type SetDataFunction = ReturnType<typeof useForm<PollFormState>>['setData'];
@@ -77,6 +79,15 @@ export default function CreatePollForm({
             ),
         );
     };
+
+    
+    const { open, CropperUI } = useImageCropper((blob) => {
+        const file = new File([blob], 'banner.jpg', {
+            type: 'image/jpeg',
+        });
+        setData('banner', file);
+    });
+
     return (
         <form
             onSubmit={onSubmit}
@@ -175,6 +186,24 @@ export default function CreatePollForm({
                                 onChange={(val) => setData('end_date', val)}
                             />
                         </div>
+                    </div>
+
+                    <div className="mb-6">
+                        <label className="mb-2 block font-mono text-sm text-zinc-500">
+                            05 // Opsi Polling
+                        </label>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            className='border w-full rounded p-3 border-dashed hover:border-zinc-500'
+                            onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                open(URL.createObjectURL(file), 'banner');
+                            }}
+                        />
+
+                        {CropperUI}
                     </div>
 
                     {/* Section 05: Options */}
@@ -319,7 +348,6 @@ export default function CreatePollForm({
                                     </Button>
                                 </div>
                             </div>
-                        
                         </div>
                     </div>
 

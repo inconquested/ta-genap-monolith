@@ -60,6 +60,11 @@ export interface Poll {
     quorum_count?: number;
     created_at: string;
     updated_at: string;
+
+    banner?: File | null;
+    comments?: Comment[];
+    creator?: User;
+    votes?: Vote[];
 }
 
 export interface PollCategory {
@@ -84,6 +89,8 @@ export interface Vote {
     voted_at: string;
     created_at: string;
     updated_at: string;
+
+    user?: User;
 }
 
 export interface PollResult {
