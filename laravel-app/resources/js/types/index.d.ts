@@ -19,9 +19,10 @@ export interface NavGroup {
 
 export interface NavItem {
     title: string;
-    href: NonNullable<InertiaLinkProps['href']>;
+    href?: string; // Parent href (optional if it's a dropdown)
     icon?: LucideIcon | null;
-    isActive?: boolean;
+    //Extension for recursive as own child
+    subItems?: NavItem[]; // Recursive structure for clean sub-menus
 }
 
 export interface SharedData {
@@ -29,6 +30,17 @@ export interface SharedData {
     auth: Auth;
     sidebarOpen: boolean;
     [key: string]: unknown;
+}
+
+export interface Media {
+    id: number;
+    uuid: string;
+    original_url: string;
+    preview_url?: string;
+    file_name: string;
+    mime_type: string;
+    size: number;
+    // ... add other fields if you need them
 }
 
 export interface User {
@@ -50,7 +62,7 @@ export interface Poll {
     title: string;
     description?: string;
     start_date: string;
-    category: UUID;
+    category: PollCategory;
     end_date: string;
     options?: PollOption[];
     is_finalized: boolean;
@@ -65,6 +77,13 @@ export interface Poll {
     comments?: Comment[];
     creator?: User;
     votes?: Vote[];
+    media?: Media[];
+}
+
+interface PaginatedPolls {
+    data: Poll[];
+    links: any[];
+    meta: any;
 }
 
 export interface PollCategory {

@@ -73,4 +73,10 @@ class Poll extends Model implements HasMedia
         ->performOnCollections('banner')
         ->format('FORMAT_WEBP');
     }
+
+    //General
+    public function isClosed(): bool
+    {
+        return $this->end_date <= now() || $this->is_finalized;
+    }
 }

@@ -7,6 +7,8 @@ use App\Http\Requests\Poll\PollStoreRequest;
 use App\Http\Requests\Poll\PollUpdateRequest;
 use App\Models\Poll;
 use App\Models\PollCategory;
+use App\Models\PollResult;
+use App\Models\WinnerOption;
 use App\Services\PollService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -21,15 +23,32 @@ class PollController extends Controller
      */
     public function index(Request $req)
     {
-        $polls = Poll::where('is_active', true)
-                ->with(['options', 'creator:id,username', 'votes', 'comments'])
-                ->orderBy('created_at', 'desc')->paginate(20);
+        $query = Poll::where('is_active', true)
+                ->with(['options', 'creator:id,username', 'votes', 'comments', 'category', 'media'])
+                ->orderBy('created_at', 'desc');
+
+        // Optional category filter (accepts id or slugified label)
+        if ($req->query('category')) {
+            $catParam = $req->query('category');
+
+            $foundCat = PollCategory::where('id', $catParam)
+                ->orWhere('label', $catParam)
+                ->orWhereRaw('LOWER(label) = ?', [strtolower(str_replace('-', ' ', $catParam))])
+                ->first();
+
+            if ($foundCat) {
+                $query->where('category', $foundCat->id);
+            }
+        }
+
+        $polls = $query->paginate(5);
         if ($req->is('api/*') || $req->expectsJson()) {
             return $this->success($polls);
         }
-        return $this->success(
-            $polls
-        );
+        return Inertia::render('polls/index',[
+            'polls'=> $polls,
+            'categories' => PollCategory::all()
+        ]);
     }
 
     /**
@@ -62,9 +81,22 @@ class PollController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Poll $poll)
+    public function show(Poll $poll, Request $req)
     {
-        return $this->success($poll->load(['options', 'creator:id,username', 'votes', 'comments']));
+        if ($req->is('api/*') || $req->expectsJson()) {
+            return $this->success($poll->load(['options', 'creator:id,username', 'votes', 'comments','media', 'category']));
+        }
+        if ($poll->isClosed()) {
+            return Inertia::render('polls/finalized', [
+                'poll' => $poll,
+                'results' => PollResult::where('poll_id', $poll->id)->get(),
+                'winners' => WinnerOption::where('poll_result_id', $poll->result?->id)->get()
+            ]);
+        }
+        return Inertia::render('polls/show',[
+            'poll' => $poll->load(['options', 'creator:id,username', 'votes', 'comments','media', 'category', 'votes'])  
+            ]
+        );
     }
 
     /**

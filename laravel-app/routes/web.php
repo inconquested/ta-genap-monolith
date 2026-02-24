@@ -17,7 +17,7 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard',[
-            'userPolls' => App\Models\Poll::where('creator_id', Auth::user('id'))->get(),
+            'userPolls' => App\Models\Poll::where('creator_id', Auth::id())->with(['media'])->get(),
             'trendingPoll' => App\Services\PollService::getTrendingPoll(),
             'achievements' => App\Services\AchievementService::getUserAchievement(Auth::user('id')),
         ]);

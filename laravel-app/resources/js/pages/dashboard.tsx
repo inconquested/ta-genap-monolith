@@ -1,9 +1,9 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { ArrowRight, Bell, CirclePlusIcon, MessageCircleQuestion, } from 'lucide-react';
+import { ArrowRight, Bell, CirclePlusIcon, Clock, MessageCircleQuestion, } from 'lucide-react';
 
 import AchievementBadge from '@/components/ui/achievement-badge';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
@@ -52,27 +52,28 @@ export default function Dashboard() {
                         </Button>
                     </div>
                 </div>
-                <div className="flex h-64 w-full flex-col justify-between gap-6 rounded-lg bg-linear-[120deg] from-orange-400/12 via-neutral-50 via-25% px-8 antialiased bg-blend-color md:h-36 md:flex-row dark:bg-linear-[120deg] dark:via-neutral-800/50 dark:to-neutral-900/50">
-                    <div className="pt-4">
-                        <h1 className="font-mono font-bold md:text-3xl">
-                            Buat Polling Baru!
-                        </h1>
-                        <p className="md:text-md mt-1 max-w-xl shrink font-mono leading-4 font-normal tracking-wider opacity-75 dark:text-muted-foreground">
-                            Buat polling instan dan dapatkan feedback dari
-                            komunitas, ikut serta dalam topik hangat atau
-                            pecahkan masalah tim bersama
-                        </p>
+                {!userPolls && (
+                    <div className="flex h-64 w-full flex-col justify-between gap-6 rounded-lg bg-linear-[120deg] from-orange-400/12 via-neutral-50 via-25% px-8 antialiased bg-blend-color md:h-36 md:flex-row dark:bg-linear-[120deg] dark:via-neutral-800/50 dark:to-neutral-900/50">
+                        <div className="pt-4">
+                            <h1 className="font-mono font-bold md:text-3xl">
+                                Buat Polling Baru!
+                            </h1>
+                            <p className="md:text-md mt-1 max-w-xl shrink font-mono leading-4 font-normal tracking-wider opacity-75 dark:text-muted-foreground">
+                                Buat polling instan dan dapatkan feedback dari
+                                komunitas, ikut serta dalam topik hangat atau
+                                pecahkan masalah tim bersama
+                            </p>
+                        </div>
+                        <div className="mb-4 flex h-full items-center md:mb-0">
+                            <Link href={createPoll().url}>
+                                <Button variant={'ctasec'} size={'lg'}>
+                                    <CirclePlusIcon />
+                                    Buat Poll
+                                </Button>
+                            </Link>
+                        </div>
                     </div>
-                    <div className="mb-4 flex h-full items-center md:mb-0">
-                        <Link
-                        href={createPoll().url}>
-                        <Button variant={'ctasec'} size={'lg'}>
-                            <CirclePlusIcon />
-                            Buat Poll
-                        </Button>
-                        </Link>
-                    </div>
-                </div>
+                )}
                 <div className="mt-12 w-full md:mt-6">
                     <div className="flex justify-between">
                         <p className="flex items-center gap-2 font-mono text-xl font-bold md:text-2xl">
@@ -92,7 +93,27 @@ export default function Dashboard() {
                     </div>
                     <div className="mt-2 grid min-h-64 w-full grid-cols-3">
                         {userPolls ? (
-                            userPolls.map((poll) => <Card key={poll.id}></Card>)
+                            userPolls.map((poll) => (
+                                <Card key={poll.id} className="pt-0 gap-1.5">
+                                    <CardHeader className="p-0">
+                                        <img
+                                            src={poll.media?.[0].original_url}
+                                            className="mb-3 h-42 w-full rounded-t-md"
+                                        />
+                                    </CardHeader>
+                                    <CardContent className='w-full'>
+                                        <div className='flex justify-between'>
+                                            <h3 className=" text-2xl font-bold tracking-tight text-gray-900 dark:text-neutral-50">
+                                            {poll.title}
+                                            </h3>
+                                            <p className='text-sm text-muted-foreground flex gap-1 items-center'>
+                                                <Clock size={16}/>
+                                                Tersisa
+                                                </p>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            ))
                         ) : (
                             <div className="col-span-3 flex h-full flex-col items-center justify-center gap-2 rounded-lg">
                                 <MessageCircleQuestion
@@ -123,7 +144,7 @@ export default function Dashboard() {
                             />
                         </Link>
                     </div>
-                    <div className="grid h-auto min-h-64 w-full grid-cols-1 gap-4 md:grid-cols-3 bg-amber-400">
+                    <div className="grid h-auto min-h-64 w-full grid-cols-1 gap-4 md:grid-cols-3">
                         <div
                             className={`row-span-2 md:col-span-2 md:row-span-1 ${trendingPoll ? '' : 'flex flex-col items-center justify-center'}`}
                         >
@@ -148,9 +169,7 @@ export default function Dashboard() {
                         </div>
 
                         <div className="h-full rounded-lg p-4">
-                            <p className='text-lg'>
-                            Pencapaian Anda
-                            </p>
+                            <p className="text-lg">Pencapaian Anda</p>
                             <div>
                                 <div className="grid grid-cols-2 gap-6 md:grid-cols-4 lg:grid-cols-6">
                                     {types.map((type) => {

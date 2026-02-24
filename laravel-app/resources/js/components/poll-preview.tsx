@@ -16,7 +16,7 @@ export default function PollPreview({ data }: PollPreviewProps) {
     const totalVotes = 156;
 
     const bannerPreview = useMemo(() => {
-        if (!data.banner) return null;
+        if (!data.banner) return undefined;
 
         if (typeof data.banner === 'string') {
             return data.banner; // existing URL from backend
@@ -34,8 +34,10 @@ export default function PollPreview({ data }: PollPreviewProps) {
             {/* Card Container */}
             <div className="overflow-hidden rounded-lg border border-zinc-800 dark:bg-black">
                 {/* Gradient Header */}
-                <div className="h-24">
-                    <img src={bannerPreview} alt="" />
+                <div
+                    className={`h-24 ${bannerPreview ? '' : 'bg-linear-to-tr from-gray-800 via-rose-500 via-20% via-50% to-orange-400'}`}
+                >
+                    <img src={bannerPreview} />
                 </div>
 
                 <div className="p-5">
@@ -50,29 +52,31 @@ export default function PollPreview({ data }: PollPreviewProps) {
                             </p>
                         )}
 
-                        {data.options.map((option : PollOption, index : number) => (
-                            <div
-                                key={option.id || index}
-                                className="group relative overflow-hidden rounded border p-3 transition-colors hover:border-zinc-600 dark:border-zinc-800 dark:bg-zinc-900/50"
-                            >
-                                {/* Fake Progress Bar for preview visual */}
+                        {data.options.map(
+                            (option: PollOption, index: number) => (
                                 <div
-                                    className="absolute top-0 left-0 h-full bg-zinc-800/50"
-                                    style={{
-                                        width: `${Math.max(10, 80 - index * 20)}%`,
-                                    }}
-                                />
+                                    key={option.id || index}
+                                    className="group relative overflow-hidden rounded border p-3 transition-colors hover:border-zinc-600 dark:border-zinc-800 dark:bg-zinc-900/50"
+                                >
+                                    {/* Fake Progress Bar for preview visual */}
+                                    <div
+                                        className="absolute top-0 left-0 h-full bg-zinc-800/50"
+                                        style={{
+                                            width: `${Math.max(10, 80 - index * 20)}%`,
+                                        }}
+                                    />
 
-                                <div className="relative z-10 flex items-center justify-between">
-                                    <span className="font-mono text-xs text-zinc-200">
-                                        {option.value || 'Opsi Kosong'}
-                                    </span>
-                                    <span className="font-mono text-xs text-zinc-500">
-                                        {Math.max(10, 80 - index * 20)}%
-                                    </span>
+                                    <div className="relative z-10 flex items-center justify-between">
+                                        <span className="font-mono text-xs text-zinc-200">
+                                            {option.value || 'Opsi Kosong'}
+                                        </span>
+                                        <span className="font-mono text-xs text-zinc-500">
+                                            {Math.max(10, 80 - index * 20)}%
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ),
+                        )}
                     </div>
 
                     <div className="mt-6 flex items-center justify-between border-t border-zinc-800 pt-4">
@@ -97,7 +101,7 @@ export default function PollPreview({ data }: PollPreviewProps) {
                     </Button>
                 </div>
             </div>
-            <div className="mt-3 p-[1.5px] bg-blend-color bg-linear-to-br from-gray-700 via-rose-500 via-25% via-55% to-orange-400 rounded">
+            <div className="mt-3 rounded bg-linear-to-br from-gray-700 via-rose-500 via-25% via-55% to-orange-400 p-[1.5px] bg-blend-color">
                 <div className="flex min-h-20 flex-col rounded bg-neutral-950 p-3">
                     <div className="flex items-center gap-1">
                         <SquareChevronRight className="text-orange-400" />

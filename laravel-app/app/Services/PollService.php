@@ -25,7 +25,7 @@ class PollService
                     'end_date' => $data['end_date'],
                     'allow_comments' => $data['allow_comments'],
                     'is_active' => $data['is_active'],
-                    'quorum' => $data['quorum'],
+                    'allow_quorum' => $data['allow_quorum'],
                     'quorum_count' => $data['quorum_count']
 
                 ]);
@@ -63,6 +63,7 @@ class PollService
                         'start_date' => $data['start_date'],
                         'end_date' => $data['end_date'],
                         'is_active' => $data['is_active'],
+                        'allow_quorum' => $data['allow_quorum'],
                         'allow_comments' => $data['allow_comments'],
                         'is_finalized' => $data['is_finalized']
                     ]
@@ -116,8 +117,13 @@ class PollService
     }
 
     public static function getTrendingPoll(){
-
+        return Poll::where('created_at', '>=', now()->modify('-7 days'))
+        ->withCount(['votes', 'comments'])
+        ->having('votes_count', '>', 100)
+        ->having('comments_count', '>', 10)
+        ->get();
     }
+
     public static function finalizePoll(Poll $poll){
         $options = $poll->options()
         ->withCount('votes')

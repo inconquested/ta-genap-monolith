@@ -1,398 +1,226 @@
-import { Head } from '@inertiajs/react';
-import { Clock, MessageSquare, ThumbsUp, Users } from 'lucide-react';
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
-
-// Assuming these are your shadcn imports.
-// If you don't have them, standard HTML/Tailwind works too.
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import AppLayout from '@/layouts/app-layout';
-import { Poll } from '@/types';
-
+import { Input } from '@/components/ui/input';
 import {
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-    type ChartConfig,
-} from '@/components/ui/chart';
+    Bell,
+    Briefcase,
+    Coffee,
+    Cpu,
+    Gamepad2,
+    Globe,
+    LayoutGrid,
+    Search,
+} from 'lucide-react';
+import { PollFeedCard } from '@/components/poll-feed-card'; // We'll build this below
+import AppLayout from '@/layouts/app-layout';
+import { BreadcrumbItem, PaginatedPolls, Poll, PollCategory } from '@/types';
+import pollsRoutes from '@/routes/polls';
+import {motion} from 'framer-motion';
+import { router, usePage } from '@inertiajs/react';
+import Pagination from '@/components/ui/pagination';
+import { slugify } from '@/lib/utils';
 
-// --- MOCK DATA FOR THE CHART ---
-const velocityData = [
-    { time: '10:00 AM', votes: 12 },
-    { time: '10:15 AM', votes: 18 },
-    { time: '10:30 AM', votes: 25 },
-    { time: '10:45 AM', votes: 22 },
-    { time: '11:00 AM', votes: 35 },
-    { time: '11:15 AM', votes: 48 },
-    { time: '11:30 AM', votes: 42 },
-    { time: '11:45 AM', votes: 55 }, // Peak
-    { time: '12:00 PM', votes: 50 },
-    { time: '12:15 PM', votes: 65 },
-    { time: '12:30 PM', votes: 62 },
-    { time: '12:45 PM', votes: 60 },
-    { time: '01:00 PM', votes: 72 }, // High
-    { time: '01:15 PM', votes: 45 },
-    { time: '01:30 PM', votes: 30 },
-    { time: '02:00 PM', votes: 28 },
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Polls',
+        href: pollsRoutes.index.url(),
+    },
+    {
+        'title': 'Temukan',
+        href: pollsRoutes.index.url()
+    }
 ];
 
-const chartConfig = {
-    votes: {
-        label: 'Votes',
-        color: 'hsl(var(--chart-1))',
-    },
-} satisfies ChartConfig;
 
-// --- PAGE COMPONENT ---
-export default function Index({ poll }: { poll?: Poll }) {
-    // Fallback title if prop is missing for preview
-    const title =
-        poll?.title ||
-        'Which architectural pattern should we adopt for the new microservices refactor?';
+const redirectToPoll=(id : string)=>{
+    router.visit(pollsRoutes.show.url(id));
+}
+
+export default function Index({polls, categories}: {
+    polls : PaginatedPolls,
+    categories: PollCategory[] 
+}) {
+    const page = usePage();
+    const searchParams = new URL(page.url, typeof window !== 'undefined' ? window.location.origin : 'http://localhost').searchParams;
+    const activeCategory = searchParams.get('category');
+
+    const selectCategory = (catSlug?: string) => {
+        const base = pollsRoutes.index.url();
+        const url = catSlug ? `${base}?category=${encodeURIComponent(catSlug)}` : base;
+        router.visit(url);
+    };
 
     return (
-        <AppLayout>
-            <Head title={title} />
-
-            {/* Main Grid Background wrapper */}
-            <div className="flex min-h-screen justify-center bg-gray-50/50 p-4 lg:p-8">
-                <div className="w-full max-w-4xl space-y-6">
-                    {/* --- HEADER SECTION --- */}
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-2 font-mono text-xs tracking-wider text-muted-foreground uppercase">
-                            <span>Poll ID: #E11340</span>
-                            <span>//</span>
-                            <span>Category: Engineering</span>
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <div className="min-h-screen font-sans text-zinc-400 selection:bg-rose-500/30">
+                <main className="mx-auto grid max-w-7xl grid-cols-1 gap-8 p-6 lg:grid-cols-12">
+                    {/* Left Feed Content */}
+                    <div className="space-y-6 lg:col-span-8">
+                        {/* Search & Categories */}
+                        <h1 className="font-mono text-4xl font-bold text-gray-900 dark:text-neutral-50">
+                            Temukan Poll Untuk Diikuti
+                        </h1>
+                        <div className="space-y-6 overflow-x-hidden px-3">
+                            <motion.div
+                                drag="x"
+                                dragConstraints={{ left: -244, right: 0 }} //Manual width calculation
+                                className="no-scrollbar -z-10 flex cursor-grab items-center gap-2 overflow-x-visible active:cursor-grabbing"
+                            >
+                                <Button
+                                    key="all"
+                                    variant={activeCategory ? 'outline' : 'ctasec'}
+                                    onClick={() => selectCategory(undefined)}
+                                >
+                                    All
+                                </Button>
+                                {categories.map((cat) => {
+                                    const catSlug = slugify(cat.label);
+                                    return (
+                                        <Button
+                                            variant={activeCategory === catSlug ? 'ctasec' : 'outline'}
+                                            key={cat.id}
+                                            onClick={() => selectCategory(catSlug)}
+                                        >
+                                            {cat.label}
+                                        </Button>
+                                    );
+                                })}
+                            </motion.div>
                         </div>
 
-                        <h1 className="font-serif text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
-                            {title}
-                        </h1>
-
-                        <div className="flex items-center gap-6 font-mono text-sm text-muted-foreground">
-                            <div className="flex items-center gap-2">
-                                <Users className="h-4 w-4" />
-                                <span>1,248 Votes</span>
+                        {/* Filter Tabs */}
+                        <div className="flex items-center justify-between border-b border-zinc-900 pb-4">
+                            <div className="flex gap-6 font-mono text-[11px] font-bold tracking-widest uppercase">
+                                <button className="-mb-[17px] border-b border-rose-500 pb-4 text-rose-500">
+                                    Trending
+                                </button>
+                                <button className="text-zinc-600 hover:text-zinc-400">
+                                    Ending Soon
+                                </button>
+                                <button className="text-zinc-600 hover:text-zinc-400">
+                                    Newest
+                                </button>
                             </div>
-                            <div className="flex items-center gap-2">
-                                <Clock className="h-4 w-4" />
-                                <span>Ends in 04:23:12</span>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="font-mono text-xs text-zinc-500"
+                            >
+                                <LayoutGrid size={14} className="mr-2" />{' '}
+                                Filters
+                            </Button>
+                        </div>
+
+                        {/* Feed */}
+                        <div className="space-y-3 w-full">
+                            {polls.data.map((poll) => (
+                                <PollFeedCard
+                                    voteCallback={()=>{redirectToPoll(poll.id)}}
+                                    key={poll.id}
+                                    poll={poll}
+                                    userVoteId={'1'}
+                                />
+                            ))}
+                        </div>
+                        { polls &&
+                            <Pagination paginated={polls} />
+                        }
+                    </div>
+
+                    {/* Right Sidebar Widgets */}
+                    <div className="space-y-6 lg:col-span-4">
+                        {/* Top Creators */}
+                        <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/30 p-5">
+                            <div className="mb-6 flex items-center justify-between">
+                                <h3 className="text-sm font-bold tracking-tight text-white">
+                                    Top Creators
+                                </h3>
+                                <button className="font-mono text-[10px] font-bold text-rose-500 uppercase hover:underline">
+                                    View All
+                                </button>
+                            </div>
+                            <div className="space-y-5">
+                                {[
+                                    {
+                                        name: 'TechGuru',
+                                        subs: '12.5k followers',
+                                    },
+                                    {
+                                        name: 'DailyPoller',
+                                        subs: '8.2k followers',
+                                    },
+                                    {
+                                        name: 'CryptoKing',
+                                        subs: '5.1k followers',
+                                    },
+                                ].map((user) => (
+                                    <div
+                                        key={user.name}
+                                        className="flex items-center justify-between"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <Avatar className="h-9 w-9 border border-zinc-800">
+                                                <AvatarFallback className="bg-zinc-800 text-[10px] text-zinc-500">
+                                                    TG
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            <div>
+                                                <p className="text-xs font-bold text-zinc-100">
+                                                    {user.name}
+                                                </p>
+                                                <p className="font-mono text-[10px] text-zinc-500">
+                                                    {user.subs}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="h-8 border-zinc-800 text-[10px] font-bold hover:bg-zinc-800"
+                                        >
+                                            Follow
+                                        </Button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* For You Widget */}
+                        <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/30 p-5">
+                            <h3 className="mb-4 text-sm font-bold tracking-tight text-white">
+                                For You
+                            </h3>
+                            <div className="space-y-2">
+                                {[
+                                    {
+                                        tag: 'Movies • Trending',
+                                        q: 'Which summer blockbuster are you most excited for?',
+                                    },
+                                    {
+                                        tag: 'Work • Hot',
+                                        q: "Remote work vs Office: What's your preference post-2024?",
+                                    },
+                                    {
+                                        tag: 'Finance • New',
+                                        q: 'Bitcoin price prediction for end of Q4?',
+                                    },
+                                ].map((item, i) => (
+                                    <div
+                                        key={i}
+                                        className="group cursor-pointer rounded-xl border border-zinc-900 bg-black/40 p-3 transition-all hover:border-zinc-800"
+                                    >
+                                        <p className="mb-1 font-mono text-[9px] tracking-widest text-rose-500 uppercase">
+                                            {item.tag}
+                                        </p>
+                                        <p className="text-xs font-medium text-zinc-300 transition-colors group-hover:text-white">
+                                            {item.q}
+                                        </p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
-
-                    {/* --- CARD 1: REAL-TIME DISTRIBUTION --- */}
-                    <Card className="border-none bg-white shadow-sm">
-                        <CardHeader className="pb-4">
-                            <div className="flex items-center justify-between">
-                                <h3 className="font-mono text-sm font-bold tracking-widest text-gray-700 uppercase">
-                                    Real-Time Distribution
-                                </h3>
-                                <div className="flex gap-2">
-                                    <ThumbsUp className="h-4 w-4 text-muted-foreground" />
-                                    <Clock className="h-4 w-4 text-muted-foreground" />
-                                </div>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            {/* Option 1 */}
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-sm font-semibold">
-                                    <span>Event-Driven Architecture (EDA)</span>
-                                    <span className="text-pink-500">45%</span>
-                                </div>
-                                <div className="relative h-12 w-full overflow-hidden rounded-md bg-gray-100">
-                                    <div
-                                        className="absolute top-0 left-0 h-full rounded-md bg-gradient-to-r from-slate-600 via-rose-500 to-orange-400"
-                                        style={{ width: '45%' }}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Option 2 */}
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-sm font-semibold">
-                                    <span>Domain-Driven Design (DDD)</span>
-                                    <span className="text-orange-400">32%</span>
-                                </div>
-                                <div className="relative h-12 w-full overflow-hidden rounded-md bg-gray-100">
-                                    <div
-                                        className="absolute top-0 left-0 h-full rounded-md bg-gradient-to-r from-slate-500 to-orange-300"
-                                        style={{ width: '32%' }}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Option 3 */}
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-sm font-semibold">
-                                    <span>Hexagonal Architecture</span>
-                                    <span className="text-gray-500">15%</span>
-                                </div>
-                                <div className="relative h-12 w-full overflow-hidden rounded-md bg-gray-100">
-                                    <div
-                                        className="absolute top-0 left-0 h-full rounded-md bg-gradient-to-r from-rose-200 to-rose-300"
-                                        style={{ width: '15%' }}
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Option 4 */}
-                            <div className="space-y-2">
-                                <div className="flex justify-between text-sm font-semibold text-muted-foreground">
-                                    <span>Monolithic (Keep as is)</span>
-                                    <span>8%</span>
-                                </div>
-                                <div className="relative h-12 w-full overflow-hidden rounded-md bg-gray-100">
-                                    <div
-                                        className="absolute top-0 left-0 h-full rounded-md bg-gray-200"
-                                        style={{ width: '8%' }}
-                                    />
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* --- CARD 2: VOTE VELOCITY (CHART) --- */}
-                    <Card className="border-none bg-white shadow-sm">
-                        <CardHeader>
-                            <h3 className="font-mono text-sm font-bold tracking-widest text-gray-700 uppercase">
-                                Vote Velocity
-                            </h3>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="h-[200px] w-full">
-                                <ChartContainer
-                                    config={chartConfig}
-                                    className="h-full w-full"
-                                >
-                                    <BarChart
-                                        data={velocityData}
-                                        margin={{
-                                            top: 0,
-                                            right: 0,
-                                            bottom: 0,
-                                            left: 0,
-                                        }}
-                                    >
-                                        <CartesianGrid
-                                            vertical={false}
-                                            strokeDasharray="3 3"
-                                            stroke="#f0f0f0"
-                                        />
-                                        <XAxis
-                                            dataKey="time"
-                                            tickLine={false}
-                                            axisLine={false}
-                                            tickMargin={10}
-                                            minTickGap={30}
-                                            tickFormatter={(value) => value}
-                                            style={{
-                                                fontSize: '10px',
-                                                fill: '#888',
-                                            }}
-                                        />
-                                        <ChartTooltip
-                                            cursor={{
-                                                fill: 'rgba(0,0,0,0.05)',
-                                            }}
-                                            content={<ChartTooltipContent />}
-                                        />
-                                        {/* The gradient look is achieved by individual bar fills or a global gradient def */}
-                                        <Bar
-                                            dataKey="votes"
-                                            radius={[2, 2, 0, 0]}
-                                            // Using a function to alternate colors slightly or keeping uniform pink/orange
-                                            fill="url(#colorGradient)"
-                                        />
-                                        <defs>
-                                            <linearGradient
-                                                id="colorGradient"
-                                                x1="0"
-                                                y1="0"
-                                                x2="0"
-                                                y2="1"
-                                            >
-                                                <stop
-                                                    offset="0%"
-                                                    stopColor="#fbbf24"
-                                                    stopOpacity={0.8}
-                                                />
-                                                <stop
-                                                    offset="100%"
-                                                    stopColor="#f43f5e"
-                                                    stopOpacity={0.8}
-                                                />
-                                            </linearGradient>
-                                        </defs>
-                                    </BarChart>
-                                </ChartContainer>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {/* --- CARD 3: COMMUNITY DISCUSSION --- */}
-                    <Card className="border-none bg-white shadow-sm">
-                        <CardHeader className="flex flex-row items-center justify-between pb-6">
-                            <div className="flex items-center gap-2">
-                                <h3 className="font-mono text-sm font-bold tracking-widest text-gray-700 uppercase">
-                                    Community Discussion
-                                </h3>
-                                <span className="rounded bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-600">
-                                    42
-                                </span>
-                            </div>
-                            <div className="flex cursor-pointer items-center gap-2 text-xs font-bold text-red-500">
-                                <span>SORT BY: TOP RATED</span>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="space-y-8">
-                            {/* Input Area */}
-                            <div className="flex gap-4">
-                                <div className="h-10 w-10 shrink-0 rounded-full bg-orange-500" />{' '}
-                                {/* Avatar Placeholder */}
-                                <div className="flex-1 space-y-2">
-                                    <Textarea
-                                        placeholder="Join the discussion..."
-                                        className="min-h-[100px] resize-none border-gray-200 bg-gray-50 focus-visible:ring-gray-300"
-                                    />
-                                    <div className="flex items-center justify-between pt-1">
-                                        <span className="text-xs text-muted-foreground">
-                                            Markdown supported
-                                        </span>
-                                        <Button
-                                            size="sm"
-                                            className="bg-slate-800 font-mono text-xs text-white hover:bg-slate-700"
-                                        >
-                                            POST COMMENT
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Comment 1 */}
-                            <div className="flex gap-4">
-                                <Avatar className="h-10 w-10 border border-gray-100">
-                                    <AvatarImage src="/placeholder-avatar-1.jpg" />
-                                    <AvatarFallback className="bg-orange-100 text-orange-600">
-                                        AD
-                                    </AvatarFallback>
-                                </Avatar>
-                                <div className="flex-1 space-y-1">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm font-bold text-gray-900">
-                                            alex_dev_99
-                                        </span>
-                                        <span className="text-xs text-muted-foreground">
-                                            2h ago
-                                        </span>
-                                        <Badge
-                                            variant="secondary"
-                                            className="h-5 rounded-sm border-none bg-pink-100 px-1.5 font-mono text-[10px] text-pink-600 hover:bg-pink-100"
-                                        >
-                                            VOTED EDA
-                                        </Badge>
-                                    </div>
-                                    <p className="text-sm leading-relaxed text-gray-600">
-                                        EDA is definitely the way to go for
-                                        scalability. The decoupling it provides
-                                        is essential for our team size. We
-                                        struggled with the Monolith for too
-                                        long.
-                                    </p>
-                                    <div className="flex items-center gap-4 pt-1">
-                                        <button className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-gray-900">
-                                            <ThumbsUp className="h-3 w-3" /> 12
-                                        </button>
-                                        <button className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-gray-900">
-                                            <MessageSquare className="h-3 w-3" />{' '}
-                                            Reply
-                                        </button>
-                                    </div>
-
-                                    {/* Threaded Reply */}
-                                    <div className="mt-4 flex gap-4 border-l-2 border-gray-100 pt-2 pl-4">
-                                        <Avatar className="h-8 w-8">
-                                            <AvatarImage src="/placeholder-avatar-2.jpg" />
-                                            <AvatarFallback className="bg-green-100 text-green-700">
-                                                SC
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <div className="flex-1 space-y-1">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-sm font-bold text-gray-900">
-                                                    sarah_connor
-                                                </span>
-                                                <span className="text-xs text-muted-foreground">
-                                                    1h ago
-                                                </span>
-                                            </div>
-                                            <p className="text-sm text-gray-600">
-                                                Agreed, but complexity increases
-                                                significantly. We need strong
-                                                monitoring tools before
-                                                committing.
-                                            </p>
-                                            <div className="flex items-center gap-4 pt-1">
-                                                <button className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-gray-900">
-                                                    <ThumbsUp className="h-3 w-3" />{' '}
-                                                    5
-                                                </button>
-                                                <button className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-gray-900">
-                                                    <MessageSquare className="h-3 w-3" />{' '}
-                                                    Reply
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Comment 2 */}
-                            <div className="flex gap-4">
-                                <Avatar className="h-10 w-10">
-                                    <AvatarFallback className="bg-indigo-600 text-white">
-                                        MK
-                                    </AvatarFallback>
-                                </Avatar>
-                                <div className="flex-1 space-y-1">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm font-bold text-gray-900">
-                                            m_k_ultra
-                                        </span>
-                                        <span className="text-xs text-muted-foreground">
-                                            4h ago
-                                        </span>
-                                        <Badge
-                                            variant="secondary"
-                                            className="h-5 rounded-sm border-none bg-orange-100 px-1.5 font-mono text-[10px] text-orange-600 hover:bg-orange-100"
-                                        >
-                                            VOTED HEXAGONAL
-                                        </Badge>
-                                    </div>
-                                    <p className="text-sm leading-relaxed text-gray-600">
-                                        Don't sleep on Hexagonal architecture.
-                                        It makes testing the business logic so
-                                        much easier without mocking everything.
-                                        Clean Architecture is the future.
-                                    </p>
-                                    <div className="flex items-center gap-4 pt-1">
-                                        <button className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-gray-900">
-                                            <ThumbsUp className="h-3 w-3" /> 8
-                                        </button>
-                                        <button className="flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-gray-900">
-                                            <MessageSquare className="h-3 w-3" />{' '}
-                                            Reply
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
+                </main>
             </div>
         </AppLayout>
     );

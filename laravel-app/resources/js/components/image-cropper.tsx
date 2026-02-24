@@ -157,7 +157,7 @@ function ImageCropperDialog({
                     />
                 </div>
                 <div className="mt-6 flex justify-between gap-2">
-                    <Button onClick={onClose}>Cancel</Button>
+                    <Button onClick={onClose} type='button'>Cancel</Button>
 
                     <Button onClick={handleCrop} type='button'>Crop {profile.label}</Button>
                 </div>

@@ -22,13 +22,18 @@ class AchievementTypeStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' 
+            'code' => 'required|string|min:2|max:16',
+            'name'=> 'required|string',
+            'description'=> 'required|string',
+            'requirement_type'=> 'required|string',
+            'requirement_value'=> 'required|integer',
+            'icon' => 'required|image|mimes:jpg,png,webp,jpeg|max:2048',
         ];
     }
     public function messages()
     {
         return [
-
+    ''=> ''
         ];
     }
 }

@@ -16,6 +16,6 @@ class PollCategory extends Model
         'label'
     ];
     public function polls():HasMany{
-        return $this->hasMany(PollCategory::class, 'category');
+        return $this->hasMany(\App\Models\Poll::class, 'category');
     }
 }

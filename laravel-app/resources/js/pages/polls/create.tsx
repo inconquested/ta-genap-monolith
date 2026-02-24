@@ -33,7 +33,7 @@ export default function Create({categories} : CreateProps){
         post(action.url,  {
             onSuccess: () => {
                 // Handle success
-                console.log('Poll created!');][]
+                console.log('Poll created!');
             }, 
             forceFormData: true,
             onError: (errors) => {

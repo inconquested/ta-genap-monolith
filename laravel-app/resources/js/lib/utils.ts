@@ -10,6 +10,14 @@ export function toUrl(url: NonNullable<InertiaLinkProps['href']>): string {
     return typeof url === 'string' ? url : url.url;
 }
 
+export const slugify = (s: string) =>
+    s
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-') // spaces to dashes
+        .replace(/[^a-z0-9\-]/g, '');
+
 export function safeParse(value: string, min: number, max: number): number {
     // 1. Handle the "Backspace/Empty" case
     if (value.trim() === '') {
