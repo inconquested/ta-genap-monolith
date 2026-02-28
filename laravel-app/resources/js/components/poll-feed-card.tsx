@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { useInitials } from '@/hooks/use-initials';
-import { cn } from '@/lib/utils';
+import { cn, parseTimeSafe } from '@/lib/utils';
 import { Poll } from '@/types';
 import { motion } from 'framer-motion';
 import {
@@ -14,6 +14,7 @@ import {
     ThumbsUp,
 } from 'lucide-react';
 import VoteComponent from './vote-component';
+import { useEffect } from 'react';
 
 export function PollFeedCard({
     poll,
@@ -26,8 +27,8 @@ export function PollFeedCard({
 }) {
     const getInitials = useInitials();
     const totalVotes = poll.votes?.length ?? 0;
-    console.log(poll)
-
+    const endTime = parseTimeSafe(new Date(poll.end_date))
+    
     return (
         <motion.div
             className="w-full rounded-xl border border-zinc-800"
@@ -100,7 +101,7 @@ export function PollFeedCard({
                         {totalVotes.toLocaleString()} votes
                     </span>
                     <span className="flex items-center gap-1.5 text-rose-500">
-                        <Clock size={14} /> 2h left
+                        <Clock size={14} /> {endTime.day + ' H ' + endTime.hours + ' J ' + endTime.minutes + ' M '}
                     </span>
                 </div>
                 <div className="flex items-center gap-4 text-zinc-500">

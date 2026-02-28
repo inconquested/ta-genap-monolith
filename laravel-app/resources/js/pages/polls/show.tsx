@@ -1,4 +1,4 @@
-'use client';
+ 'use client';
 
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,9 @@ import {
     Users,
 } from 'lucide-react';
 import React from 'react';
+import { useForm, usePage } from '@inertiajs/react';
+import { store as commentsStore } from '@/routes/comments';
+import { store as votesStore } from '@/routes/votes';
 
 const Badge = ({
     children,
@@ -128,8 +131,77 @@ const makeBreadCrumbs = (title : string) : BreadcrumbItem[]=>{
 export default function Show({poll} : {poll : Poll}) 
 {
     console.log(poll)
-    const handleVote = ()=>{
+    const page = usePage().props as any
+    const currentUser = page?.auth?.user
 
+    // Local state for comments and votes so we can update UI immediately
+    const [comments, setComments] = React.useState(() => (poll.comments ?? []));
+    const [votes, setVotes] = React.useState(() => (poll.votes ?? []));
+
+    // Comment form (Inertia useForm)
+    const commentForm = useForm({ content: '' });
+
+    const handleCommentSubmit = (e?: React.FormEvent) => {
+        e?.preventDefault()
+        const content = (commentForm.data.content || '').trim()
+        if (!content) return
+        const action = commentsStore(poll.id);
+
+        commentForm.post(action.url, {
+            preserveScroll: true,
+            forceFormData: true,
+            onSuccess: () => {
+                // Optimistically append the comment using real user data
+                const newComment = {
+                    id: `temp-${Date.now()}`,
+                    user_id: currentUser?.id,
+                    poll_id: poll.id,
+                    content,
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString(),
+                    user: currentUser,
+                };
+
+                setComments((prev) => [newComment, ...prev]);
+                commentForm.reset();
+            },
+        });
+    }
+
+    // Vote form (useForm) and handler
+    const voteForm = useForm({ option_id: '' })
+    const currentUserVote = votes.find((v) => v.user_id === currentUser?.id)
+    const [userVoteId, setUserVoteId] = React.useState<string | null>(currentUserVote?.option_id ?? null)
+
+    const handleVote = (optionId: string) => {
+        if (!optionId) return
+        if (voteForm.processing) return
+        // Prevent voting twice from the same user in UI
+        if (userVoteId) return
+
+        const action = votesStore(poll.id)
+
+        voteForm.post(action.url, {
+            data: { option_id: optionId },
+            preserveScroll: true,
+            forceFormData: true,
+            onSuccess: () => {
+                // Optimistically add the vote using current user
+                const newVote = {
+                    id: `temp-${Date.now()}`,
+                    poll_id: poll.id,
+                    option_id: optionId,
+                    user_id: currentUser?.id,
+                    voted_at: new Date().toISOString(),
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString(),
+                    user: currentUser,
+                }
+
+                setVotes((prev) => [...prev, newVote])
+                setUserVoteId(optionId)
+            },
+        })
     }
     return (
         <AppLayout breadcrumbs={makeBreadCrumbs(poll.title)}>
@@ -177,10 +249,12 @@ export default function Show({poll} : {poll : Poll})
                     </div>
 
                     {/* Real-Time Distribution */}
-                    <VoteComponent 
-                    options={poll.options}
-                    votes={poll.votes}
-                    onVote={handleVote}
+                    <VoteComponent
+                        options={poll.options}
+                        votes={votes}
+                        userVoteId={userVoteId}
+                        isSubmitting={voteForm.processing}
+                        onVote={handleVote}
                     />
 
                     {/* Vote Velocity Chart */}
@@ -190,8 +264,8 @@ export default function Show({poll} : {poll : Poll})
                     <Card className="p-1">
                         <div className="flex items-center justify-between border-b border-white/5 p-5">
                             <div className="flex items-center gap-2">
-                                <h3 className="font-mono text-xs font-bold tracking-widest text-white uppercase">
-                                    Community Discussion
+                                <h3 className="font-mono text-xs font-bold tracking-widest text-neutral-950 dark:text-neutral-50 uppercase">
+                                    Diskusi Komunitas
                                 </h3>
                                 <span className="rounded bg-[#1a232e] px-1.5 py-0.5 font-mono text-[10px] text-blue-400">
                                     42
@@ -203,81 +277,57 @@ export default function Show({poll} : {poll : Poll})
                         </div>
                         <div className="space-y-6 p-6">
                             {/* Input */}
-                            <div className="mb-8 flex gap-4">
+                            <form onSubmit={handleCommentSubmit} className="mb-8 flex gap-4">
                                 <div className="h-10 w-10 shrink-0 rounded-full bg-gradient-to-br from-orange-500 to-rose-600" />
                                 <div className="w-full space-y-2">
                                     <textarea
                                         placeholder="Join the discussion..."
-                                        className="max-h-48 min-h-20 w-full rounded border border-white/10 bg-[#050807] p-3 text-sm text-gray-300 focus:border-rose-500/50 focus:outline-none"
+                                        value={commentForm.data.content}
+                                        onChange={(e) => commentForm.setData('content', e.target.value)}
+                                        className="max-h-48 min-h-20 w-full rounded border border-white/10 bg-neutral-50 dark:bg-neutral-950 p-3 text-sm text-foreground focus:border-rose-500/50 focus:outline-none"
                                     />
                                     <div className="flex items-center justify-between">
-                                        <span className="font-mono text-[10px] text-gray-600">
-                                            Markdown supported
-                                        </span>
-                                        <Button
-                                       
-                                            className="h-8 text-white"
-                                        >
-                                            POST COMMENT
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Comment 1 */}
-                            <div className="flex gap-4">
-                                <Avatar />
-                                <div className="w-full space-y-1">
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm font-bold text-white">
-                                            alex_dev_99
-                                        </span>
-                                        <span className="font-mono text-xs text-gray-600">
-                                            2h ago
-                                        </span>
-                                        <span className="rounded-[2px] border border-rose-900/50 bg-rose-900/30 px-1 py-0.5 font-mono text-[9px] text-rose-500 uppercase">
-                                            VOTED EDA
-                                        </span>
-                                    </div>
-                                    <p className="text-xs leading-relaxed text-gray-400 md:text-sm">
-                                        EDA is definitely the way to go for
-                                        scalability. The decoupling it provides
-                                        is essential for our team size. We
-                                        struggled with the Monolith for too
-                                        long.
-                                    </p>
-                                    <div className="flex items-center gap-4 pt-1 text-gray-600">
-                                        <button className="flex items-center gap-1 text-xs hover:text-white">
-                                            <ThumbsUp className="h-3 w-3" /> 12
-                                        </button>
-                                        <button className="flex items-center gap-1 text-xs hover:text-white">
-                                            <MessageSquare className="h-3 w-3" />{' '}
-                                            Reply
-                                        </button>
-                                    </div>
-
-                                    {/* Reply */}
-                                    <div className="mt-2 flex gap-4 border-l border-white/10 pt-4 pl-4">
-                                        <Avatar fallback="SC" />
-                                        <div className="space-y-1">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-sm font-bold text-white">
-                                                    sarah_connor
-                                                </span>
-                                                <span className="font-mono text-xs text-gray-600">
-                                                    1h ago
-                                                </span>
-                                            </div>
-                                            <p className="text-xs text-gray-400 md:text-sm">
-                                                Agreed, but complexity increases
-                                                significantly. We need strong
-                                                monitoring tools before
-                                                committing.
-                                            </p>
+                                        <span className="font-mono text-[10px] text-gray-600">Markdown supported</span>
+                                        <div className="flex items-center gap-2">
+                                            <Button type="submit" disabled={commentForm.processing} className="h-8 text-white">
+                                                {commentForm.processing ? 'Posting...' : 'POST COMMENT'}
+                                            </Button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
+
+                            {/* Render comments (real data) */}
+                            {comments.length === 0 ? (
+                                <div className="text-sm text-gray-500">No comments yet — be the first to comment.</div>
+                            ) : (
+                                comments.map((c: any) => (
+                                    <div key={c.id} className="flex gap-4">
+                                        <Avatar>
+                                            {c.user?.avatar ? (
+                                                <AvatarImage src={c.user.avatar} />
+                                            ) : (
+                                                <AvatarFallback>{(c.user?.username || 'U').substring(0, 2).toUpperCase()}</AvatarFallback>
+                                            )}
+                                        </Avatar>
+                                        <div className="w-full space-y-1">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-sm font-bold text-white">{c.user?.username ?? 'Unknown'}</span>
+                                                <span className="font-mono text-xs text-gray-600">{new Date(c.created_at).toLocaleString()}</span>
+                                            </div>
+                                            <p className="text-xs leading-relaxed text-gray-400 md:text-sm">{c.content}</p>
+                                            <div className="flex items-center gap-4 pt-1 text-gray-600">
+                                                <button className="flex items-center gap-1 text-xs hover:text-white">
+                                                    <ThumbsUp className="h-3 w-3" />
+                                                </button>
+                                                <button className="flex items-center gap-1 text-xs hover:text-white">
+                                                    <MessageSquare className="h-3 w-3" /> Reply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
                         </div>
 
                         <div className="border-t border-white/5 p-4 text-center">
