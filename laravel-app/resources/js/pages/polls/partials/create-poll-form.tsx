@@ -7,6 +7,8 @@ import { useImageCropper } from '@/components/image-cropper';
 import { Button } from '@/components/ui/button';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxList, ComboboxItem, ComboboxInput } from '@/components/ui/combobox';
 import { DatePickerTime } from '@/components/ui/datetime-picker';
+import { useCropper } from '@/components/ui/image-cropper';
+import { Input } from '@/components/ui/input';
 import { safeParse } from '@/lib/utils';
 import { PollCategory } from '@/types';
 import { PollOption, UUID } from '@/types';
@@ -250,10 +252,27 @@ export default function CreatePollForm({
                         </div>
                     </div>
 
-                    {/* Section 06: Advanced Settings */}
+                    {/**Section 06: Banner File Picker */}
                     <div className="mb-6">
                         <label className="mb-4 block font-mono text-sm text-zinc-500">
-                            06 // Pengaturan Tambahan
+                            06 // Gambar Banner
+                        </label>
+                        <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                open(URL.createObjectURL(file), 'banner');
+                            }}
+                        />
+                        {CropperUI}
+                    </div>
+
+                    {/* Section 07: Advanced Settings */}
+                    <div className="mb-6">
+                        <label className="mb-4 block font-mono text-sm text-zinc-500">
+                            07 // Pengaturan Tambahan
                         </label>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <SettingCard
@@ -283,7 +302,6 @@ export default function CreatePollForm({
                                     setData('allow_quorum', !data.allow_quorum)
                                 }
                             />
-                            {/* Counter: Jumlah Quorum */}
                             {/* Counter: Jumlah Quorum */}
                             <div className="flex h-full items-center justify-between rounded-md border border-zinc-800 p-4 dark:bg-black">
                                 <span className="font-mono text-sm font-bold text-wrap dark:text-neutral-50">
