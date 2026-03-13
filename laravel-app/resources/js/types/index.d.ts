@@ -138,6 +138,14 @@ export interface AchievementType {
     created_at: string;
     updated_at: string;
 }
+
+export interface AchievementProgress {
+    achievement: AchievementType;
+    current: number;
+    required: number;
+    percentage: number;
+}
+
 export interface UserAchievement {
     id: UUID;
     user_id: UUID;

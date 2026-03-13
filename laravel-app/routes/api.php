@@ -14,6 +14,7 @@ Route::get('/user', function (Request $request) {
 
 //REST Endpoints
 Route::middleware('auth')->group(function () {
+    Route::get('/user/achievements', [UserAchievementController::class, 'index']);
     Route::apiResource('/polls', PollController::class)->names([
         'index' => 'api.polls.index',
         'store' => 'api.polls.store',
@@ -23,5 +24,6 @@ Route::middleware('auth')->group(function () {
     ]);
     Route::apiResource('polls/{poll}/votes', VoteController::class);
     Route::apiResource('/achievement-type', AchievementTypeController::class);
+    Route::apiResource('/poll-category', \App\Http\Controllers\PollCategoryController::class);
     Route::apiResource('/polls/{poll}/comments', Comment::class);
 });

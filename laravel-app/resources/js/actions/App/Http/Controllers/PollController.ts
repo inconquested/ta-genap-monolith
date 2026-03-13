@@ -902,6 +902,84 @@ export const destroy = {
 }
 
 /**
+* @see \App\Http\Controllers\PollController::finalizedList
+ * @see app/Http/Controllers/PollController.php:130
+ * @route '/polls/finalized/list'
+ */
+export const finalizedList = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: finalizedList.url(options),
+    method: 'get',
+})
+
+finalizedList.definition = {
+    methods: ["get","head"],
+    url: '/polls/finalized/list',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\PollController::finalizedList
+ * @see app/Http/Controllers/PollController.php:130
+ * @route '/polls/finalized/list'
+ */
+finalizedList.url = (options?: RouteQueryOptions) => {
+    return finalizedList.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\PollController::finalizedList
+ * @see app/Http/Controllers/PollController.php:130
+ * @route '/polls/finalized/list'
+ */
+finalizedList.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: finalizedList.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\PollController::finalizedList
+ * @see app/Http/Controllers/PollController.php:130
+ * @route '/polls/finalized/list'
+ */
+finalizedList.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: finalizedList.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\PollController::finalizedList
+ * @see app/Http/Controllers/PollController.php:130
+ * @route '/polls/finalized/list'
+ */
+    const finalizedListForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: finalizedList.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\PollController::finalizedList
+ * @see app/Http/Controllers/PollController.php:130
+ * @route '/polls/finalized/list'
+ */
+        finalizedListForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: finalizedList.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\PollController::finalizedList
+ * @see app/Http/Controllers/PollController.php:130
+ * @route '/polls/finalized/list'
+ */
+        finalizedListForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: finalizedList.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    finalizedList.form = finalizedListForm
+/**
 * @see \App\Http\Controllers\PollController::create
  * @see app/Http/Controllers/PollController.php:57
  * @route '/polls/create'
@@ -1081,6 +1159,6 @@ edit.head = (args: { poll: string | { id: string } } | [poll: string | { id: str
         })
     
     edit.form = editForm
-const PollController = { index, store, show, update, destroy, create, edit }
+const PollController = { index, store, show, update, destroy, finalizedList, create, edit }
 
 export default PollController

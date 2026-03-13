@@ -29,7 +29,7 @@ class PollService
                     'quorum_count' => $data['quorum_count']
 
                 ]);
-                if($banner){
+                if ($banner) {
                     $poll->addMedia($banner)->toMediaCollection('banner');
                 }
 
@@ -40,10 +40,11 @@ class PollService
                         'display_order' => $index
                     ]);
                 }
+                \App\Jobs\FinalizePolls::dispatch($poll)->delay($poll->end_date);
                 return $poll;
             });
-            \App\Jobs\FinalizePolls::dispatch($poll)->delay($poll->end_date);
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             throw $e;
         }
     }
@@ -54,21 +55,21 @@ class PollService
             return DB::transaction(function () use ($data) {
                 // 1. Update or Create Poll
                 $poll = Poll::updateOrCreate(
-                    ['id' => $data['poll_id'] ?? null],
-                    [
-                        'id' => $data['poll_id'] ?? (string) Str::uuid(),
-                        'title' => $data['title'],
-                        'description' => $data['description'],
-                        'creator_id' => $data['creator_id'],
-                        'start_date' => $data['start_date'],
-                        'end_date' => $data['end_date'],
-                        'is_active' => $data['is_active'],
-                        'allow_quorum' => $data['allow_quorum'],
-                        'allow_comments' => $data['allow_comments'],
-                        'is_finalized' => $data['is_finalized']
-                    ]
+                ['id' => $data['poll_id'] ?? null],
+                [
+                    'id' => $data['poll_id'] ?? (string)Str::uuid(),
+                    'title' => $data['title'],
+                    'description' => $data['description'],
+                    'creator_id' => $data['creator_id'],
+                    'start_date' => $data['start_date'],
+                    'end_date' => $data['end_date'],
+                    'is_active' => $data['is_active'],
+                    'allow_quorum' => $data['allow_quorum'],
+                    'allow_comments' => $data['allow_comments'],
+                    'is_finalized' => $data['is_finalized']
+                ]
                 );
-                if($poll->wasChanged('end_date')){
+                if ($poll->wasChanged('end_date')) {
                     \App\Jobs\FinalizePolls::dispatch($poll)->delay($poll->end_date)->afterCommit();
                 }
 
@@ -81,7 +82,8 @@ class PollService
                 // 3. Delete options that are no longer in the request
                 if (!empty($incomingOptionIds)) {
                     $poll->options()->whereNotIn('id', $incomingOptionIds)->delete();
-                } else {
+                }
+                else {
                     // If no existing IDs, delete all old options
                     $poll->options()->delete();
                 }
@@ -92,16 +94,17 @@ class PollService
                     if (isset($optionData['id']) && !empty($optionData['id'])) {
                         // Update existing option
                         $poll->options()->updateOrCreate(
-                            ['id' => $optionData['id']],
-                            [
-                                'option_text' => $optionData['option_text'],
-                                'display_order' => $index
-                            ]
+                        ['id' => $optionData['id']],
+                        [
+                            'option_text' => $optionData['option_text'],
+                            'display_order' => $index
+                        ]
                         );
-                    } else {
+                    }
+                    else {
                         // Create new option
                         $poll->options()->create([
-                            'id' => (string) Str::uuid(),
+                            'id' => (string)Str::uuid(),
                             'option_text' => $optionData['option_text'],
                             'display_order' => $index
                         ]);
@@ -111,46 +114,49 @@ class PollService
                 // Return the poll with fresh options
                 return $poll->fresh();
             });
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e) {
             throw $e;
         }
     }
 
-    public static function getTrendingPoll(){
+    public static function getTrendingPoll()
+    {
         return Poll::where('created_at', '>=', now()->modify('-7 days'))
-        ->withCount(['votes', 'comments'])
-        ->having('votes_count', '>', 100)
-        ->having('comments_count', '>', 10)
-        ->get();
+            ->withCount(['votes', 'comments'])
+            ->having('votes_count', '>', 100)
+            ->having('comments_count', '>', 10)
+            ->get();
     }
 
-    public static function finalizePoll(Poll $poll){
+    public static function finalizePoll(Poll $poll)
+    {
         $options = $poll->options()
-        ->withCount('votes')
-        ->get();
+            ->withCount('votes')
+            ->get();
         $maxVotes = $options->max('votes_count');
         $winners = $options->where('votes_count', $maxVotes);
         $totalVotes = $options->sum('votes_count');
         $isDraw = $winners->count() > 1;
 
-        DB::transaction(function () use ($winners, $isDraw, $poll, $totalVotes){
+        DB::transaction(function () use ($winners, $isDraw, $poll, $totalVotes) {
             $pollResult = PollResult::create([
                 'id' => Str::uuid(),
                 'poll_id' => $poll->id,
-                'is_draw'=> $isDraw,
+                'is_draw' => $isDraw,
                 'total_votes' => $totalVotes,
             ]);
             $pollResult->save();
             $poll->update([
                 'is_finalized' => true
             ]);
-            foreach( $winners as $option ){
+            foreach ($winners as $option) {
                 WinnerOption::create([
                     'id' => Str::uuid(),
                     'poll_result_id' => $pollResult->id,
                     'option_id' => $option->id,
                 ]);
             }
-        }); 
-     }
+        });
+    }
 }

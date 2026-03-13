@@ -113,7 +113,7 @@ class AchievementService
     }
 
     // Get user's progress toward next achievements
-    public function getProgress(User $user)
+    public static function getProgress(User $user)
     {
         $unearnedAchievements = AchievementType::whereNotIn('id', function ($query) use ($user) {
             $query->select('achievement_type_id')
@@ -139,6 +139,7 @@ class AchievementService
     return [
         'earned' => UserAchievement::where('user_id', $user->id)->get(),
         'types'  => AchievementType::all(),
+        'progress' => self::getProgress($user)
     ];
 }
 }

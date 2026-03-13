@@ -6,26 +6,20 @@ use App\Concerns\ApiResponse;
 use App\Http\Requests\AchievementTypeStoreRequest;
 use App\Http\Requests\AchievementTypeUpdateRequest;
 use App\Models\AchievementType;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
+use App\Services\AchievementTypeService;
 
 class AchievementTypeController extends Controller
 {
     use ApiResponse;
+
+    public function __construct(private AchievementTypeService $achievementTypeService) {}
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return $this->success(AchievementType::get());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return Inertia::render();
+        return $this->success($this->achievementTypeService->getAll());
     }
 
     /**
@@ -33,8 +27,12 @@ class AchievementTypeController extends Controller
      */
     public function store(AchievementTypeStoreRequest $req)
     {
+        $achievementType = $this->achievementTypeService->create(
+            $req->validated(),
+            $req->file('icon')
+        );
         return $this->success(
-            data: AchievementType::create($req->validated()),
+            data: $achievementType,
             status: 201
         );
     }
@@ -44,15 +42,7 @@ class AchievementTypeController extends Controller
      */
     public function show(AchievementType $achievementType)
     {
-        return $this->success($achievementType);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(AchievementType $achievementType)
-    {
-        //
+        return $this->success($this->achievementTypeService->getById($achievementType));
     }
 
     /**
@@ -60,9 +50,14 @@ class AchievementTypeController extends Controller
      */
     public function update(AchievementTypeUpdateRequest $req, AchievementType $achievementType)
     {
+        $achievementType = $this->achievementTypeService->update(
+            $achievementType,
+            $req->validated(),
+            $req->file('icon')
+        );
         return $this->success(
-            data: $achievementType->update($req->validated()),
-            status: 201
+            data: $achievementType,
+            status: 200
         );
     }
 
@@ -71,6 +66,10 @@ class AchievementTypeController extends Controller
      */
     public function destroy(AchievementType $achievementType)
     {
-        //
+        $this->achievementTypeService->delete($achievementType);
+        return $this->success(
+            data: null,
+            status: 204,
+        );
     }
 }

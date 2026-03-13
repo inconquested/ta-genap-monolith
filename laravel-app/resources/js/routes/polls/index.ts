@@ -1,4 +1,5 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../wayfinder'
+import finalized from './finalized'
 /**
 * @see \App\Http\Controllers\PollController::index
  * @see app/Http/Controllers/PollController.php:24
@@ -616,7 +617,8 @@ destroy.delete = (args: { poll: string | { id: string } } | [poll: string | { id
     
     destroy.form = destroyForm
 const polls = {
-    index: Object.assign(index, index),
+    finalized: Object.assign(finalized, finalized),
+index: Object.assign(index, index),
 create: Object.assign(create, create),
 store: Object.assign(store, store),
 show: Object.assign(show, show),

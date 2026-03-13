@@ -123,4 +123,24 @@ class PollController extends Controller
     {
         return response()->json($poll->delete(), 204);
     }
+
+    /**
+     * Display a listing of finalized polls.
+     */
+    public function finalizedList(Request $req)
+    {
+        $polls = Poll::with(['options', 'creator:id,username', 'category', 'media', 'result', 'votes'])
+            ->where('is_active', false)
+            ->orWhere('end_date', '<', now())
+            ->orderBy('end_date', 'desc')
+            ->paginate(10);
+
+        if ($req->is('api/*') || $req->expectsJson()) {
+            return response()->json($polls);
+        }
+
+        return Inertia::render('polls/finalized', [
+            'polls' => $polls
+        ]);
+    }
 }

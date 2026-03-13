@@ -11,7 +11,7 @@ class PollCategoryUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,7 @@ class PollCategoryUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'label' => 'sometimes|string|max:255',
         ];
     }
 }

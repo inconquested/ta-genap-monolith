@@ -4,15 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Http\Requests\CommentStoreRequest;
+use Inertia\Inertia;
 
 class CommentController extends Controller
 {
+    public function userIndex(Request $req)
+    {
+        $comments = Comment::where('user_id', $req->user_id)->get();
+        return Inertia::render('Comments/Index', [
+            'comments' => $comments,
+        ]);
+    }
+    public function pollIndex(Request $req)
+    {
+        $comments = Comment::where('poll_id', $req->poll_id)->get();
+        return Inertia::render('Comments/Index', [
+            'comments' => $comments,
+        ]);
+    }
+
     /**
+     * 
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CommentStoreRequest $req)
     {
-        
+        $comment = \App\Models\Poll::find($req->poll_id)->comments()->create($req->validated());
     }
 
     /**
@@ -20,15 +38,7 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comment $comment)
-    {
-        //
     }
 
     /**
@@ -36,7 +46,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        $comment->update($request->validated());
     }
 
     /**
@@ -44,6 +54,6 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $comment->delete();
     }
 }

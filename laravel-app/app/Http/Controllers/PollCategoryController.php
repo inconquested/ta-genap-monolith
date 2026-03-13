@@ -3,32 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Models\PollCategory;
-use Illuminate\Http\Request;
+use App\Concerns\ApiResponse;
+use App\Services\PollCategoryService;
+use App\Http\Requests\PollCategoryStoreRequest;
+use App\Http\Requests\PollCategoryUpdateRequest;
 
 class PollCategoryController extends Controller
 {
+    use ApiResponse;
+
+    public function __construct(private PollCategoryService $pollCategoryService) {}
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return $this->success($this->pollCategoryService->getAll());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PollCategoryStoreRequest $request)
     {
-        //
+        $pollCategory = $this->pollCategoryService->create($request->validated());
+        return $this->success(data: $pollCategory, status: 201);
     }
 
     /**
@@ -36,23 +36,16 @@ class PollCategoryController extends Controller
      */
     public function show(PollCategory $pollCategory)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PollCategory $pollCategory)
-    {
-        //
+        return $this->success($this->pollCategoryService->getById($pollCategory));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PollCategory $pollCategory)
+    public function update(PollCategoryUpdateRequest $request, PollCategory $pollCategory)
     {
-        //
+        $pollCategory = $this->pollCategoryService->update($pollCategory, $request->validated());
+        return $this->success(data: $pollCategory, status: 200);
     }
 
     /**
@@ -60,6 +53,7 @@ class PollCategoryController extends Controller
      */
     public function destroy(PollCategory $pollCategory)
     {
-        //
+        $this->pollCategoryService->delete($pollCategory);
+        return $this->success(data: null, status: 204);
     }
 }

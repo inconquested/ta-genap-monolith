@@ -10,21 +10,31 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return Inertia::render('welcome', [
-        'canRegister' => Features::enabled(Features::registration()),
+    'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
-        return Inertia::render('dashboard',[
-            'userPolls' => App\Models\Poll::where('creator_id', Auth::id())->with(['media'])->get(),
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $userAchievements = App\Services\AchievementService::getUserAchievement($user);
+
+            return Inertia::render('dashboard', [
+            'userPolls' => App\Models\Poll::where('creator_id', $user->id)->with(['media'])->get(),
             'trendingPoll' => App\Services\PollService::getTrendingPoll(),
-            'achievements' => App\Services\AchievementService::getUserAchievement(Auth::user('id')),
-        ]);
-    })->name('dashboard');
-});
+            'achievements' => [
+            'earned' => $userAchievements['earned'],
+            'types' => $userAchievements['types'],
+            '   progress' => $userAchievements['progress'],
+            ],
+            ]);
+        }
+        )->name('dashboard');
+    });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/polls/finalized/list', [PollController::class, 'finalizedList'])->name('polls.finalized.list');
     Route::resource('polls', PollController::class)->names([
         'index' => 'polls.index',
         'create' => 'polls.create',
@@ -32,7 +42,7 @@ Route::middleware('auth')->group(function () {
         'show' => 'polls.show',
         'edit' => 'polls.edit',
         'update' => 'polls.update',
-        'destroy' => 'polls.destroy',]);
+        'destroy' => 'polls.destroy', ]);
 });
 
 require __DIR__ . '/settings.php';

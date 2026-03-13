@@ -11,7 +11,7 @@ class AchievementTypeUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class AchievementTypeUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'code' => 'sometimes|string|min:2|max:16',
+            'name' => 'sometimes|string',
+            'description' => 'sometimes|string',
+            'requirement_type' => 'sometimes|string',
+            'requirement_value' => 'sometimes|integer',
+            'icon' => 'sometimes|image|mimes:jpg,png,webp,jpeg|max:2048',
         ];
     }
 }
