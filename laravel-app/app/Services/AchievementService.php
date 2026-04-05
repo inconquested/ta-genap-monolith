@@ -135,11 +135,17 @@ class AchievementService
     }
 
     //Get achievement user has
-    public static function getUserAchievement(User $user) {
+    public static function getUserAchievement(User $user, ?object $query = null) {
+        $earned = UserAchievement::where('user_id', $user->id);
+        $types = AchievementType::all();
+        $progress = self::getProgress($user);
+        if($query && isset($query->type)){
+            $earned = $earned->where('achievement_type_id', $query->type);
+        }
     return [
-        'earned' => UserAchievement::where('user_id', $user->id)->get(),
-        'types'  => AchievementType::all(),
-        'progress' => self::getProgress($user)
+        'earned' => $earned->get(),
+        'types'  => $types,
+        'progress' => $progress
     ];
 }
 }

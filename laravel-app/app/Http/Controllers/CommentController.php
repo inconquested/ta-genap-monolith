@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
-use App\Http\Requests\CommentStoreRequest;
+use App\Http\Requests\Comment\CommentStoreRequest;
 use Inertia\Inertia;
+use App\Http\Requests\Comment\CommentUpdateRequest;
 
 class CommentController extends Controller
 {
@@ -44,7 +45,7 @@ class CommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comment $comment)
+    public function update(CommentUpdateRequest $request, Comment $comment)
     {
         $comment->update($request->validated());
     }

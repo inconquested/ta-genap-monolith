@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+return new class extends Migration 
 {
     /**
      * Run the migrations.
@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('polls', function (Blueprint $table) {
-           /**
-            * Determine if poll has maximal
-            * thresholds of vote counts
-            */
+            /**
+             * Determine if poll has maximal
+             * thresholds of vote counts
+             */
             $table->boolean('allow_quorum')->after('description')->default(false);
             $table->unsignedBigInteger('quorum_count')->after('allow_quorum')->nullable();
-            
+
         });
     }
 
@@ -30,7 +30,6 @@ return new class extends Migration
         Schema::table('polls', function (Blueprint $table) {
             $table->dropColumn('allow_quorum');
             $table->dropColumn('quorum');
-
         });
     }
 };

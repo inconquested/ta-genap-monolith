@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\PollCategory;
 use App\Concerns\ApiResponse;
 use App\Services\PollCategoryService;
-use App\Http\Requests\PollCategoryStoreRequest;
-use App\Http\Requests\PollCategoryUpdateRequest;
+use App\Http\Requests\PollCategory\PollCategoryUpdateRequest;
+use App\Http\Requests\PollCategory\PollCategoryStoreRequest;
 
 class PollCategoryController extends Controller
 {
@@ -17,7 +17,7 @@ class PollCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+  public function index()
     {
         return $this->success($this->pollCategoryService->getAll());
     }

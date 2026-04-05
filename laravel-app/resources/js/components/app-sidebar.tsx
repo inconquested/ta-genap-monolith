@@ -13,7 +13,7 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-    
+
 } from '@/components/ui/sidebar';
 import SidebarPollsMenu from '@/components/sidebar-menu';
 import { dashboard } from '@/routes';
@@ -67,7 +67,7 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
-        import { useActiveUrl } from '@/hooks/use-active-url';
+import { useActiveUrl } from '@/hooks/use-active-url';
 const footerNavItems: NavItem[] = [];
 
 export function AppSidebar() {

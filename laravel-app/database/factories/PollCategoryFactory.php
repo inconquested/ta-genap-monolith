@@ -17,15 +17,16 @@ class PollCategoryFactory extends Factory
     protected $model = \App\Models\PollCategory::class;
     public function definition(): array
     {
-         $pollCategories = [
-            'Politik', 'Sosial', 'Teknologi', 'Hiburan', 'Olahraga', 
+        $pollCategories = [
+            'Politik', 'Sosial', 'Teknologi', 'Hiburan', 'Olahraga',
             'Pendidikan', 'Gaya Hidup', 'Kesehatan', 'Kuliner', 'Ekonomi',
             'Opini Publik', 'Kebijakan', 'Lingkungan', 'Musik', 'Film',
             'Gadget', 'Otomotif', 'Wisata', 'Budaya', 'Religius'
         ];
         return [
             'id' => \Illuminate\Support\Str::uuid(),
-            'label' => $this->faker->randomElement($pollCategories),
+            'label' => $this->faker->unique()->randomElement($pollCategories),
+            'description' => $this->faker->sentence(),
         ];
     }
 }

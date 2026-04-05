@@ -10,10 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('poll_categories', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('label');
-            $table->timestamps();
+        Schema::table('poll_categories', function (Blueprint $table) {
+            $table->mediumText('description')->nullable();
         });
     }
 
@@ -22,6 +20,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('poll_categories');
+        Schema::table('poll_categories', function (Blueprint $table) {
+            $table->dropColumn('description');
+        });
     }
 };

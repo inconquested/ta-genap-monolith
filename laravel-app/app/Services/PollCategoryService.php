@@ -8,7 +8,7 @@ class PollCategoryService
 {
     public function getAll()
     {
-        return PollCategory::all();
+        return PollCategory::get();
     }
 
     public function getById(PollCategory $pollCategory)

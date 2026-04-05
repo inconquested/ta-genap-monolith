@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\PollCategory;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PollCategoryStoreRequest extends FormRequest
+class ClientLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,19 +22,17 @@ class PollCategoryStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'label' => 'required|string|max:255',
-            'description' => 'nullable|string|max:255',
+            'email' => 'required|email',
+            'password' => 'required',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'label.required' => 'Label wajib diisi',
-            'label.string' => 'Label harus berupa string',
-            'label.max' => 'Label tidak boleh lebih dari 255 karakter',
-            'description.string' => 'Deskripsi harus berupa string',
-            'description.max' => 'Deskripsi tidak boleh lebih dari 255 karakter',
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Email tidak valid',
+            'password.required' => 'Password wajib diisi',
         ];
     }
 }

@@ -1,1 +1,0 @@
-import{q as s}from"./index-BDqSilVs.js";const t=o=>({url:t.url(o),method:"post"});t.definition={methods:["post"],url:"/register"};t.url=o=>t.definition.url+s(o);t.post=o=>({url:t.url(o),method:"post"});const r=o=>({action:t.url(o),method:"post"});r.post=o=>({action:t.url(o),method:"post"});t.form=r;const i={store:Object.assign(t,t)};export{i as r,t as s};

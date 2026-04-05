@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\AchievementType;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -33,18 +33,17 @@ class AchievementTypeStoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'code.required' => 'The achievement code is required.',
-            'code.min' => 'The achievement code must be at least 2 characters.',
-            'code.max' => 'The achievement code may not be greater than 16 characters.',
-            'name.required' => 'Please provide a name for this achievement.',
-            'description.required' => 'An achievement description is required to help users understand what this entails.',
-            'requirement_type.required' => 'You must specify a requirement type for the achievement.',
-            'requirement_value.required' => 'A requirement value is required.',
-            'requirement_value.integer' => 'The requirement value must be a valid number.',
-            'icon.required' => 'An icon image is required for the achievement.',
-            'icon.image' => 'The uploaded file must be an image.',
-            'icon.mimes' => 'The icon must be a file of type: jpg, png, webp, jpeg.',
-            'icon.max' => 'The icon size may not be greater than 2MB (2048 KB).',
+            'code.min' => 'Kode achievement harus terdiri dari minimal 2 karakter.',
+            'code.max' => 'Kode achievement tidak boleh lebih dari 16 karakter.',
+            'name.required' => 'Nama achievement harus diisi.',
+            'description.required' => 'Deskripsi achievement harus diisi.',
+            'requirement_type.required' => 'Tipe requirement harus diisi.',
+            'requirement_value.required' => 'Nilai requirement harus diisi.',
+            'requirement_value.integer' => 'Nilai requirement harus berupa angka.',
+            'icon.required' => 'Icon harus diunggah.',
+            'icon.image' => 'File yang diunggah harus berupa gambar.',
+            'icon.mimes' => 'Icon harus berupa file berformat: jpg, png, webp, jpeg.',
+            'icon.max' => 'Ukuran icon tidak boleh lebih dari 2MB (2048 KB).',
         ];
     }
 }

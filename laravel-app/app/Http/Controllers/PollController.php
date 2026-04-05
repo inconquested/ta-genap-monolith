@@ -23,11 +23,15 @@ class PollController extends Controller
      */
     public function index(Request $req)
     {
-        $query = Poll::where('is_active', true)
-                ->with(['options', 'creator:id,username', 'votes', 'comments', 'category', 'media'])
-                ->orderBy('created_at', 'desc');
+        $baseQuery = Poll::where('is_active', true)
+            ->with([
+                'options:id,poll_id,value',
+                'creator:id,username',
+                'pollCategory:id,label'
+            ])
+            ->withCount(['votes', 'comments'])
+            ->orderBy('created_at', 'desc');
 
-        // Optional category filter (accepts id or slugified label)
         if ($req->query('category')) {
             $catParam = $req->query('category');
 
@@ -37,16 +41,23 @@ class PollController extends Controller
                 ->first();
 
             if ($foundCat) {
-                $query->where('category', $foundCat->id);
+                $baseQuery->where('category', $foundCat->id);
             }
         }
 
-        $polls = $query->paginate(5);
+        // API response (no media)
         if ($req->is('api/*') || $req->expectsJson()) {
+            $polls = $baseQuery->paginate(5);
             return $this->success($polls);
         }
-        return Inertia::render('polls/index',[
-            'polls'=> $polls,
+
+        // Web response (with media)
+        $polls = (clone $baseQuery)
+            ->with('media')
+            ->paginate(5);
+
+        return Inertia::render('polls/index', [
+            'polls' => $polls,
             'categories' => PollCategory::all()
         ]);
     }
@@ -56,8 +67,8 @@ class PollController extends Controller
      */
     public function create()
     {
-        return Inertia::render('polls/create',[
-            'categories'=>PollCategory::all()
+        return Inertia::render('polls/create', [
+            'categories' => PollCategory::all()
         ]);
     }
 
@@ -71,7 +82,7 @@ class PollController extends Controller
             \Illuminate\Support\Facades\Auth::user()->id,
             $req->file('banner')
         );
-    
+
         if ($req->is('api/*') || $req->expectsJson()) {
             return $this->success(data: $pollData, status: 201);
         }
@@ -84,7 +95,7 @@ class PollController extends Controller
     public function show(Poll $poll, Request $req)
     {
         if ($req->is('api/*') || $req->expectsJson()) {
-            return $this->success($poll->load(['options', 'creator:id,username', 'votes', 'comments','media', 'category']));
+            return $this->success($poll->load(['options', 'creator:id,username', 'votes', 'comments', 'media', 'category']));
         }
         if ($poll->isClosed()) {
             return Inertia::render('polls/finalized', [
@@ -93,8 +104,10 @@ class PollController extends Controller
                 'winners' => WinnerOption::where('poll_result_id', $poll->result?->id)->get()
             ]);
         }
-        return Inertia::render('polls/show',[
-            'poll' => $poll->load(['options', 'creator:id,username', 'votes', 'comments','media', 'category', 'votes'])  
+        return Inertia::render(
+            'polls/show',
+            [
+                'poll' => $poll->load(['options', 'creator:id,username', 'votes', 'comments', 'media', 'pollCategory', 'votes'])
             ]
         );
     }
@@ -104,7 +117,7 @@ class PollController extends Controller
      */
     public function edit(Poll $poll)
     {
-        return Inertia::render('poll/create',['poll'=>$poll->load(['options','creator:id,username','votes','comments'])]);
+        return Inertia::render('poll/create', ['poll' => $poll->load(['options', 'creator:id,username', 'votes', 'comments'])]);
     }
 
     /**

@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\PollCategoryController::index
  * @see app/Http/Controllers/PollCategoryController.php:20
@@ -420,6 +420,12 @@ destroy.delete = (args: { poll_category: string | number } | [poll_category: str
         })
     
     destroy.form = destroyForm
-const PollCategoryController = { index, store, show, update, destroy }
+const pollCategories = {
+    index: Object.assign(index, index),
+store: Object.assign(store, store),
+show: Object.assign(show, show),
+update: Object.assign(update, update),
+destroy: Object.assign(destroy, destroy),
+}
 
-export default PollCategoryController
+export default pollCategories

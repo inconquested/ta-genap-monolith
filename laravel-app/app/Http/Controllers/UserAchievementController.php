@@ -7,17 +7,11 @@ use Illuminate\Http\Request;
 
 class UserAchievementController extends Controller
 {
-    public function index(Request $request, AchievementService $service)
+    public function index(Request $req, AchievementService $service)
     {
-        $user = $request->user();
-        
-        $userAchievements = AchievementService::getUserAchievement($user);
-        $progress = $service->getProgress($user);
-
-        return response()->json([
-            'earned' => $userAchievements['earned'],
-            'types' => $userAchievements['types'],
-            'progress' => $progress
-        ]);
+        if (!empty($req->query())) {
+            return response()->json(AchievementService::getUserAchievement($req->user(), (object)$req->query()));
+        }
+        return response()->json(AchievementService::getUserAchievement($req->user(), null));
     }
 }

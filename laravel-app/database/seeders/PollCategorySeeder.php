@@ -16,23 +16,28 @@ class PollCategorySeeder extends Seeder
     {
         \App\Models\PollCategory::create([
             'id' => Str::uuid(),
-            'label' => 'IT'
+            'label' => 'IT',
+            'description' => 'Teknologi Informasi'
         ]);
         \App\Models\PollCategory::create([
             'id' => Str::uuid(),
-            'label' => 'Keuangan'
+            'label' => 'Keuangan',
+            'description' => 'Keuangan'
         ]);
         \App\Models\PollCategory::create([
             'id' => Str::uuid(),
-            'label' => 'Bisnis'
+            'label' => 'Bisnis',
+            'description' => 'Bisnis'
         ]);
         \App\Models\PollCategory::create([
             'id' => Str::uuid(),
-            'label' => 'Gaming'
+            'label' => 'Gaming',
+            'description' => 'Gaming'
         ]);
         \App\Models\PollCategory::create([
             'id' => Str::uuid(),
-            'label' => 'Hiburan'
+            'label' => 'Hiburan',
+            'description' => 'Hiburan'
         ]);
     }
 }

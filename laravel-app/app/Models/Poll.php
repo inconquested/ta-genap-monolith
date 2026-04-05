@@ -33,7 +33,7 @@ class Poll extends Model implements HasMedia
     ];
     protected $casts = [
         'start_date' => 'datetime',
-        'end_date'=> 'datetime',
+        'end_date' => 'datetime',
     ];
     public function creator(): BelongsTo
     {
@@ -45,9 +45,17 @@ class Poll extends Model implements HasMedia
     }
     public function votes(): HasManyThrough
     {
-        return $this->hasManyThrough(Vote::class, PollOption::class, 'poll_id', 'option_id', 'id', 'id');
+        return $this->hasManyThrough(
+            Vote::class,
+            PollOption::class,
+            'poll_id',   // FK on poll_options → polls.id
+            'option_id', // FK on votes → poll_options.id
+            'id',        // PK on polls
+            'id'         // PK on poll_options
+        );
     }
-    public function category (): BelongsTo{
+    public function pollCategory(): BelongsTo
+    {
         return $this->belongsTo(PollCategory::class, 'category');
     }
     public function result(): HasOne
@@ -63,15 +71,15 @@ class Poll extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('banner')
-        ->singleFile()
-        ->withResponsiveImages();
-    } 
+            ->singleFile()
+            ->withResponsiveImages();
+    }
     public function registerMediaConversions(?Media $media = null): void
     {
         $this->addMediaConversion('banner')
-        ->nonQueued()
-        ->performOnCollections('banner')
-        ->format('FORMAT_WEBP');
+            ->nonQueued()
+            ->performOnCollections('banner')
+            ->format('FORMAT_WEBP');
     }
 
     //General

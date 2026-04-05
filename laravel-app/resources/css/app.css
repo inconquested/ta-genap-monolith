@@ -144,14 +144,15 @@
         @apply bg-background text-foreground;
     }
 }
+
 #nprogress .bar {
-    background: linear-gradient(
-        to right,
-        theme('colors.gray.700'),
-        theme('colors.rose.500'),
-        theme('colors.orange.400')
-    ) !important; /* Indigo to Purple */
-    height: 2px !important; /* Make it a bit thicker to see the gradient */
+    background: linear-gradient(to right,
+            theme('colors.gray.700'),
+            theme('colors.rose.500'),
+            theme('colors.orange.400')) !important;
+    /* Indigo to Purple */
+    height: 2px !important;
+    /* Make it a bit thicker to see the gradient */
 }
 
 /* The glowing shadow at the tip */
@@ -162,20 +163,31 @@
 }
 
 @keyframes slide {
-    from { x: 0; y: 0; }
-    to { x: 10; y: 10; }
-  }
-  .animate-pattern {
-    animation: slide 1s linear infinite;
-  }
+    from {
+        x: 0;
+        y: 0;
+    }
 
-  @layer utilities {
+    to {
+        x: 10;
+        y: 10;
+    }
+}
+
+.animate-pattern {
+    animation: slide 1s linear infinite;
+}
+
+@layer utilities {
     .no-scrollbar::-webkit-scrollbar {
-      display: none; /* Chrome, Safari and Opera */
+        display: none;
+        /* Chrome, Safari and Opera */
     }
-  
+
     .no-scrollbar {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width: none;
+        /* Firefox */
     }
-  }
+}

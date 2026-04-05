@@ -11,11 +11,16 @@ class PollCategory extends Model
 {
     /** @use HasFactory<\Database\Factories\PollCategoryFactory> */
     use HasFactory, HasUuids;
+    protected $keyType = 'string';
+    public $incrementing = false;
+
     protected $fillable = [
-        'id',
-        'label'
+        'label',
+        'description'
     ];
-    public function polls():HasMany{
-        return $this->hasMany(\App\Models\Poll::class, 'category');
+    protected $hidden = ['polls'];
+    public function polls(): HasMany
+    {
+        return $this->hasMany(\App\Models\Poll::class , 'category');
     }
 }

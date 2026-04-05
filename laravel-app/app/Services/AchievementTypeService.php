@@ -6,23 +6,22 @@ use App\Models\AchievementType;
 
 class AchievementTypeService
 {
-    public function getAll()
-    {
-        return AchievementType::all();
-    }
-
-    public function getById(AchievementType $achievementType)
-    {
-        return $achievementType;
-    }
-
     public function create(array $data, ?\Illuminate\Http\UploadedFile $icon = null)
     {
         $achievementType = AchievementType::create($data);
         if ($icon) {
             $achievementType->addMedia($icon)->toMediaCollection('icon');
         }
-        return $achievementType;
+        return $achievementType->load('media');
+    }
+
+    public function search(string $search)
+    {
+        return AchievementType::where('code', 'like', "%{$search}%")
+            ->orWhere('name', 'like', "%{$search}%")
+            ->orWhere('description', 'like', "%{$search}%")
+            ->get()
+            ->load('media');
     }
 
     public function update(AchievementType $achievementType, array $data, ?\Illuminate\Http\UploadedFile $icon = null)

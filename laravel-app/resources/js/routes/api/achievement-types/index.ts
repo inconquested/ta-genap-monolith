@@ -1,4 +1,4 @@
-import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
+import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\AchievementTypeController::index
  * @see app/Http/Controllers/AchievementTypeController.php:20
@@ -420,6 +420,12 @@ destroy.delete = (args: { achievement_type: string | number } | [achievement_typ
         })
     
     destroy.form = destroyForm
-const AchievementTypeController = { index, store, show, update, destroy }
+const achievementTypes = {
+    index: Object.assign(index, index),
+store: Object.assign(store, store),
+show: Object.assign(show, show),
+update: Object.assign(update, update),
+destroy: Object.assign(destroy, destroy),
+}
 
-export default AchievementTypeController
+export default achievementTypes

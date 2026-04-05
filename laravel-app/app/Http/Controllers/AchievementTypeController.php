@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Concerns\ApiResponse;
-use App\Http\Requests\AchievementTypeStoreRequest;
-use App\Http\Requests\AchievementTypeUpdateRequest;
+use App\Http\Requests\AchievementType\AchievementTypeStoreRequest;
+use App\Http\Requests\AchievementType\AchievementTypeUpdateRequest;
 use App\Models\AchievementType;
 use App\Services\AchievementTypeService;
 
@@ -19,7 +19,10 @@ class AchievementTypeController extends Controller
      */
     public function index()
     {
-        return $this->success($this->achievementTypeService->getAll());
+        if(request()->has('search')){
+            return $this->success($this->achievementTypeService->search(request()->search));
+        }
+        return $this->success(AchievementType::with('media')->get());
     }
 
     /**
@@ -42,7 +45,7 @@ class AchievementTypeController extends Controller
      */
     public function show(AchievementType $achievementType)
     {
-        return $this->success($this->achievementTypeService->getById($achievementType));
+        return $this->success($achievementType->load('media'));
     }
 
     /**
