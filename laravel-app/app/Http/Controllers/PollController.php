@@ -27,7 +27,8 @@ class PollController extends Controller
             ->with([
                 'options:id,poll_id,value',
                 'creator:id,username',
-                'pollCategory:id,label'
+                'pollCategory:id,label',
+                'votes'
             ])
             ->withCount(['votes', 'comments'])
             ->orderBy('created_at', 'desc');

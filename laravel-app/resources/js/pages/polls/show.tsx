@@ -1,10 +1,10 @@
- 'use client';
+'use client';
 
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import VoteComponent from '@/components/vote-component';
-import { VoteVelocityChart } from '@/components/vote-velocity-chart';
+import VoteComponent from '@/components/vote/vote-component';
+import { VoteVelocityChart } from '@/components/vote/vote-velocity-chart';
 import AppLayout from '@/layouts/app-layout';
 import polls from '@/routes/polls';
 import { BreadcrumbItem, Poll } from '@/types';
@@ -117,26 +117,25 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ];
 
-const makeBreadCrumbs = (title : string) : BreadcrumbItem[]=>{
+const makeBreadCrumbs = (title: string): BreadcrumbItem[] => {
     return [
         {
-        title: 'Polls',
-        href: polls.index.url()
-    },{
-        title: title,
-        href: ''
-    }
+            title: 'Polls',
+            href: polls.index.url()
+        }, {
+            title: title,
+            href: ''
+        }
     ]
-} 
-export default function Show({poll} : {poll : Poll}) 
-{
+}
+export default function Show({ poll }: { poll: Poll }) {
     console.log(poll)
     const page = usePage().props as any
     const currentUser = page?.auth?.user
 
     // Local state for comments and votes so we can update UI immediately
-    const [comments, setComments] = React.useState(() => (poll.comments ?? []));
-    const [votes, setVotes] = React.useState(() => (poll.votes ?? []));
+    const [comments, setComments] = React.useState<any[]>(() => (poll.comments ?? []));
+    const [votes, setVotes] = React.useState<any[]>(() => (poll.votes ?? []));
 
     // Comment form (Inertia useForm)
     const commentForm = useForm({ content: '' });
@@ -162,7 +161,7 @@ export default function Show({poll} : {poll : Poll})
                     user: currentUser,
                 };
 
-                setComments((prev) => [newComment, ...prev]);
+                setComments((prev) => [newComment, ...prev])
                 commentForm.reset();
             },
         });
@@ -180,9 +179,8 @@ export default function Show({poll} : {poll : Poll})
         if (userVoteId) return
 
         const action = votesStore(poll.id)
-
+        voteForm.transform((data) => ({ ...data, option_id: optionId }))
         voteForm.post(action.url, {
-            data: { option_id: optionId },
             preserveScroll: true,
             forceFormData: true,
             onSuccess: () => {
@@ -258,7 +256,7 @@ export default function Show({poll} : {poll : Poll})
                     />
 
                     {/* Vote Velocity Chart */}
-                    <VoteVelocityChart data={velocityData}/>
+                    <VoteVelocityChart data={velocityData} />
 
                     {/* Community Discussion */}
                     <Card className="p-1">
@@ -361,7 +359,7 @@ export default function Show({poll} : {poll : Poll})
                                     <Terminal className="mr-2 h-3 w-3" />{' '}
                                     Receipt
                                 </Button>
-                                <Button variant="danger" className="flex-1">
+                                <Button variant="destructive" className="flex-1">
                                     <Share2 className="mr-2 h-3 w-3" /> Share
                                 </Button>
                             </div>
@@ -383,11 +381,11 @@ export default function Show({poll} : {poll : Poll})
                                     className="group flex cursor-default items-center justify-between p-4 transition-colors hover:bg-white/5"
                                 >
                                     <div className="flex items-center gap-3">
-                                        <Avatar
-                                            fallback={voter.name
-                                                .substring(0, 2)
-                                                .toUpperCase()}
-                                        />
+                                        <Avatar>
+                                            <AvatarFallback>
+                                                {voter.name.substring(0, 2).toUpperCase()}
+                                            </AvatarFallback>
+                                        </Avatar>
                                         <div className="flex flex-col">
                                             <span className="text-xs font-bold text-gray-200">
                                                 {voter.name}

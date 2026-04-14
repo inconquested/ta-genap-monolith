@@ -53,7 +53,7 @@ class AchievementService
             'user_id' => $user->id,
             'achievement_type_id' => $achievement->id,
             'progress_data' => [
-                'current_value' => $this->getCurrentValue($user, $achievement),
+                'current_value' => self::getCurrentValue($user, $achievement),
             ]
         ]);
 
@@ -103,7 +103,7 @@ class AchievementService
     }
 
     // Get user's curent actions count value
-    private function getCurrentValue(User $user, AchievementType $achievement)
+    private static function getCurrentValue(User $user, AchievementType $achievement)
     {
         return match ($achievement->requirement_type) {
             'vote_count' => $user->votes()->count(),
@@ -121,8 +121,8 @@ class AchievementService
                 ->where('user_id', $user->id);
         })->get();
 
-        return $unearnedAchievements->map(function ($achievement) use ($user) {
-            $current = $this->getCurrentValue($user, $achievement);
+        return $unearnedAchievements->map(function (AchievementType $achievement) use ($user) {
+            $current = self::getCurrentValue($user, $achievement);
             $required = $achievement->requirement_value;
 
             return [
@@ -135,17 +135,18 @@ class AchievementService
     }
 
     //Get achievement user has
-    public static function getUserAchievement(User $user, ?object $query = null) {
+    public static function getUserAchievement(User $user, ?object $query = null)
+    {
         $earned = UserAchievement::where('user_id', $user->id);
         $types = AchievementType::all();
         $progress = self::getProgress($user);
-        if($query && isset($query->type)){
+        if ($query && isset($query->type)) {
             $earned = $earned->where('achievement_type_id', $query->type);
         }
-    return [
-        'earned' => $earned->get(),
-        'types'  => $types,
-        'progress' => $progress
-    ];
-}
+        return [
+            'earned' => $earned->get(),
+            'types' => $types,
+            'progress' => $progress
+        ];
+    }
 }

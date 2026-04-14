@@ -1,7 +1,7 @@
 import { Head, router, useForm } from '@inertiajs/react';
 import { useEffect } from 'react';
 
-import PollPreview from '@/components/poll-preview';
+import PollPreview from '@/components/vote/poll-preview';
 import AppLayout from '@/layouts/app-layout';
 import { update, destroy } from '@/routes/polls';
 import { Poll, PollCategory, PollOption, UUID } from '@/types';
@@ -15,7 +15,7 @@ interface EditProps {
 }
 
 export default function Edit({ categories, poll }: EditProps) {
-    const { data, setData, processing, errors, put} = useForm<EditPollFormState>({
+    const { data, setData, processing, errors, put } = useForm<EditPollFormState>({
         title: '',
         description: '',
         options: [] as PollOption[],

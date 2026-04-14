@@ -14,7 +14,6 @@ import {
     ThumbsUp,
 } from 'lucide-react';
 import VoteComponent from './vote-component';
-import { useEffect } from 'react';
 
 export function PollFeedCard({
     poll,
@@ -23,12 +22,12 @@ export function PollFeedCard({
 }: {
     poll: Poll;
     userVoteId: string | null;
-    voteCallback: ()=>void;
+    voteCallback: () => void;
 }) {
     const getInitials = useInitials();
     const totalVotes = poll.votes?.length ?? 0;
     const endTime = parseTimeSafe(new Date(poll.end_date))
-    
+
     return (
         <motion.div
             className="w-full rounded-xl border border-zinc-800"
@@ -38,7 +37,7 @@ export function PollFeedCard({
             exit={{ opacity: 0, x: 20 }}
         >
             {/* Header */}
-            <img src={poll.media?.[0].original_url} className='w-full h-42 mb-3 rounded-t-md'/>
+            <img src={poll.media?.[0].original_url} className='w-full h-42 mb-3 rounded-t-md' />
             <div className="mb-4 flex items-start justify-between px-3">
                 <div className="flex gap-3">
                     <Avatar className="h-10 w-10 border border-zinc-700">
@@ -52,7 +51,7 @@ export function PollFeedCard({
                             {poll.creator?.username}
                         </h4>
                         <p className="flex items-center font-mono text-xs text-muted-foreground">
-                            Posted {poll.created_at} •
+                            Posted {parseTimeSafe(poll.created_at).day + 'H ' + parseTimeSafe(poll.created_at).hours + 'J ' + parseTimeSafe(poll.created_at).minutes + 'M'} •
                             <span className="ms-1.5 font-bold text-rose-500">
                                 {poll.category.label}
                             </span>

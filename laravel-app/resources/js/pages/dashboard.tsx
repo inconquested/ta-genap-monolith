@@ -42,6 +42,8 @@ export default function Dashboard() {
     // Kept the boolean state in case deferred props are implemented later.
     const [loading, setLoading] = useState(false);
 
+    console.log("loaded")
+
     const { earned, types, progress } = achievementsData;
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -122,11 +124,11 @@ export default function Dashboard() {
                             ))
                         ) : userPolls.length > 0 ? (
                             userPolls.map((poll) => (
-                                <Link href={polls.show(poll.id)}>
-                                    <Card key={poll.id} className="pt-0 gap-1.5">
+                                <Link key={poll.id} href={polls.show(poll.id)}>
+                                    <Card className="pt-0 gap-1.5">
                                         <CardHeader className="p-0">
                                             <img
-                                                src={poll.media?.[0].original_url}
+                                                src={poll.media?.[0]?.original_url}
                                                 className="mb-3 h-42 w-full object-cover rounded-t-md"
                                             />
                                         </CardHeader>

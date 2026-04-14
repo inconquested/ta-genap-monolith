@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AchievementTypeController;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PollController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserAchievementController;
@@ -20,6 +22,8 @@ Route::post('/logout', [ApiAuthController::class, 'logout']);
 
 Route::get('/user/achievements', [UserAchievementController::class, 'index']);
 
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('api.dashboard.index');
+
 Route::get('/reports/{poll}', [ReportController::class, 'index']);
 
 Route::apiResource('/polls', PollController::class)->names([
@@ -30,12 +34,7 @@ Route::apiResource('/polls', PollController::class)->names([
     'destroy' => 'api.polls.destroy',
 ]);
 
-Route::apiResource('polls/{poll}/votes', VoteController::class)->names([
-    'index' => 'api.votes.index',
-    'show' => 'api.votes.show',
-    'update' => 'api.votes.update',
-    'destroy' => 'api.votes.destroy',
-]);
+
 
 Route::apiResource('/achievement-types', AchievementTypeController::class)->names([
     'index' => 'api.achievement-types.index',

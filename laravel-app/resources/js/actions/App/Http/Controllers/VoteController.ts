@@ -1,29 +1,32 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes'
+ * @see app/Http/Controllers/VoteController.php:19
+ * @route '/polls/{poll}/votes'
  */
-export const index = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const index = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 
 index.definition = {
     methods: ["get","head"],
-    url: '/api/polls/{poll}/votes',
+    url: '/polls/{poll}/votes',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes'
+ * @see app/Http/Controllers/VoteController.php:19
+ * @route '/polls/{poll}/votes'
  */
-index.url = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions) => {
+index.url = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { poll: args }
     }
 
+            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
+            args = { poll: args.id }
+        }
     
     if (Array.isArray(args)) {
         args = {
@@ -34,7 +37,9 @@ index.url = (args: { poll: string | number } | [poll: string | number ] | string
     args = applyUrlDefaults(args)
 
     const parsedArgs = {
-                        poll: args.poll,
+                        poll: typeof args.poll === 'object'
+                ? args.poll.id
+                : args.poll,
                 }
 
     return index.definition.url
@@ -44,48 +49,48 @@ index.url = (args: { poll: string | number } | [poll: string | number ] | string
 
 /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes'
+ * @see app/Http/Controllers/VoteController.php:19
+ * @route '/polls/{poll}/votes'
  */
-index.get = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+index.get = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: index.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes'
+ * @see app/Http/Controllers/VoteController.php:19
+ * @route '/polls/{poll}/votes'
  */
-index.head = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+index.head = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: index.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes'
+ * @see app/Http/Controllers/VoteController.php:19
+ * @route '/polls/{poll}/votes'
  */
-    const indexForm = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const indexForm = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: index.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes'
+ * @see app/Http/Controllers/VoteController.php:19
+ * @route '/polls/{poll}/votes'
  */
-        indexForm.get = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.get = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes'
+ * @see app/Http/Controllers/VoteController.php:19
+ * @route '/polls/{poll}/votes'
  */
-        indexForm.head = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        indexForm.head = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: index.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -98,8 +103,8 @@ index.head = (args: { poll: string | number } | [poll: string | number ] | strin
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\VoteController::store
- * @see app/Http/Controllers/VoteController.php:22
- * @route '/api/polls/{poll}/votes'
+ * @see app/Http/Controllers/VoteController.php:27
+ * @route '/polls/{poll}/votes'
  */
 export const store = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
@@ -108,13 +113,13 @@ export const store = (args: { poll: string | number } | [poll: string | number ]
 
 store.definition = {
     methods: ["post"],
-    url: '/api/polls/{poll}/votes',
+    url: '/polls/{poll}/votes',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\VoteController::store
- * @see app/Http/Controllers/VoteController.php:22
- * @route '/api/polls/{poll}/votes'
+ * @see app/Http/Controllers/VoteController.php:27
+ * @route '/polls/{poll}/votes'
  */
 store.url = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
@@ -141,8 +146,8 @@ store.url = (args: { poll: string | number } | [poll: string | number ] | string
 
 /**
 * @see \App\Http\Controllers\VoteController::store
- * @see app/Http/Controllers/VoteController.php:22
- * @route '/api/polls/{poll}/votes'
+ * @see app/Http/Controllers/VoteController.php:27
+ * @route '/polls/{poll}/votes'
  */
 store.post = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(args, options),
@@ -151,8 +156,8 @@ store.post = (args: { poll: string | number } | [poll: string | number ] | strin
 
     /**
 * @see \App\Http\Controllers\VoteController::store
- * @see app/Http/Controllers/VoteController.php:22
- * @route '/api/polls/{poll}/votes'
+ * @see app/Http/Controllers/VoteController.php:27
+ * @route '/polls/{poll}/votes'
  */
     const storeForm = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(args, options),
@@ -161,8 +166,8 @@ store.post = (args: { poll: string | number } | [poll: string | number ] | strin
 
             /**
 * @see \App\Http\Controllers\VoteController::store
- * @see app/Http/Controllers/VoteController.php:22
- * @route '/api/polls/{poll}/votes'
+ * @see app/Http/Controllers/VoteController.php:27
+ * @route '/polls/{poll}/votes'
  */
         storeForm.post = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(args, options),
@@ -171,91 +176,74 @@ store.post = (args: { poll: string | number } | [poll: string | number ] | strin
     
     store.form = storeForm
 /**
-* @see \App\Http\Controllers\VoteController::show
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::showUserVotes
+ * @see app/Http/Controllers/VoteController.php:37
+ * @route '/user/votes'
  */
-export const show = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: show.url(args, options),
+export const showUserVotes = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: showUserVotes.url(options),
     method: 'get',
 })
 
-show.definition = {
+showUserVotes.definition = {
     methods: ["get","head"],
-    url: '/api/polls/{poll}/votes/{vote}',
+    url: '/user/votes',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\VoteController::show
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::showUserVotes
+ * @see app/Http/Controllers/VoteController.php:37
+ * @route '/user/votes'
  */
-show.url = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions) => {
-    if (Array.isArray(args)) {
-        args = {
-                    poll: args[0],
-                    vote: args[1],
-                }
-    }
-
-    args = applyUrlDefaults(args)
-
-    const parsedArgs = {
-                        poll: args.poll,
-                                vote: args.vote,
-                }
-
-    return show.definition.url
-            .replace('{poll}', parsedArgs.poll.toString())
-            .replace('{vote}', parsedArgs.vote.toString())
-            .replace(/\/+$/, '') + queryParams(options)
+showUserVotes.url = (options?: RouteQueryOptions) => {
+    return showUserVotes.definition.url + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\VoteController::show
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::showUserVotes
+ * @see app/Http/Controllers/VoteController.php:37
+ * @route '/user/votes'
  */
-show.get = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: show.url(args, options),
+showUserVotes.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: showUserVotes.url(options),
     method: 'get',
 })
 /**
-* @see \App\Http\Controllers\VoteController::show
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::showUserVotes
+ * @see app/Http/Controllers/VoteController.php:37
+ * @route '/user/votes'
  */
-show.head = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: show.url(args, options),
+showUserVotes.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: showUserVotes.url(options),
     method: 'head',
 })
 
     /**
-* @see \App\Http\Controllers\VoteController::show
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::showUserVotes
+ * @see app/Http/Controllers/VoteController.php:37
+ * @route '/user/votes'
  */
-    const showForm = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: show.url(args, options),
+    const showUserVotesForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: showUserVotes.url(options),
         method: 'get',
     })
 
             /**
-* @see \App\Http\Controllers\VoteController::show
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::showUserVotes
+ * @see app/Http/Controllers/VoteController.php:37
+ * @route '/user/votes'
  */
-        showForm.get = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: show.url(args, options),
+        showUserVotesForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: showUserVotes.url(options),
             method: 'get',
         })
             /**
-* @see \App\Http\Controllers\VoteController::show
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::showUserVotes
+ * @see app/Http/Controllers/VoteController.php:37
+ * @route '/user/votes'
  */
-        showForm.head = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: show.url(args, {
+        showUserVotesForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: showUserVotes.url({
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -264,32 +252,36 @@ show.head = (args: { poll: string | number, vote: string | number } | [poll: str
             method: 'get',
         })
     
-    show.form = showForm
+    showUserVotes.form = showUserVotesForm
 /**
-* @see \App\Http\Controllers\VoteController::update
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::getPollResults
+ * @see app/Http/Controllers/VoteController.php:42
+ * @route '/polls/{poll}/results'
  */
-export const update = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
-    url: update.url(args, options),
-    method: 'put',
+export const getPollResults = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: getPollResults.url(args, options),
+    method: 'get',
 })
 
-update.definition = {
-    methods: ["put","patch"],
-    url: '/api/polls/{poll}/votes/{vote}',
-} satisfies RouteDefinition<["put","patch"]>
+getPollResults.definition = {
+    methods: ["get","head"],
+    url: '/polls/{poll}/results',
+} satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\VoteController::update
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::getPollResults
+ * @see app/Http/Controllers/VoteController.php:42
+ * @route '/polls/{poll}/results'
  */
-update.url = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions) => {
+getPollResults.url = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions) => {
+    if (typeof args === 'string' || typeof args === 'number') {
+        args = { poll: args }
+    }
+
+    
     if (Array.isArray(args)) {
         args = {
                     poll: args[0],
-                    vote: args[1],
                 }
     }
 
@@ -297,161 +289,67 @@ update.url = (args: { poll: string | number, vote: string | number } | [poll: st
 
     const parsedArgs = {
                         poll: args.poll,
-                                vote: args.vote,
                 }
 
-    return update.definition.url
+    return getPollResults.definition.url
             .replace('{poll}', parsedArgs.poll.toString())
-            .replace('{vote}', parsedArgs.vote.toString())
             .replace(/\/+$/, '') + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\VoteController::update
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::getPollResults
+ * @see app/Http/Controllers/VoteController.php:42
+ * @route '/polls/{poll}/results'
  */
-update.put = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
-    url: update.url(args, options),
-    method: 'put',
+getPollResults.get = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: getPollResults.url(args, options),
+    method: 'get',
 })
 /**
-* @see \App\Http\Controllers\VoteController::update
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::getPollResults
+ * @see app/Http/Controllers/VoteController.php:42
+ * @route '/polls/{poll}/results'
  */
-update.patch = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
-    url: update.url(args, options),
-    method: 'patch',
-})
-
-    /**
-* @see \App\Http\Controllers\VoteController::update
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
- */
-    const updateForm = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: update.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'PUT',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
-
-            /**
-* @see \App\Http\Controllers\VoteController::update
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
- */
-        updateForm.put = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: update.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'PUT',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-            /**
-* @see \App\Http\Controllers\VoteController::update
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
- */
-        updateForm.patch = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: update.url(args, {
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'PATCH',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    update.form = updateForm
-/**
-* @see \App\Http\Controllers\VoteController::destroy
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
- */
-export const destroy = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
-    url: destroy.url(args, options),
-    method: 'delete',
-})
-
-destroy.definition = {
-    methods: ["delete"],
-    url: '/api/polls/{poll}/votes/{vote}',
-} satisfies RouteDefinition<["delete"]>
-
-/**
-* @see \App\Http\Controllers\VoteController::destroy
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
- */
-destroy.url = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions) => {
-    if (Array.isArray(args)) {
-        args = {
-                    poll: args[0],
-                    vote: args[1],
-                }
-    }
-
-    args = applyUrlDefaults(args)
-
-    const parsedArgs = {
-                        poll: args.poll,
-                                vote: args.vote,
-                }
-
-    return destroy.definition.url
-            .replace('{poll}', parsedArgs.poll.toString())
-            .replace('{vote}', parsedArgs.vote.toString())
-            .replace(/\/+$/, '') + queryParams(options)
-}
-
-/**
-* @see \App\Http\Controllers\VoteController::destroy
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
- */
-destroy.delete = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
-    url: destroy.url(args, options),
-    method: 'delete',
+getPollResults.head = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: getPollResults.url(args, options),
+    method: 'head',
 })
 
     /**
-* @see \App\Http\Controllers\VoteController::destroy
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::getPollResults
+ * @see app/Http/Controllers/VoteController.php:42
+ * @route '/polls/{poll}/results'
  */
-    const destroyForm = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: destroy.url(args, {
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'DELETE',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
+    const getPollResultsForm = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: getPollResults.url(args, options),
+        method: 'get',
     })
 
             /**
-* @see \App\Http\Controllers\VoteController::destroy
- * @see app/Http/Controllers/VoteController.php:0
- * @route '/api/polls/{poll}/votes/{vote}'
+* @see \App\Http\Controllers\VoteController::getPollResults
+ * @see app/Http/Controllers/VoteController.php:42
+ * @route '/polls/{poll}/results'
  */
-        destroyForm.delete = (args: { poll: string | number, vote: string | number } | [poll: string | number, vote: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: destroy.url(args, {
+        getPollResultsForm.get = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: getPollResults.url(args, options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\VoteController::getPollResults
+ * @see app/Http/Controllers/VoteController.php:42
+ * @route '/polls/{poll}/results'
+ */
+        getPollResultsForm.head = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: getPollResults.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'DELETE',
+                            _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
                         }
                     }),
-            method: 'post',
+            method: 'get',
         })
     
-    destroy.form = destroyForm
-const VoteController = { index, store, show, update, destroy }
+    getPollResults.form = getPollResultsForm
+const VoteController = { index, store, showUserVotes, getPollResults }
 
 export default VoteController

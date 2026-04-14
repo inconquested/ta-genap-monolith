@@ -11,11 +11,11 @@ import {
     LayoutGrid,
     Search,
 } from 'lucide-react';
-import { PollFeedCard } from '@/components/poll-feed-card'; // We'll build this below
+import { PollFeedCard } from '@/components/vote/poll-feed-card';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem, PaginatedPolls, Poll, PollCategory } from '@/types';
+import { BreadcrumbItem, PaginatedPolls, Poll, PollCategory, User } from '@/types';
 import pollsRoutes from '@/routes/polls';
-import {motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 import { router, usePage } from '@inertiajs/react';
 import Pagination from '@/components/ui/pagination';
 import { slugify } from '@/lib/utils';
@@ -32,15 +32,16 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 
-const redirectToPoll=(id : string)=>{
+const redirectToPoll = (id: string) => {
     router.visit(pollsRoutes.show.url(id));
 }
 
-export default function Index({polls, categories}: {
-    polls : PaginatedPolls,
-    categories: PollCategory[] 
+export default function Index({ polls, categories }: {
+    polls: PaginatedPolls,
+    categories: PollCategory[]
 }) {
     const page = usePage();
+    const { user } = (page.props as any).auth as { user: User };
     const searchParams = new URL(page.url, typeof window !== 'undefined' ? window.location.origin : 'http://localhost').searchParams;
     const activeCategory = searchParams.get('category');
 
@@ -49,6 +50,7 @@ export default function Index({polls, categories}: {
         const url = catSlug ? `${base}?category=${encodeURIComponent(catSlug)}` : base;
         router.visit(url);
     };
+    console.log(polls)
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -113,16 +115,20 @@ export default function Index({polls, categories}: {
 
                         {/* Feed */}
                         <div className="space-y-3 w-full">
-                            {polls.data.map((poll) => (
-                                <PollFeedCard
-                                    voteCallback={()=>{redirectToPoll(poll.id)}}
-                                    key={poll.id}
-                                    poll={poll}
-                                    userVoteId={'1'}
-                                />
-                            ))}
+                            {polls.data.map((poll) => {
+                                const currentUserVote = poll.votes?.find((v) => v.user_id === user?.id);
+                                const userVoteId = currentUserVote?.option_id ?? null;
+                                return (
+                                    <PollFeedCard
+                                        voteCallback={() => { redirectToPoll(poll.id) }}
+                                        key={poll.id}
+                                        poll={poll}
+                                        userVoteId={userVoteId}
+                                    />
+                                );
+                            })}
                         </div>
-                        { polls &&
+                        {!!polls &&
                             <Pagination paginated={polls} />
                         }
                     </div>

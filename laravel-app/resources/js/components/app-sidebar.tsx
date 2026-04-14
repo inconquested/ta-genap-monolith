@@ -56,7 +56,7 @@ const mainNavItems: NavItem[] = [
         ],
     },
     {
-        title: 'Leaderboard',
+        title: 'Papan Peringkat',
         href: '',
         icon: Trophy,
     },

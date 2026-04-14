@@ -79,7 +79,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\PollController::store
- * @see app/Http/Controllers/PollController.php:78
+ * @see app/Http/Controllers/PollController.php:79
  * @route '/api/polls'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -94,7 +94,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\PollController::store
- * @see app/Http/Controllers/PollController.php:78
+ * @see app/Http/Controllers/PollController.php:79
  * @route '/api/polls'
  */
 store.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ store.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PollController::store
- * @see app/Http/Controllers/PollController.php:78
+ * @see app/Http/Controllers/PollController.php:79
  * @route '/api/polls'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -113,7 +113,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
     /**
 * @see \App\Http\Controllers\PollController::store
- * @see app/Http/Controllers/PollController.php:78
+ * @see app/Http/Controllers/PollController.php:79
  * @route '/api/polls'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -123,7 +123,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
             /**
 * @see \App\Http\Controllers\PollController::store
- * @see app/Http/Controllers/PollController.php:78
+ * @see app/Http/Controllers/PollController.php:79
  * @route '/api/polls'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -134,7 +134,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\PollController::show
- * @see app/Http/Controllers/PollController.php:95
+ * @see app/Http/Controllers/PollController.php:96
  * @route '/api/polls/{poll}'
  */
 export const show = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -149,7 +149,7 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\PollController::show
- * @see app/Http/Controllers/PollController.php:95
+ * @see app/Http/Controllers/PollController.php:96
  * @route '/api/polls/{poll}'
  */
 show.url = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
@@ -182,7 +182,7 @@ show.url = (args: { poll: string | { id: string } } | [poll: string | { id: stri
 
 /**
 * @see \App\Http\Controllers\PollController::show
- * @see app/Http/Controllers/PollController.php:95
+ * @see app/Http/Controllers/PollController.php:96
  * @route '/api/polls/{poll}'
  */
 show.get = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -191,7 +191,7 @@ show.get = (args: { poll: string | { id: string } } | [poll: string | { id: stri
 })
 /**
 * @see \App\Http\Controllers\PollController::show
- * @see app/Http/Controllers/PollController.php:95
+ * @see app/Http/Controllers/PollController.php:96
  * @route '/api/polls/{poll}'
  */
 show.head = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -201,7 +201,7 @@ show.head = (args: { poll: string | { id: string } } | [poll: string | { id: str
 
     /**
 * @see \App\Http\Controllers\PollController::show
- * @see app/Http/Controllers/PollController.php:95
+ * @see app/Http/Controllers/PollController.php:96
  * @route '/api/polls/{poll}'
  */
     const showForm = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -211,7 +211,7 @@ show.head = (args: { poll: string | { id: string } } | [poll: string | { id: str
 
             /**
 * @see \App\Http\Controllers\PollController::show
- * @see app/Http/Controllers/PollController.php:95
+ * @see app/Http/Controllers/PollController.php:96
  * @route '/api/polls/{poll}'
  */
         showForm.get = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -220,7 +220,7 @@ show.head = (args: { poll: string | { id: string } } | [poll: string | { id: str
         })
             /**
 * @see \App\Http\Controllers\PollController::show
- * @see app/Http/Controllers/PollController.php:95
+ * @see app/Http/Controllers/PollController.php:96
  * @route '/api/polls/{poll}'
  */
         showForm.head = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -236,7 +236,7 @@ show.head = (args: { poll: string | { id: string } } | [poll: string | { id: str
     show.form = showForm
 /**
 * @see \App\Http\Controllers\PollController::update
- * @see app/Http/Controllers/PollController.php:126
+ * @see app/Http/Controllers/PollController.php:127
  * @route '/api/polls/{poll}'
  */
 export const update = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -251,7 +251,7 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\PollController::update
- * @see app/Http/Controllers/PollController.php:126
+ * @see app/Http/Controllers/PollController.php:127
  * @route '/api/polls/{poll}'
  */
 update.url = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
@@ -284,7 +284,7 @@ update.url = (args: { poll: string | { id: string } } | [poll: string | { id: st
 
 /**
 * @see \App\Http\Controllers\PollController::update
- * @see app/Http/Controllers/PollController.php:126
+ * @see app/Http/Controllers/PollController.php:127
  * @route '/api/polls/{poll}'
  */
 update.put = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
@@ -293,7 +293,7 @@ update.put = (args: { poll: string | { id: string } } | [poll: string | { id: st
 })
 /**
 * @see \App\Http\Controllers\PollController::update
- * @see app/Http/Controllers/PollController.php:126
+ * @see app/Http/Controllers/PollController.php:127
  * @route '/api/polls/{poll}'
  */
 update.patch = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
@@ -303,7 +303,7 @@ update.patch = (args: { poll: string | { id: string } } | [poll: string | { id: 
 
     /**
 * @see \App\Http\Controllers\PollController::update
- * @see app/Http/Controllers/PollController.php:126
+ * @see app/Http/Controllers/PollController.php:127
  * @route '/api/polls/{poll}'
  */
     const updateForm = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -318,7 +318,7 @@ update.patch = (args: { poll: string | { id: string } } | [poll: string | { id: 
 
             /**
 * @see \App\Http\Controllers\PollController::update
- * @see app/Http/Controllers/PollController.php:126
+ * @see app/Http/Controllers/PollController.php:127
  * @route '/api/polls/{poll}'
  */
         updateForm.put = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -332,7 +332,7 @@ update.patch = (args: { poll: string | { id: string } } | [poll: string | { id: 
         })
             /**
 * @see \App\Http\Controllers\PollController::update
- * @see app/Http/Controllers/PollController.php:126
+ * @see app/Http/Controllers/PollController.php:127
  * @route '/api/polls/{poll}'
  */
         updateForm.patch = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -348,7 +348,7 @@ update.patch = (args: { poll: string | { id: string } } | [poll: string | { id: 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\PollController::destroy
- * @see app/Http/Controllers/PollController.php:135
+ * @see app/Http/Controllers/PollController.php:136
  * @route '/api/polls/{poll}'
  */
 export const destroy = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -363,7 +363,7 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\PollController::destroy
- * @see app/Http/Controllers/PollController.php:135
+ * @see app/Http/Controllers/PollController.php:136
  * @route '/api/polls/{poll}'
  */
 destroy.url = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
@@ -396,7 +396,7 @@ destroy.url = (args: { poll: string | { id: string } } | [poll: string | { id: s
 
 /**
 * @see \App\Http\Controllers\PollController::destroy
- * @see app/Http/Controllers/PollController.php:135
+ * @see app/Http/Controllers/PollController.php:136
  * @route '/api/polls/{poll}'
  */
 destroy.delete = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
@@ -406,7 +406,7 @@ destroy.delete = (args: { poll: string | { id: string } } | [poll: string | { id
 
     /**
 * @see \App\Http\Controllers\PollController::destroy
- * @see app/Http/Controllers/PollController.php:135
+ * @see app/Http/Controllers/PollController.php:136
  * @route '/api/polls/{poll}'
  */
     const destroyForm = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -421,7 +421,7 @@ destroy.delete = (args: { poll: string | { id: string } } | [poll: string | { id
 
             /**
 * @see \App\Http\Controllers\PollController::destroy
- * @see app/Http/Controllers/PollController.php:135
+ * @see app/Http/Controllers/PollController.php:136
  * @route '/api/polls/{poll}'
  */
         destroyForm.delete = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({

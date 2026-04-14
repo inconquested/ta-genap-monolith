@@ -1,9 +1,9 @@
-import { Head, useForm} from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 
-import PollPreview from '@/components/poll-preview';
+import PollPreview from '@/components/vote/poll-preview';
 import AppLayout from "@/layouts/app-layout";
 import { store } from "@/routes/polls";
-import { PollCategory, PollOption} from '@/types';
+import { PollCategory, PollOption } from '@/types';
 
 import CreatePollForm, { PollFormState } from "./partials/create-poll-form";
 
@@ -11,7 +11,7 @@ interface CreateProps {
     categories: PollCategory[];
 }
 
-export default function Create({categories} : CreateProps){
+export default function Create({ categories }: CreateProps) {
     const { data, setData, processing, errors, post } = useForm<PollFormState>({
         title: '',
         description: '',
@@ -30,11 +30,11 @@ export default function Create({categories} : CreateProps){
         e.preventDefault(); // Ensure this sends 'data' correctly
         const action = store();
         console.log(data);
-        post(action.url,  {
+        post(action.url, {
             onSuccess: () => {
                 // Handle success
                 console.log('Poll created!');
-            }, 
+            },
             forceFormData: true,
             onError: (errors) => {
                 // Validation errors are automatically handled

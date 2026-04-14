@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PollController;
 
+use App\Http\Controllers\VoteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -14,25 +16,9 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::middleware(['auth', 'verified', 'throttle:30,1'])->group(function () {
-    Route::get(
-        'dashboard',
-        function () {
-            /** @var \App\Models\User $user */
-            $user = Auth::user();
-            $userAchievements = App\Services\AchievementService::getUserAchievement($user);
 
-            return Inertia::render('dashboard', [
-                'userPolls' => App\Models\Poll::where('creator_id', $user->id)->with(['media'])->get(),
-                'trendingPoll' => App\Services\PollService::getTrendingPoll(),
-                'achievements' => [
-                    'earned' => $userAchievements['earned'],
-                    'types' => $userAchievements['types'],
-                    '   progress' => $userAchievements['progress'],
-                ],
-            ]);
-        }
-    )->name('dashboard');
+Route::middleware(['auth', 'verified', 'throttle:30,1'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 Route::middleware(['auth', 'throttle:30,1'])->group(function () {
@@ -47,6 +33,13 @@ Route::middleware(['auth', 'throttle:30,1'])->group(function () {
         'destroy' => 'polls.destroy',
     ]);
     Route::get('/{user}/polls', [PollController::class, 'userPolls'])->name('polls.user');
+});
+
+Route::middleware(['auth', 'throttle:30,1'])->group(function () {
+    Route::get('/polls/{poll}/votes', [VoteController::class, 'index'])->name('votes.index');
+    Route::post('/polls/{poll}/votes', [VoteController::class, 'store'])->name('votes.store');
+    Route::get('/user/votes', [VoteController::class, 'showUserVotes'])->name('votes.user');
+    Route::get('/polls/{poll}/results', [VoteController::class, 'getPollResults'])->name('votes.results');
 });
 
 

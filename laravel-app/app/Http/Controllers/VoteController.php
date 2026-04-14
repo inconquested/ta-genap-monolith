@@ -16,28 +16,38 @@ class VoteController extends Controller
     //Traits for stardardized response
     use ApiResponse;
 
+    public function index(Poll $poll)
+    {
+        return $this->success($poll->votes()->with(['pollOption'])->get());
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(VoteStoreRequest $req)
     {
-        return $this->success(data: VoteService::CastVote($req->validated()), status: 201);
+        try {
+            $vote = VoteService::CastVote($req->validated());
+            return $this->success(data: $vote, status: 201);
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), 'Validation Error', $e->getCode() ?: 400);
+        }
     }
 
     public function showUserVotes()
     {
-
-        return $this->success(Poll::where('user_id', Auth::id())->orderBy('created_at', 'desc')->with('votes'));
+        return $this->success(Vote::where('user_id', Auth::id())->orderBy('created_at', 'desc')->with(['poll', 'pollOption'])->get());
     }
+
     public function getPollResults($pollId)
     {
         $results = PollOption::where('poll_id', $pollId)
-            ->withCounts('votes')
+            ->withCount('votes')
             ->get()
             ->map(function ($option) {
                 return [
                     'id' => $option->id,
-                    'text' => $option->text,
+                    'text' => $option->value,
                     'votes' => $option->votes_count,
                 ];
             });

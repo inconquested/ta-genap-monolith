@@ -9,7 +9,7 @@ import {
     XAxis,
 } from 'recharts';
 import { useInView } from 'react-intersection-observer';
-import { Card } from './ui/card';
+import { Card } from '../ui/card';
 
 export const VoteVelocityChart = ({
     data,
@@ -32,8 +32,8 @@ export const VoteVelocityChart = ({
                 {/* Added 'transition-opacity' so the chart fades in 
                    smoothly once it's in view, hiding any Recharts "reset" jitter.
                 */}
-                <div 
-                    ref={ref} 
+                <div
+                    ref={ref}
                     className={`h-52 w-full transition-opacity duration-700 ${inView ? 'opacity-100' : 'opacity-0'}`}
                 >
                     <ResponsiveContainer width="100%" height="100%">

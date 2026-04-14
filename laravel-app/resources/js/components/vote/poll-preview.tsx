@@ -1,10 +1,10 @@
 import { SquareChevronRight } from 'lucide-react';
 import { useMemo } from 'react';
 
-import {PollFormState} from "@/pages/polls/partials/create-poll-form";
-import {  PollOption } from '@/types';
+import { PollFormState } from "@/pages/polls/partials/create-poll-form";
+import { PollOption } from '@/types';
 
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 
 
 interface PollPreviewProps {
