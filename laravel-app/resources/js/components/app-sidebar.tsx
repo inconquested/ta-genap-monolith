@@ -40,38 +40,44 @@ import AppLogo from './app-logo';
         icon: History
     }
 ]; */
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Beranda',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-    {
-        title: 'Polls',
-        icon: ChartBarBig,
-        subItems: [
-            { title: 'Jelajahi Poll', href: polls.index.url() },
-            { title: 'Buat Poll', href: polls.create.url() },
-            { title: 'Kelola Poll Saya', href: '#' },
-        ],
-    },
-    {
-        title: 'Papan Peringkat',
-        href: '',
-        icon: Trophy,
-    },
-    {
-        title: 'Riwayat',
-        href: '',
-        icon: History,
-    },
-];
-
 import { useActiveUrl } from '@/hooks/use-active-url';
-const footerNavItems: NavItem[] = [];
+import votes from '@/routes/votes';
+import { usePage } from '@inertiajs/react';
+import { SharedData } from '@/types';
 
 export function AppSidebar() {
+    const { auth } = usePage<SharedData>().props;
     const { urlIsActive } = useActiveUrl();
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: 'Beranda',
+            href: dashboard().url,
+            icon: LayoutGrid,
+        },
+        {
+            title: 'Polls',
+            icon: ChartBarBig,
+            subItems: [
+                { title: 'Jelajahi Poll', href: polls.index.url() },
+                { title: 'Buat Poll', href: polls.create.url() },
+                { title: 'Kelola Poll Saya', href: polls.user.url(auth.user.id) },
+            ],
+        },
+        {
+            title: 'Papan Peringkat',
+            href: '/leaderboard',
+            icon: Trophy,
+        },
+        {
+            title: 'Riwayat',
+            href: votes.user.url(),
+            icon: History,
+        },
+    ];
+
+    const footerNavItems: NavItem[] = [];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>

@@ -28,8 +28,8 @@ export default function Pagination({ paginated }: Props) {
   };
 
   return (
-    <nav className="mt-4 flex items-center justify-center">
-      <ul className="inline-flex items-center gap-2">
+    <nav className="mt-8 flex items-center justify-center">
+      <ul className="flex flex-wrap items-center justify-center gap-2 md:inline-flex">
         {paginated.links
           // Filter out translation keys and other non-numeric labels when paginator
           // returns keys like "pagination.previous" or "pagination.next" with null urls

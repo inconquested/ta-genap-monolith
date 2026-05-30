@@ -31,7 +31,24 @@ class CommentController extends Controller
      */
     public function store(CommentStoreRequest $req)
     {
-        $comment = \App\Models\Poll::find($req->poll_id)->comments()->create($req->validated());
+        try {
+            $poll = \App\Models\Poll::with('creator')->findOrFail($req->poll_id);
+            $comment = $poll->comments()->create($req->validated());
+            
+            // Notify poll creator if someone else comments
+            if ($poll->creator_id !== $req->user()->id) {
+                $poll->creator->notify(new \App\Notifications\PollNotification('new_comment', [
+                    'message' => "{$req->user()->username} mengomentari polling Anda: \"{$poll->title}\"",
+                    'poll_id' => $poll->id,
+                    'action_url' => route('polls.show', $poll->id),
+                    'icon' => 'MessageSquare'
+                ]));
+            }
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['message' => 'Failed to post comment.']);
+        }
     }
 
     /**

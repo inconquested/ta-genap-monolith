@@ -45,6 +45,11 @@ class VoteService
             'option_id' => $vote->option_id,
         ]);
 
+        // Dispatch a simple decoupled event so other domains can listen (e.g. achievements)
+        if ($user = \App\Models\User::find($vote->user_id)) {
+            \App\Events\UserActed::dispatch($user);
+        }
+
         return $vote;
     }
 }

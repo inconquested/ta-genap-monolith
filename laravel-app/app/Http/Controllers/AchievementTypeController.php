@@ -7,22 +7,26 @@ use App\Http\Requests\AchievementType\AchievementTypeStoreRequest;
 use App\Http\Requests\AchievementType\AchievementTypeUpdateRequest;
 use App\Models\AchievementType;
 use App\Services\AchievementTypeService;
+use Illuminate\Http\Request;
 
 class AchievementTypeController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private AchievementTypeService $achievementTypeService) {}
+    public function __construct(private AchievementTypeService $achievementTypeService)
+    {
+    }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        if(request()->has('search')){
-            return $this->success($this->achievementTypeService->search(request()->search));
+        if ($request->has('search')) {
+            return $this->success($this->achievementTypeService->search($request->search));
         }
-        return $this->success(AchievementType::with('media')->get());
+
+        return $this->success(AchievementType::all());
     }
 
     /**
@@ -45,7 +49,7 @@ class AchievementTypeController extends Controller
      */
     public function show(AchievementType $achievementType)
     {
-        return $this->success($achievementType->load('media'));
+        return $this->success($achievementType->load('firstMedia'));
     }
 
     /**

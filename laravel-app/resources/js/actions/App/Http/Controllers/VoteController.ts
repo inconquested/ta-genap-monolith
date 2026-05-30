@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:19
+ * @see app/Http/Controllers/VoteController.php:20
  * @route '/polls/{poll}/votes'
  */
 export const index = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:19
+ * @see app/Http/Controllers/VoteController.php:20
  * @route '/polls/{poll}/votes'
  */
 index.url = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
@@ -49,7 +49,7 @@ index.url = (args: { poll: string | { id: string } } | [poll: string | { id: str
 
 /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:19
+ * @see app/Http/Controllers/VoteController.php:20
  * @route '/polls/{poll}/votes'
  */
 index.get = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -58,7 +58,7 @@ index.get = (args: { poll: string | { id: string } } | [poll: string | { id: str
 })
 /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:19
+ * @see app/Http/Controllers/VoteController.php:20
  * @route '/polls/{poll}/votes'
  */
 index.head = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -68,7 +68,7 @@ index.head = (args: { poll: string | { id: string } } | [poll: string | { id: st
 
     /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:19
+ * @see app/Http/Controllers/VoteController.php:20
  * @route '/polls/{poll}/votes'
  */
     const indexForm = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -78,7 +78,7 @@ index.head = (args: { poll: string | { id: string } } | [poll: string | { id: st
 
             /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:19
+ * @see app/Http/Controllers/VoteController.php:20
  * @route '/polls/{poll}/votes'
  */
         indexForm.get = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -87,7 +87,7 @@ index.head = (args: { poll: string | { id: string } } | [poll: string | { id: st
         })
             /**
 * @see \App\Http\Controllers\VoteController::index
- * @see app/Http/Controllers/VoteController.php:19
+ * @see app/Http/Controllers/VoteController.php:20
  * @route '/polls/{poll}/votes'
  */
         indexForm.head = (args: { poll: string | { id: string } } | [poll: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -103,7 +103,7 @@ index.head = (args: { poll: string | { id: string } } | [poll: string | { id: st
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\VoteController::store
- * @see app/Http/Controllers/VoteController.php:27
+ * @see app/Http/Controllers/VoteController.php:28
  * @route '/polls/{poll}/votes'
  */
 export const store = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -118,7 +118,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\VoteController::store
- * @see app/Http/Controllers/VoteController.php:27
+ * @see app/Http/Controllers/VoteController.php:28
  * @route '/polls/{poll}/votes'
  */
 store.url = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -146,7 +146,7 @@ store.url = (args: { poll: string | number } | [poll: string | number ] | string
 
 /**
 * @see \App\Http\Controllers\VoteController::store
- * @see app/Http/Controllers/VoteController.php:27
+ * @see app/Http/Controllers/VoteController.php:28
  * @route '/polls/{poll}/votes'
  */
 store.post = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -156,7 +156,7 @@ store.post = (args: { poll: string | number } | [poll: string | number ] | strin
 
     /**
 * @see \App\Http\Controllers\VoteController::store
- * @see app/Http/Controllers/VoteController.php:27
+ * @see app/Http/Controllers/VoteController.php:28
  * @route '/polls/{poll}/votes'
  */
     const storeForm = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -166,7 +166,7 @@ store.post = (args: { poll: string | number } | [poll: string | number ] | strin
 
             /**
 * @see \App\Http\Controllers\VoteController::store
- * @see app/Http/Controllers/VoteController.php:27
+ * @see app/Http/Controllers/VoteController.php:28
  * @route '/polls/{poll}/votes'
  */
         storeForm.post = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -177,7 +177,7 @@ store.post = (args: { poll: string | number } | [poll: string | number ] | strin
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\VoteController::showUserVotes
- * @see app/Http/Controllers/VoteController.php:37
+ * @see app/Http/Controllers/VoteController.php:47
  * @route '/user/votes'
  */
 export const showUserVotes = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -192,7 +192,7 @@ showUserVotes.definition = {
 
 /**
 * @see \App\Http\Controllers\VoteController::showUserVotes
- * @see app/Http/Controllers/VoteController.php:37
+ * @see app/Http/Controllers/VoteController.php:47
  * @route '/user/votes'
  */
 showUserVotes.url = (options?: RouteQueryOptions) => {
@@ -201,7 +201,7 @@ showUserVotes.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\VoteController::showUserVotes
- * @see app/Http/Controllers/VoteController.php:37
+ * @see app/Http/Controllers/VoteController.php:47
  * @route '/user/votes'
  */
 showUserVotes.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -210,7 +210,7 @@ showUserVotes.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\VoteController::showUserVotes
- * @see app/Http/Controllers/VoteController.php:37
+ * @see app/Http/Controllers/VoteController.php:47
  * @route '/user/votes'
  */
 showUserVotes.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -220,7 +220,7 @@ showUserVotes.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => (
 
     /**
 * @see \App\Http\Controllers\VoteController::showUserVotes
- * @see app/Http/Controllers/VoteController.php:37
+ * @see app/Http/Controllers/VoteController.php:47
  * @route '/user/votes'
  */
     const showUserVotesForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -230,7 +230,7 @@ showUserVotes.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => (
 
             /**
 * @see \App\Http\Controllers\VoteController::showUserVotes
- * @see app/Http/Controllers/VoteController.php:37
+ * @see app/Http/Controllers/VoteController.php:47
  * @route '/user/votes'
  */
         showUserVotesForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -239,7 +239,7 @@ showUserVotes.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => (
         })
             /**
 * @see \App\Http\Controllers\VoteController::showUserVotes
- * @see app/Http/Controllers/VoteController.php:37
+ * @see app/Http/Controllers/VoteController.php:47
  * @route '/user/votes'
  */
         showUserVotesForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -255,7 +255,7 @@ showUserVotes.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => (
     showUserVotes.form = showUserVotesForm
 /**
 * @see \App\Http\Controllers\VoteController::getPollResults
- * @see app/Http/Controllers/VoteController.php:42
+ * @see app/Http/Controllers/VoteController.php:63
  * @route '/polls/{poll}/results'
  */
 export const getPollResults = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -270,7 +270,7 @@ getPollResults.definition = {
 
 /**
 * @see \App\Http\Controllers\VoteController::getPollResults
- * @see app/Http/Controllers/VoteController.php:42
+ * @see app/Http/Controllers/VoteController.php:63
  * @route '/polls/{poll}/results'
  */
 getPollResults.url = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -298,7 +298,7 @@ getPollResults.url = (args: { poll: string | number } | [poll: string | number ]
 
 /**
 * @see \App\Http\Controllers\VoteController::getPollResults
- * @see app/Http/Controllers/VoteController.php:42
+ * @see app/Http/Controllers/VoteController.php:63
  * @route '/polls/{poll}/results'
  */
 getPollResults.get = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -307,7 +307,7 @@ getPollResults.get = (args: { poll: string | number } | [poll: string | number ]
 })
 /**
 * @see \App\Http\Controllers\VoteController::getPollResults
- * @see app/Http/Controllers/VoteController.php:42
+ * @see app/Http/Controllers/VoteController.php:63
  * @route '/polls/{poll}/results'
  */
 getPollResults.head = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -317,7 +317,7 @@ getPollResults.head = (args: { poll: string | number } | [poll: string | number 
 
     /**
 * @see \App\Http\Controllers\VoteController::getPollResults
- * @see app/Http/Controllers/VoteController.php:42
+ * @see app/Http/Controllers/VoteController.php:63
  * @route '/polls/{poll}/results'
  */
     const getPollResultsForm = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -327,7 +327,7 @@ getPollResults.head = (args: { poll: string | number } | [poll: string | number 
 
             /**
 * @see \App\Http\Controllers\VoteController::getPollResults
- * @see app/Http/Controllers/VoteController.php:42
+ * @see app/Http/Controllers/VoteController.php:63
  * @route '/polls/{poll}/results'
  */
         getPollResultsForm.get = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -336,7 +336,7 @@ getPollResults.head = (args: { poll: string | number } | [poll: string | number 
         })
             /**
 * @see \App\Http\Controllers\VoteController::getPollResults
- * @see app/Http/Controllers/VoteController.php:42
+ * @see app/Http/Controllers/VoteController.php:63
  * @route '/polls/{poll}/results'
  */
         getPollResultsForm.head = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

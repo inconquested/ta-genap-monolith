@@ -43,6 +43,23 @@ export interface Media {
     // ... add other fields if you need them
 }
 
+export interface Notification {
+    id: string;
+    type: string;
+    notifiable_type: string;
+    notifiable_id: UUID;
+    data: {
+        type: string;
+        message: string;
+        poll_id?: UUID;
+        action_url?: string;
+        icon?: string;
+    };
+    read_at: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface User {
     id: UUID;
     username: string;
@@ -53,6 +70,8 @@ export interface User {
     two_factor_enabled?: boolean;
     created_at: string;
     updated_at: string;
+    notifications_count?: number;
+    recent_notifications?: Notification[];
     [key: string]: unknown; // This allows for additional properties...
 }
 
@@ -78,6 +97,7 @@ export interface Poll {
     creator?: User;
     votes?: Vote[];
     media?: Media[];
+    result?: PollResult;
 }
 
 interface PaginatedPolls {
@@ -99,6 +119,7 @@ export interface PollOption {
     display_order?: number;
     created_at: string;
     updated_at: string;
+    votes_count?: number;
 }
 export interface Vote {
     id: UUID;

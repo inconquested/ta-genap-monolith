@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card } from '@/components/ui/card';
 import { useInitials } from '@/hooks/use-initials';
-import { cn, parseTimeSafe } from '@/lib/utils';
+import { parseTimeSafe } from '@/lib/utils';
 import { Poll } from '@/types';
 import { motion } from 'framer-motion';
 import {
@@ -14,6 +14,7 @@ import {
     ThumbsUp,
 } from 'lucide-react';
 import VoteComponent from './vote-component';
+import { PollTimer } from '../polls/poll-timer';
 
 export function PollFeedCard({
     poll,
@@ -93,26 +94,23 @@ export function PollFeedCard({
             </div>
 
             {/* Footer Stats */}
-            <div className="flex items-center justify-between border-t border-zinc-900 py-4 px-3">
-                <div className="flex items-center gap-4 font-mono text-xs tracking-widest text-zinc-500 uppercase">
+            <div className="flex flex-col gap-4 border-t border-zinc-900 py-4 px-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex flex-wrap items-center gap-4 font-mono text-[10px] tracking-widest text-zinc-500 uppercase sm:text-xs">
                     <span className="flex items-center gap-1.5">
                         <BarChart3 size={14} className="text-zinc-600" />
                         {totalVotes.toLocaleString()} votes
                     </span>
-                    <span className="flex items-center gap-1.5 text-rose-500">
-                        <Clock size={14} /> {endTime.day + ' H ' + endTime.hours + ' J ' + endTime.minutes + ' M '}
-                    </span>
+                    <PollTimer endDate={poll.end_date} variant="card" />
                 </div>
-                <div className="flex items-center gap-4 text-zinc-500">
-                    <MessageSquare
-                        size={18}
-                        onClick={voteCallback}
-                        className="cursor-pointer transition-colors hover:text-rose-500"
-                    />
-                    <Share2
-                        size={18}
-                        className="cursor-pointer transition-colors hover:text-rose-500"
-                    />
+                <div className="flex items-center gap-6 text-zinc-500 sm:gap-4">
+                    <button className="flex items-center gap-2 transition-colors hover:text-rose-500" onClick={voteCallback}>
+                        <MessageSquare size={18} />
+                        <span className="text-[10px] font-bold uppercase sm:hidden">Komentar</span>
+                    </button>
+                    <button className="flex items-center gap-2 transition-colors hover:text-rose-500">
+                        <Share2 size={18} />
+                        <span className="text-[10px] font-bold uppercase sm:hidden">Bagikan</span>
+                    </button>
                 </div>
             </div>
         </motion.div>

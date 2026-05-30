@@ -7,12 +7,11 @@ import VoteComponent from '@/components/vote/vote-component';
 import { VoteVelocityChart } from '@/components/vote/vote-velocity-chart';
 import AppLayout from '@/layouts/app-layout';
 import polls from '@/routes/polls';
-import { BreadcrumbItem, Poll } from '@/types';
+import { Poll } from '@/types';
 import {
     CheckCircle2,
     ChevronRight,
-    Clock,
-    Cpu,
+    MessageCircleOff,
     MessageSquare,
     Share2,
     Terminal,
@@ -20,53 +19,19 @@ import {
     Users,
 } from 'lucide-react';
 import React from 'react';
-import { useForm, usePage } from '@inertiajs/react';
+import { useForm, usePage, router } from '@inertiajs/react';
 import { store as commentsStore } from '@/routes/comments';
+import { PollTimer } from '@/components/polls/poll-timer';
 import { store as votesStore } from '@/routes/votes';
-
-const Badge = ({
-    children,
-    className,
-    variant = 'default',
-}: {
-    children: React.ReactNode;
-    className?: string;
-    variant?: 'default' | 'outline' | 'danger';
-}) => {
-    const styles = {
-        default: 'bg-green-900/30 text-green-400 border-green-800',
-        outline: 'bg-transparent border-gray-700 text-gray-400',
-        danger: 'bg-red-900/30 text-red-400 border-red-800',
-    };
-    return (
-        <span
-            className={`inline-flex items-center rounded-sm border px-2 py-0.5 font-mono text-[10px] font-medium uppercase ${styles[variant]} ${className}`}
-        >
-            {children}
-        </span>
-    );
-};
-
-
-
-// --- DATA ---
-const velocityData = [
-    { time: '10:00', votes: 15 },
-    { time: '10:15', votes: 20 },
-    { time: '10:30', votes: 35 },
-    { time: '10:45', votes: 45 },
-    { time: '11:00', votes: 30 },
-    { time: '11:15', votes: 55 },
-    { time: '11:30', votes: 70 },
-    { time: '11:45', votes: 65 },
-    { time: '12:00', votes: 85 },
-    { time: '12:15', votes: 80 }, // Peak Red
-    { time: '12:30', votes: 110 }, // Start Orange
-    { time: '12:45', votes: 115 },
-    { time: '01:00', votes: 125 },
-    { time: '01:15', votes: 75 },
-    { time: '01:30', votes: 50 },
-];
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import { makeBreadCrumbs } from '@/lib/utils';
 
 const recentVoters = [
     {
@@ -106,29 +71,9 @@ const recentVoters = [
         color: 'text-gray-400',
     },
 ];
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Polls',
-        href: polls.index.url(),
-    },
-    {
-        title: 'hjaha',
-        href: ''
-    }
-];
 
-const makeBreadCrumbs = (title: string): BreadcrumbItem[] => {
-    return [
-        {
-            title: 'Polls',
-            href: polls.index.url()
-        }, {
-            title: title,
-            href: ''
-        }
-    ]
-}
 export default function Show({ poll }: { poll: Poll }) {
+    const categoryObj = (poll as any).poll_category || poll.category;
     console.log(poll)
     const page = usePage().props as any
     const currentUser = page?.auth?.user
@@ -137,6 +82,33 @@ export default function Show({ poll }: { poll: Poll }) {
     const [comments, setComments] = React.useState<any[]>(() => (poll.comments ?? []));
     const [votes, setVotes] = React.useState<any[]>(() => (poll.votes ?? []));
 
+    const velocityData = React.useMemo(() => {
+        if (!votes || votes.length === 0) return [];
+        const buckets: Record<string, { label: string, value: number, timestamp: number }> = {};
+
+        votes.forEach(v => {
+            const d = new Date(v.created_at);
+            const minutes = d.getMinutes();
+            const bucketMinutes = Math.floor(minutes / 15) * 15;
+            d.setMinutes(bucketMinutes, 0, 0);
+
+            const ts = d.getTime();
+            if (!buckets[ts]) {
+                const hh = d.getHours().toString().padStart(2, '0');
+                const mm = d.getMinutes().toString().padStart(2, '0');
+                const label = `${d.getDate()}/${d.getMonth() + 1} ${hh}:${mm}`;
+                buckets[ts] = { label, value: 0, timestamp: ts };
+            }
+            buckets[ts].value += 1;
+        });
+
+        const sorted = Object.values(buckets).sort((a, b) => a.timestamp - b.timestamp);
+        return sorted.map(b => ({
+            time: b.label,
+            votes: b.value
+        }));
+    }, [votes]);
+
     // Comment form (Inertia useForm)
     const commentForm = useForm({ content: '' });
 
@@ -144,7 +116,7 @@ export default function Show({ poll }: { poll: Poll }) {
         e?.preventDefault()
         const content = (commentForm.data.content || '').trim()
         if (!content) return
-        const action = commentsStore(poll.id);
+        const action = commentsStore();
 
         commentForm.post(action.url, {
             preserveScroll: true,
@@ -171,6 +143,8 @@ export default function Show({ poll }: { poll: Poll }) {
     const voteForm = useForm({ option_id: '' })
     const currentUserVote = votes.find((v) => v.user_id === currentUser?.id)
     const [userVoteId, setUserVoteId] = React.useState<string | null>(currentUserVote?.option_id ?? null)
+    const [showVoteSuccess, setShowVoteSuccess] = React.useState(false)
+    const [votedOptionLabel, setVotedOptionLabel] = React.useState<string | null>(null)
 
     const handleVote = (optionId: string) => {
         if (!optionId) return
@@ -178,6 +152,7 @@ export default function Show({ poll }: { poll: Poll }) {
         // Prevent voting twice from the same user in UI
         if (userVoteId) return
 
+        const votedOption = poll.options?.find((o) => o.id === optionId)
         const action = votesStore(poll.id)
         voteForm.transform((data) => ({ ...data, option_id: optionId }))
         voteForm.post(action.url, {
@@ -198,30 +173,69 @@ export default function Show({ poll }: { poll: Poll }) {
 
                 setVotes((prev) => [...prev, newVote])
                 setUserVoteId(optionId)
+                setVotedOptionLabel(votedOption?.value ?? null)
+                setShowVoteSuccess(true)
             },
         })
     }
     return (
-        <AppLayout breadcrumbs={makeBreadCrumbs(poll.title)}>
-            <div className="relative z-10 mx-auto grid max-w-400 grid-cols-1 gap-8 p-6 lg:grid-cols-12">
+        <AppLayout breadcrumbs={makeBreadCrumbs(poll.title, polls.index.url())}>
+            {/* Vote Success Modal */}
+            <Dialog open={showVoteSuccess} onOpenChange={setShowVoteSuccess}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2">
+                            <CheckCircle2 className="h-5 w-5 text-teal-400" />
+                            Vote Cast Successfully
+                        </DialogTitle>
+                        <DialogDescription>
+                            Your vote for{' '}
+                            <strong className="text-foreground">{votedOptionLabel}</strong>{' '}
+                            has been recorded.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button
+                            variant="outline"
+                            onClick={() => setShowVoteSuccess(false)}
+                        >
+                            Stay Here
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                setShowVoteSuccess(false)
+                                router.visit(polls.index.url())
+                            }}
+                        >
+                            Back to Polls
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+            <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 gap-8 p-4 md:p-6 lg:grid-cols-12">
                 {/* --- LEFT COLUMN (MAIN) --- */}
-                <div className="space-y-8 lg:col-span-8">
+                <div className="space-y-6 md:space-y-8 lg:col-span-8">
                     {/* Hero / Question Area */}
                     <div className="space-y-6">
                         {/* Visual Header */}
-                        <img
-                            src={poll.media?.[0]?.original_url}
-                            className="h-48 w-full rounded-xs"
-                        />
+                        <div className="relative h-48 w-full overflow-hidden rounded-xl md:h-64">
+                            <img
+                                src={poll.media?.[0]?.original_url}
+                                className="h-full w-full object-cover"
+                                alt={poll.title}
+                            />
+                            <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
+                        </div>
+
                         {/* Poll Details */}
                         <div className="space-y-4">
-                            <div className="flex items-center gap-3 font-mono text-[10px] tracking-widest text-gray-500 uppercase">
-                                <span>Poll ID: {poll.id}</span>
-                                <span>//</span>
-                                <span>Kategori: {poll.category.label}</span>
+                            <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] tracking-widest text-gray-500 uppercase">
+                                <span className="shrink-0">Poll ID: {poll.id.substring(0, 8)}...</span>
+                                <span className="hidden sm:inline">//</span>
+                                <span className="shrink-0">Kategori: {categoryObj?.label ?? 'Uncategorized'}</span>
                             </div>
 
-                            <h1 className="font-mono text-3xl leading-tight font-bold tracking-tight dark:text-neutral-50 text-gray-900     md:text-4xl">
+                            <h1 className="font-mono text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-neutral-50">
                                 {poll.title}
                             </h1>
 
@@ -239,8 +253,7 @@ export default function Show({ poll }: { poll: Poll }) {
                                     <span>{poll.votes?.length ?? 0} Votes</span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <Clock className="h-4 w-4" />
-                                    <span>Ends in 04:23:12</span>
+                                    <PollTimer endDate={poll.end_date} variant="detail" />
                                 </div>
                             </div>
                         </div>
@@ -266,7 +279,7 @@ export default function Show({ poll }: { poll: Poll }) {
                                     Diskusi Komunitas
                                 </h3>
                                 <span className="rounded bg-[#1a232e] px-1.5 py-0.5 font-mono text-[10px] text-blue-400">
-                                    42
+                                    {!!comments ? comments.length : 0}
                                 </span>
                             </div>
                             <span className="cursor-pointer font-mono text-[10px] font-bold text-rose-500 hover:underline">
@@ -275,29 +288,34 @@ export default function Show({ poll }: { poll: Poll }) {
                         </div>
                         <div className="space-y-6 p-6">
                             {/* Input */}
-                            <form onSubmit={handleCommentSubmit} className="mb-8 flex gap-4">
-                                <div className="h-10 w-10 shrink-0 rounded-full bg-gradient-to-br from-orange-500 to-rose-600" />
-                                <div className="w-full space-y-2">
-                                    <textarea
-                                        placeholder="Join the discussion..."
-                                        value={commentForm.data.content}
-                                        onChange={(e) => commentForm.setData('content', e.target.value)}
-                                        className="max-h-48 min-h-20 w-full rounded border border-white/10 bg-neutral-50 dark:bg-neutral-950 p-3 text-sm text-foreground focus:border-rose-500/50 focus:outline-none"
-                                    />
-                                    <div className="flex items-center justify-between">
-                                        <span className="font-mono text-[10px] text-gray-600">Markdown supported</span>
-                                        <div className="flex items-center gap-2">
-                                            <Button type="submit" disabled={commentForm.processing} className="h-8 text-white">
-                                                {commentForm.processing ? 'Posting...' : 'POST COMMENT'}
+                            {!!poll.allow_comments ?
+                                <form onSubmit={handleCommentSubmit} className="mb-8 flex flex-col gap-4 sm:flex-row">
+                                    <div className="hidden h-10 w-10 shrink-0 rounded-full bg-linear-to-br from-orange-500 to-rose-600 sm:block" />
+                                    <div className="w-full space-y-3">
+                                        <textarea
+                                            placeholder="Join the discussion..."
+                                            value={commentForm.data.content}
+                                            onChange={(e) => commentForm.setData('content', e.target.value)}
+                                            className="max-h-48 min-h-24 w-full rounded-xl border border-white/10 bg-neutral-50 dark:bg-neutral-950 p-4 text-sm text-foreground focus:border-rose-500/50 focus:outline-none transition-all"
+                                        />
+                                        <div className="flex items-center justify-between">
+                                            <span className="font-mono text-[10px] text-gray-500">Markdown supported</span>
+                                            <Button type="submit" disabled={commentForm.processing} className="h-9 px-6 font-bold uppercase tracking-wider dark:text-neutral-950 text-neutral-50">
+                                                {commentForm.processing ? 'Posting...' : 'POST'}
                                             </Button>
                                         </div>
                                     </div>
+                                </form>
+                                :
+                                <div className="text-center flex flex-col items-center justify-center gap-2">
+                                    <MessageCircleOff className="h-12 w-12 text-gray-600" />
+                                    <p className="text-gray-500">Diskusi tidak diizinkan untuk polling ini.</p>
                                 </div>
-                            </form>
+                            }
 
                             {/* Render comments (real data) */}
-                            {comments.length === 0 ? (
-                                <div className="text-sm text-gray-500">No comments yet — be the first to comment.</div>
+                            {!!poll.allow_comments && comments.length === 0 ? (
+                                <div className="text-sm text-gray-500">Belum ada komentar — Jadi yang pertama disini.</div>
                             ) : (
                                 comments.map((c: any) => (
                                     <div key={c.id} className="flex gap-4">
@@ -339,32 +357,34 @@ export default function Show({ poll }: { poll: Poll }) {
                 {/* --- RIGHT COLUMN (SIDEBAR) --- */}
                 <div className="space-y-6 lg:col-span-4">
                     {/* Success Card */}
-                    <div className="relative overflow-hidden rounded-lg border border-teal-500/30 bg-gradient-to-b from-teal-900/80 to-[#0c1210] p-6">
-                        <div className="absolute top-0 right-0 p-3 opacity-20">
-                            <CheckCircle2 className="h-24 w-24 text-teal-400" />
-                        </div>
-                        <div className="relative z-10 space-y-4">
-                            <h3 className="font-serif text-xl font-bold text-white">
-                                Vote Cast Successfully
-                            </h3>
-                            <p className="font-mono text-xs leading-relaxed text-teal-100/70">
-                                Your decision has been recorded on the immutable
-                                ledger.
-                            </p>
-                            <div className="flex gap-2 pt-2">
-                                <Button
-                                    variant="outline"
-                                    className="flex-1 border-teal-500/30 text-teal-300 hover:bg-teal-900/50"
-                                >
-                                    <Terminal className="mr-2 h-3 w-3" />{' '}
-                                    Receipt
-                                </Button>
-                                <Button variant="destructive" className="flex-1">
-                                    <Share2 className="mr-2 h-3 w-3" /> Share
-                                </Button>
+                    {userVoteId && (
+                        <div className="relative overflow-hidden rounded-lg border border-teal-500/30 bg-linear-to-b from-teal-900/80 to-[#0c1210] p-6">
+                            <div className="absolute top-0 right-0 p-3 opacity-20">
+                                <CheckCircle2 className="h-24 w-24 text-teal-400" />
+                            </div>
+                            <div className="relative z-10 space-y-4">
+                                <h3 className="font-serif text-xl font-bold text-white">
+                                    Vote Cast Successfully
+                                </h3>
+                                <p className="font-mono text-xs leading-relaxed text-teal-100/70">
+                                    Your decision has been recorded on the immutable
+                                    ledger.
+                                </p>
+                                <div className="flex gap-2 pt-2">
+                                    <Button
+                                        variant="outline"
+                                        className="flex-1 border-teal-500/30 text-teal-300 hover:bg-teal-900/50"
+                                    >
+                                        <Terminal className="mr-2 h-3 w-3" />{' '}
+                                        Receipt
+                                    </Button>
+                                    <Button variant="destructive" className="flex-1">
+                                        <Share2 className="mr-2 h-3 w-3" /> Share
+                                    </Button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
 
                     {/* Recent Voters */}
                     <Card className="h-fit">
@@ -408,7 +428,7 @@ export default function Show({ poll }: { poll: Poll }) {
                         </div>
                     </Card>
                 </div>
-            </div>
-        </AppLayout>
+            </div >
+        </AppLayout >
     );
 }

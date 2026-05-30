@@ -10,6 +10,7 @@ use App\Models\Vote;
 use App\Services\VoteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class VoteController extends Controller
 {
@@ -28,15 +29,35 @@ class VoteController extends Controller
     {
         try {
             $vote = VoteService::CastVote($req->validated());
-            return $this->success(data: $vote, status: 201);
+
+            if ($req->is('api/*') || $req->expectsJson()) {
+                return $this->success(data: $vote, status: 201);
+            }
+
+            return redirect()->back();
         } catch (\Exception $e) {
-            return $this->error($e->getMessage(), 'Validation Error', $e->getCode() ?: 400);
+            if ($req->is('api/*') || $req->expectsJson()) {
+                return $this->error($e->getMessage(), 'Validation Error', $e->getCode() ?: 400);
+            }
+
+            return redirect()->back()->withErrors(['vote' => $e->getMessage()]);
         }
     }
 
-    public function showUserVotes()
+    public function showUserVotes(Request $req)
     {
-        return $this->success(Vote::where('user_id', Auth::id())->orderBy('created_at', 'desc')->with(['poll', 'pollOption'])->get());
+        $votes = Vote::where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->with(['poll.media', 'poll.pollCategory', 'pollOption'])
+            ->paginate(10);
+
+        if ($req->is('api/*') || $req->expectsJson()) {
+            return $this->success($votes);
+        }
+
+        return Inertia::render('polls/history', [
+            'votes' => $votes
+        ]);
     }
 
     public function getPollResults($pollId)

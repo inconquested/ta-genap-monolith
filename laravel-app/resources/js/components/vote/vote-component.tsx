@@ -3,6 +3,15 @@ import { PollOption, Vote } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Check, Loader2 } from 'lucide-react';
 import { useMemo, useRef, useState, useCallback, useEffect } from 'react';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 interface VoteComponentProps {
     options: PollOption[] | undefined;
@@ -43,6 +52,9 @@ export default function VoteComponent({
 
     // Profile Selector: If user voted or poll is over, show the "Public Display" profile
     const showResults = !!userVoteId || isEnded;
+
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [selectedOption, setSelectedOption] = useState<PollOption | null>(null);
 
     // --- Secure vote controller (client-side) ---
     // Prevent multiple rapid calls and concurrent submissions for same poll
@@ -184,12 +196,55 @@ export default function VoteComponent({
                                 key={opt.id}
                                 label={opt.value}
                                 isSubmitting={effectiveSubmitting}
-                                onSelect={() => safeOnVote(opt.id)}
+                                onSelect={() => {
+                                    if (effectiveSubmitting) return;
+                                    setSelectedOption(opt);
+                                    setIsDialogOpen(true);
+                                }}
                             />
                         ))}
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Confirm Your Vote</DialogTitle>
+                        <DialogDescription>
+                            Apakah anda yakin ingin memilih <strong className="text-foreground">{selectedOption?.value}</strong>?
+                            Pilihan anda tidak bisa diubah.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button
+                            variant="outline"
+                            onClick={() => setIsDialogOpen(false)}
+                            disabled={effectiveSubmitting}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                if (selectedOption) {
+                                    safeOnVote(selectedOption.id);
+                                    setIsDialogOpen(false);
+                                }
+                            }}
+                            disabled={effectiveSubmitting}
+                        >
+                            {effectiveSubmitting ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Casting Vote...
+                                </>
+                            ) : (
+                                "Confirm Vote"
+                            )}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

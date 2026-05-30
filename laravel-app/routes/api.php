@@ -6,10 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PollController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserAchievementController;
-use App\Http\Controllers\VoteController;
-use App\Models\Comment;
 
-use App\Services\PollReportService;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiAuthController;
 use App\Http\Controllers\PollCategoryController;
@@ -54,6 +51,8 @@ Route::apiResource('/poll-categories', PollCategoryController::class)->names([
 
 Route::apiResource('/polls/{poll}/comments', CommentController::class)->names([
     'index' => 'api.comments.index',
+    'store' => 'api.comments.store',
     'show' => 'api.comments.show',
+    'update' => 'api.comments.update',
     'destroy' => 'api.comments.destroy',
 ]);

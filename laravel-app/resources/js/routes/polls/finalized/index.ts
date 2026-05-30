@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\PollController::list
- * @see app/Http/Controllers/PollController.php:144
+ * @see app/Http/Controllers/PollController.php:121
  * @route '/polls/finalized/list'
  */
 export const list = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ list.definition = {
 
 /**
 * @see \App\Http\Controllers\PollController::list
- * @see app/Http/Controllers/PollController.php:144
+ * @see app/Http/Controllers/PollController.php:121
  * @route '/polls/finalized/list'
  */
 list.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ list.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\PollController::list
- * @see app/Http/Controllers/PollController.php:144
+ * @see app/Http/Controllers/PollController.php:121
  * @route '/polls/finalized/list'
  */
 list.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ list.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
 * @see \App\Http\Controllers\PollController::list
- * @see app/Http/Controllers/PollController.php:144
+ * @see app/Http/Controllers/PollController.php:121
  * @route '/polls/finalized/list'
  */
 list.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ list.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
     /**
 * @see \App\Http\Controllers\PollController::list
- * @see app/Http/Controllers/PollController.php:144
+ * @see app/Http/Controllers/PollController.php:121
  * @route '/polls/finalized/list'
  */
     const listForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -54,7 +54,7 @@ list.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 
             /**
 * @see \App\Http\Controllers\PollController::list
- * @see app/Http/Controllers/PollController.php:144
+ * @see app/Http/Controllers/PollController.php:121
  * @route '/polls/finalized/list'
  */
         listForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -63,7 +63,7 @@ list.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
         })
             /**
 * @see \App\Http\Controllers\PollController::list
- * @see app/Http/Controllers/PollController.php:144
+ * @see app/Http/Controllers/PollController.php:121
  * @route '/polls/finalized/list'
  */
         listForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({

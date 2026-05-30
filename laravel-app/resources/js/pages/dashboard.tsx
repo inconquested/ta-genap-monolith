@@ -1,17 +1,16 @@
 import { Head, Link, usePage } from '@inertiajs/react';
-import { ArrowRight, Bell, CirclePlusIcon, Clock, MessageCircleQuestion, } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-
+import { ArrowRight, CirclePlusIcon, MessageCircleQuestion, } from 'lucide-react';
+import { useState } from 'react';
 import AchievementBadge from '@/components/ui/achievement-badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { dashboard } from '@/routes';
-import polls, { create as createPoll } from '@/routes/polls';
+import polls, { create as createPoll, index } from '@/routes/polls';
 import { type Poll, type BreadcrumbItem, type SharedData, type UserAchievement, AchievementType, AchievementProgress } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PollTimer } from '@/components/polls/poll-timer';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -41,31 +40,25 @@ export default function Dashboard() {
     // Inertia returns data on render so loading is implicitly false for page-data.
     // Kept the boolean state in case deferred props are implemented later.
     const [loading, setLoading] = useState(false);
-
-    console.log("loaded")
-
     const { earned, types, progress } = achievementsData;
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-6 overflow-x-auto rounded-xl p-4">
-                <div className="flex items-center justify-between">
+            <div className="flex h-full flex-1 flex-col gap-6 rounded-xl p-4 md:p-6 lg:p-8">
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h1 className="my-0 font-mono text-4xl font-bold tracking-wide">
+                        <h1 className="my-0 font-mono text-3xl font-bold tracking-tight md:text-4xl">
                             Halo, {auth.user.username}
                         </h1>
-                        <p className="my-0 font-mono leading-tight text-muted-foreground">
+                        <p className="mt-1 text-sm leading-tight text-muted-foreground md:text-base">
                             Apa yang bakal kamu pilih hari ini?
                         </p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex w-full items-center gap-2 md:w-auto">
                         <Input
-                            className="rounded-sm font-mono placeholder-neutral-50/10"
+                            className="flex-1 rounded-sm font-mono placeholder:text-neutral-500 md:w-64"
                             placeholder="Cari Poll..."
                         />
-                        <Button variant={'outline'} className="rounded-sm">
-                            <Bell />
-                        </Button>
                     </div>
                 </div>
                 {userPolls === undefined ? (
@@ -138,8 +131,7 @@ export default function Dashboard() {
                                                     {poll.title}
                                                 </h3>
                                                 <p className='text-sm text-muted-foreground flex gap-1 items-center shrink-0'>
-                                                    <Clock size={16} />
-                                                    Tersisa
+                                                    <PollTimer endDate={poll.end_date} variant='card' />
                                                 </p>
                                             </div>
                                         </CardContent>
@@ -167,7 +159,7 @@ export default function Dashboard() {
                             <div className="h-3 w-3 rounded-full bg-linear-to-tr from-gray-800 via-rose-500 via-20% via-50% to-orange-400" />
                             Poll Yang Sedang Hangat
                         </p>
-                        <Link className="group flex items-center gap-0.5 font-mono text-sm underline-offset-3 hover:underline">
+                        <Link className="group flex items-center gap-0.5 font-mono text-sm underline-offset-3 hover:underline" href={index.url()}>
                             Lihat Semua
                             <ArrowRight
                                 strokeWidth={1.5}

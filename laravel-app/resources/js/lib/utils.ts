@@ -87,3 +87,19 @@ export function parseTimeSafe(input?: string | number | Date | null) {
         isValid: true,
     }
 }
+
+/**
+ * Generate standard breadcrumbs for poll-related pages.
+ */
+export function makeBreadCrumbs(title: string, indexUrl: string): { title: string; href: string }[] {
+    return [
+        {
+            title: 'Polls',
+            href: indexUrl,
+        },
+        {
+            title: title,
+            href: '',
+        },
+    ];
+}

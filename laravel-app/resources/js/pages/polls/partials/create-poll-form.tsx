@@ -1,17 +1,16 @@
 
 import { useForm } from '@inertiajs/react';
-import { Check, ChevronRight, Minus, Plus, X } from 'lucide-react';
+import { Check, ChevronRight, Cross, Minus, Plus, X } from 'lucide-react';
 import React from 'react';
 
 import { useImageCropper } from '@/components/image-cropper';
 import { Button } from '@/components/ui/button';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxList, ComboboxItem, ComboboxInput } from '@/components/ui/combobox';
 import { DatePickerTime } from '@/components/ui/datetime-picker';
-import { useCropper } from '@/components/ui/image-cropper';
-import { Input } from '@/components/ui/input';
 import { safeParse } from '@/lib/utils';
 import { PollCategory } from '@/types';
 import { PollOption, UUID } from '@/types';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 
 export interface PollFormState {
     title: string;
@@ -19,7 +18,7 @@ export interface PollFormState {
     options: PollOption[];
     is_active: boolean;
     start_date?: string;
-    deleted_option_ids?: UUID[]; 
+    deleted_option_ids?: UUID[];
     end_date?: string;
     allow_comments: boolean;
     category: string;
@@ -48,7 +47,7 @@ export default function CreatePollForm({
     onSubmit,
     categories
 }: CreatePollFormProps) {
- 
+
 
     // --- 2. Refactored Handlers using setData ---
 
@@ -82,7 +81,7 @@ export default function CreatePollForm({
         );
     };
 
-    
+
     const { open, CropperUI } = useImageCropper((blob) => {
         const file = new File([blob], 'banner.jpg', {
             type: 'image/jpeg',
@@ -93,10 +92,10 @@ export default function CreatePollForm({
     return (
         <form
             onSubmit={onSubmit}
-            className="flex min-h-screen w-full max-w-4xl justify-center p-6 font-sans text-muted-foreground"
+            className="flex w-full justify-center font-sans text-muted-foreground"
         >
-            <div className="w-screen">
-                <div className="rounded-lg border border-zinc-800 p-6 dark:bg-zinc-950/50">
+            <div className="w-full">
+                <div className="rounded-xl border border-zinc-800 p-4 md:p-6 lg:p-8 dark:bg-zinc-950/50">
                     {/* Section 01: Title */}
                     <div className="mb-6">
                         <label className="mb-2 block font-mono text-sm text-zinc-500">
@@ -190,24 +189,6 @@ export default function CreatePollForm({
                         </div>
                     </div>
 
-                    <div className="mb-6">
-                        <label className="mb-2 block font-mono text-sm text-zinc-500">
-                            05 // Opsi Polling
-                        </label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            className='border w-full rounded p-3 border-dashed hover:border-zinc-500'
-                            onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (!file) return;
-                                open(URL.createObjectURL(file), 'banner');
-                            }}
-                        />
-
-                        {CropperUI}
-                    </div>
-
                     {/* Section 05: Options */}
                     <div className="mb-6">
                         <label className="mb-2 block font-mono text-sm text-zinc-500">
@@ -257,15 +238,23 @@ export default function CreatePollForm({
                         <label className="mb-4 block font-mono text-sm text-zinc-500">
                             06 // Gambar Banner
                         </label>
-                        <Input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (!file) return;
-                                open(URL.createObjectURL(file), 'banner');
-                            }}
-                        />
+                        <InputGroup className='cursor-pointer'>
+                            <InputGroupInput
+                                type="file"
+                                accept="image/*"
+                                className='cursor-pointer'
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (!file) return;
+                                    open(URL.createObjectURL(file), 'banner');
+                                }}
+                            />
+                            <InputGroupAddon align={'inline-end'}>
+                                <Button variant={'ghost'} className='hover:text-rose-500'>
+                                    <X size={18} />
+                                </Button>
+                            </InputGroupAddon>
+                        </InputGroup>
                         {CropperUI}
                     </div>
 
@@ -343,11 +332,10 @@ export default function CreatePollForm({
                                                 ),
                                             );
                                         }}
-                                        className={`w-8 text-center font-mono text-lg font-bold ${
-                                            data.allow_quorum
-                                                ? 'text-gray-900 dark:text-neutral-50'
-                                                : ''
-                                        } border-0! focus:outline-none`}
+                                        className={`w-8 text-center font-mono text-lg font-bold ${data.allow_quorum
+                                            ? 'text-gray-900 dark:text-neutral-50'
+                                            : ''
+                                            } border-0! focus:outline-none`}
                                     />
 
                                     <Button
@@ -422,7 +410,7 @@ function SettingCard({
                 {active ? (
                     <Check size={14} className="dark:text-neutral-50" />
                 ) : (
-                    <X size={14} className='dark:text-neutral-50'/>
+                    <X size={14} className='dark:text-neutral-50' />
                 )}
             </Button>
         </div>

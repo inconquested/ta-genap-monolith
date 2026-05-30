@@ -19,18 +19,18 @@ import {
 interface DatePickerTimeProps {
   label?: string
   // Changed: Now returns a string (or undefined) to the parent
-  onChange?: (dateTime: string | undefined) => void 
+  onChange?: (dateTime: string | undefined) => void
   value?: Date
 }
 
-export function DatePickerTime({ 
-  label = "Select Date & Time", 
-  onChange, 
-  value 
+export function DatePickerTime({
+  label = "Select Date & Time",
+  onChange,
+  value
 }: DatePickerTimeProps) {
   const [open, setOpen] = React.useState(false)
   const [date, setDate] = React.useState<Date | undefined>(value)
-  const [time, setTime] = React.useState<string>("10:30:00")
+  const [time, setTime] = React.useState<string>(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }))
 
   const handleUpdate = (newDate: Date | undefined, newTime: string) => {
     if (!newDate) {
@@ -40,13 +40,13 @@ export function DatePickerTime({
 
     // 1. Parse the time string
     const [hours, minutes, seconds] = newTime.split(":").map(Number)
-    
+
     // 2. Combine into a single Date object
-    const combinedDate = set(newDate, { 
-      hours: hours || 0, 
-      minutes: minutes || 0, 
+    const combinedDate = set(newDate, {
+      hours: hours || 0,
+      minutes: minutes || 0,
       seconds: seconds || 0,
-      milliseconds: 0 
+      milliseconds: 0
     })
 
     // 3. Format it specifically for your backend: Y-m-d H:i:s
@@ -74,6 +74,7 @@ export function DatePickerTime({
             <Calendar
               mode="single"
               selected={date}
+              disabled={(date) => date.getTime() < new Date().setHours(0, 0, 0, 0)}
               captionLayout="dropdown"
               onSelect={(selectedDate) => {
                 setDate(selectedDate)

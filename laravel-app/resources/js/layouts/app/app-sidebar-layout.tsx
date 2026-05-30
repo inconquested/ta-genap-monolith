@@ -1,9 +1,11 @@
 import { type PropsWithChildren } from 'react';
+import { Toaster } from 'sonner';
 
 import { AppContent } from '@/components/app-content';
 import { AppShell } from '@/components/app-shell';
 import { AppSidebar } from '@/components/app-sidebar';
 import { AppSidebarHeader } from '@/components/app-sidebar-header';
+import AchievementListener from '@/components/achievement-listener';
 import { type BreadcrumbItem } from '@/types';
 
 export default function AppSidebarLayout({
@@ -17,6 +19,8 @@ export default function AppSidebarLayout({
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
                 {children}
             </AppContent>
+            <AchievementListener />
+            <Toaster position="bottom-right" richColors />
         </AppShell>
     );
 }

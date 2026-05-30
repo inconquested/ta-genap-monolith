@@ -79,7 +79,7 @@ class Poll extends Model implements HasMedia
         $this->addMediaConversion('banner')
             ->nonQueued()
             ->performOnCollections('banner')
-            ->format('FORMAT_WEBP');
+            ->format('webp');
     }
 
     //General

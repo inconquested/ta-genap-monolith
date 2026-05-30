@@ -19,9 +19,9 @@ class DashboardController extends Controller
         if ($req->is("api/*")) {
             return $this->success(data: DashboardService::getAdminMetrics($req), status: 200);
         } else {
-            $userAchievements = AchievementService::getUserAchievement($req->user());
+            $userAchievements = AchievementService::getUserAchievement(auth()->user());
             return Inertia::render('dashboard', [
-                'userPolls' => Poll::where('creator_id', $req->user()->id)->with(['media'])->get(),
+                'userPolls' => Poll::where('creator_id', auth()->id())->with(['media'])->get(),
                 'trendingPoll' => PollService::getTrendingPoll(),
                 'achievements' => [
                     'earned' => $userAchievements['earned'],

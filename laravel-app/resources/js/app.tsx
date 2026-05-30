@@ -1,4 +1,5 @@
 import '../css/app.css';
+import './pusher';
 
 import { createInertiaApp } from '@inertiajs/react';
 import axios from 'axios';

@@ -9,12 +9,75 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
+use App\Models\PollCategory;
+use App\Models\User;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class PollService
 {
+    /**
+     * Get paginated active polls with filters.
+     */
+    public static function getPaginatedPolls(array $filters = [], int $perPage = 5): LengthAwarePaginator
+    {
+        $query = Poll::where('is_active', true)
+            ->with([
+                'options:id,poll_id,value',
+                'creator:id,username',
+                'pollCategory:id,label',
+                'votes',
+                'media'
+            ])
+            ->withCount(['votes', 'comments'])
+            ->orderBy('created_at', 'desc');
+
+        if (!empty($filters['category'])) {
+            $catParam = $filters['category'];
+            $foundCat = PollCategory::where('id', $catParam)
+                ->orWhere('label', $catParam)
+                ->orWhereRaw('LOWER(label) = ?', [strtolower(str_replace('-', ' ', $catParam))])
+                ->first();
+
+            if ($foundCat) {
+                $query->where('category', $foundCat->id);
+            }
+        }
+
+        return $query->paginate($perPage);
+    }
+
+    /**
+     * Get top creators based on poll count.
+     */
+    public static function getTopCreators(int $limit = 3)
+    {
+        return User::withCount('polls')
+            ->orderBy('polls_count', 'desc')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Get recommended active polls.
+     */
+    public static function getRecommendedPolls(int $limit = 3, ?string $excludeId = null)
+    {
+        $query = Poll::where('is_active', true)
+            ->with(['pollCategory', 'media']);
+
+        if ($excludeId) {
+            $query->where('id', '!=', $excludeId);
+        }
+
+        return $query->inRandomOrder()
+            ->limit($limit)
+            ->get();
+    }
+
     public static function CreatePoll(array $data, string $userId, ?UploadedFile $banner = null): Poll
     {
         try {
-            return DB::transaction(function () use ($data, $userId, $banner) {
+            $poll = DB::transaction(function () use ($data, $userId, $banner) {
                 $poll = Poll::create([
                     'id' => Str::uuid(),
                     'creator_id' => $userId,
@@ -43,8 +106,14 @@ class PollService
                 \App\Jobs\FinalizePolls::dispatch($poll)->delay($poll->end_date);
                 return $poll;
             });
-        }
-        catch (\Exception $e) {
+
+            // Dispatch a simple decoupled event so other domains can listen (e.g. achievements)
+            if ($user = \App\Models\User::find($userId)) {
+                \App\Events\UserActed::dispatch($user);
+            }
+
+            return $poll;
+        } catch (\Exception $e) {
             throw $e;
         }
     }
@@ -55,19 +124,19 @@ class PollService
             return DB::transaction(function () use ($data) {
                 // 1. Update or Create Poll
                 $poll = Poll::updateOrCreate(
-                ['id' => $data['poll_id'] ?? null],
-                [
-                    'id' => $data['poll_id'] ?? (string)Str::uuid(),
-                    'title' => $data['title'],
-                    'description' => $data['description'],
-                    'creator_id' => $data['creator_id'],
-                    'start_date' => $data['start_date'],
-                    'end_date' => $data['end_date'],
-                    'is_active' => $data['is_active'],
-                    'allow_quorum' => $data['allow_quorum'],
-                    'allow_comments' => $data['allow_comments'],
-                    'is_finalized' => $data['is_finalized']
-                ]
+                    ['id' => $data['poll_id'] ?? null],
+                    [
+                        'id' => $data['poll_id'] ?? (string) Str::uuid(),
+                        'title' => $data['title'],
+                        'description' => $data['description'],
+                        'creator_id' => $data['creator_id'],
+                        'start_date' => $data['start_date'],
+                        'end_date' => $data['end_date'],
+                        'is_active' => $data['is_active'],
+                        'allow_quorum' => $data['allow_quorum'],
+                        'allow_comments' => $data['allow_comments'],
+                        'is_finalized' => $data['is_finalized']
+                    ]
                 );
                 if ($poll->wasChanged('end_date')) {
                     \App\Jobs\FinalizePolls::dispatch($poll)->delay($poll->end_date)->afterCommit();
@@ -82,8 +151,7 @@ class PollService
                 // 3. Delete options that are no longer in the request
                 if (!empty($incomingOptionIds)) {
                     $poll->options()->whereNotIn('id', $incomingOptionIds)->delete();
-                }
-                else {
+                } else {
                     // If no existing IDs, delete all old options
                     $poll->options()->delete();
                 }
@@ -94,18 +162,17 @@ class PollService
                     if (isset($optionData['id']) && !empty($optionData['id'])) {
                         // Update existing option
                         $poll->options()->updateOrCreate(
-                        ['id' => $optionData['id']],
-                        [
-                            'option_text' => $optionData['option_text'],
-                            'display_order' => $index
-                        ]
+                            ['id' => $optionData['id']],
+                            [
+                                'value' => $optionData['value'],
+                                'display_order' => $index
+                            ]
                         );
-                    }
-                    else {
+                    } else {
                         // Create new option
                         $poll->options()->create([
-                            'id' => (string)Str::uuid(),
-                            'option_text' => $optionData['option_text'],
+                            'id' => (string) Str::uuid(),
+                            'value' => $optionData['value'],
                             'display_order' => $index
                         ]);
                     }
@@ -114,8 +181,7 @@ class PollService
                 // Return the poll with fresh options
                 return $poll->fresh();
             });
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             throw $e;
         }
     }
@@ -141,21 +207,30 @@ class PollService
 
         DB::transaction(function () use ($winners, $isDraw, $poll, $totalVotes) {
             $pollResult = PollResult::create([
-                'id' => Str::uuid(),
+                'id' => (string) Str::uuid(),
                 'poll_id' => $poll->id,
                 'is_draw' => $isDraw,
                 'total_votes' => $totalVotes,
             ]);
-            $pollResult->save();
-            $poll->update([
-                'is_finalized' => true
-            ]);
+
+            $poll->update(['is_finalized' => true]);
+            
             foreach ($winners as $option) {
                 WinnerOption::create([
                     'id' => Str::uuid(),
                     'poll_result_id' => $pollResult->id,
                     'option_id' => $option->id,
                 ]);
+            }
+
+            // Notify poll creator
+            if ($creator = $poll->creator) {
+                $creator->notify(new \App\Notifications\PollNotification('poll_finalized', [
+                    'message' => "Polling Anda \"{$poll->title}\" telah selesai. Lihat hasilnya!",
+                    'poll_id' => $poll->id,
+                    'action_url' => route('polls.show', $poll->id),
+                    'icon' => 'Trophy'
+                ]));
             }
         });
     }

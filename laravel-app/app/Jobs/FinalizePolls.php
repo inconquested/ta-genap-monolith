@@ -27,8 +27,8 @@ class FinalizePolls implements ShouldQueue
     {
         $poll = $this->poll->fresh(); // always refresh from DB
         // Guard: if poll was extended, stop here
-        if ($poll->end_date->isFuture() || $poll->is_finalized) 
+        if (!$poll || $poll->end_date->isFuture() || $poll->is_finalized)
             return;
-        \App\Services\PollService::finalizePoll($this->poll);
+        \App\Services\PollService::finalizePoll($poll);
     }
 }

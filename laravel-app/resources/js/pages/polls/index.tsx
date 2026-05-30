@@ -1,24 +1,15 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-    Bell,
-    Briefcase,
-    Coffee,
-    Cpu,
-    Gamepad2,
-    Globe,
-    LayoutGrid,
-    Search,
-} from 'lucide-react';
+import { LayoutGrid } from 'lucide-react';
 import { PollFeedCard } from '@/components/vote/poll-feed-card';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, PaginatedPolls, Poll, PollCategory, User } from '@/types';
 import pollsRoutes from '@/routes/polls';
 import { motion } from 'framer-motion';
-import { router, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import Pagination from '@/components/ui/pagination';
 import { slugify } from '@/lib/utils';
+import { PageHeader } from '@/components/shared/page-header';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -31,14 +22,15 @@ const breadcrumbs: BreadcrumbItem[] = [
     }
 ];
 
-
 const redirectToPoll = (id: string) => {
     router.visit(pollsRoutes.show.url(id));
 }
 
-export default function Index({ polls, categories }: {
+export default function Index({ polls, categories, topCreators, recommendedPolls }: {
     polls: PaginatedPolls,
-    categories: PollCategory[]
+    categories: PollCategory[],
+    topCreators: any[],
+    recommendedPolls: Poll[]
 }) {
     const page = usePage();
     const { user } = (page.props as any).auth as { user: User };
@@ -50,7 +42,6 @@ export default function Index({ polls, categories }: {
         const url = catSlug ? `${base}?category=${encodeURIComponent(catSlug)}` : base;
         router.visit(url);
     };
-    console.log(polls)
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -59,9 +50,7 @@ export default function Index({ polls, categories }: {
                     {/* Left Feed Content */}
                     <div className="space-y-6 lg:col-span-8">
                         {/* Search & Categories */}
-                        <h1 className="font-mono text-4xl font-bold text-gray-900 dark:text-neutral-50">
-                            Temukan Poll Untuk Diikuti
-                        </h1>
+                        <PageHeader title="Temukan Poll Untuk Diikuti" />
                         <div className="space-y-6 overflow-x-hidden px-3">
                             <motion.div
                                 drag="x"
@@ -92,15 +81,15 @@ export default function Index({ polls, categories }: {
 
                         {/* Filter Tabs */}
                         <div className="flex items-center justify-between border-b border-zinc-900 pb-4">
-                            <div className="flex gap-6 font-mono text-[11px] font-bold tracking-widest uppercase">
+                            <div className="flex gap-4 font-mono text-[11px] font-bold tracking-widest uppercase">
                                 <button className="-mb-[17px] border-b border-rose-500 pb-4 text-rose-500">
                                     Trending
                                 </button>
                                 <button className="text-zinc-600 hover:text-zinc-400">
-                                    Ending Soon
+                                    Segera Berakhir
                                 </button>
                                 <button className="text-zinc-600 hover:text-zinc-400">
-                                    Newest
+                                    Terbaru
                                 </button>
                             </div>
                             <Button
@@ -109,7 +98,7 @@ export default function Index({ polls, categories }: {
                                 className="font-mono text-xs text-zinc-500"
                             >
                                 <LayoutGrid size={14} className="mr-2" />{' '}
-                                Filters
+                                Filter
                             </Button>
                         </div>
 
@@ -139,43 +128,31 @@ export default function Index({ polls, categories }: {
                         <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/30 p-5">
                             <div className="mb-6 flex items-center justify-between">
                                 <h3 className="text-sm font-bold tracking-tight text-white">
-                                    Top Creators
+                                    Kreator Teratas
                                 </h3>
-                                <button className="font-mono text-[10px] font-bold text-rose-500 uppercase hover:underline">
-                                    View All
-                                </button>
+                                <Link href="/leaderboard" className="font-mono text-[10px] font-bold text-rose-500 uppercase hover:underline">
+                                    Lihat Semua
+                                </Link>
                             </div>
                             <div className="space-y-5">
-                                {[
-                                    {
-                                        name: 'TechGuru',
-                                        subs: '12.5k followers',
-                                    },
-                                    {
-                                        name: 'DailyPoller',
-                                        subs: '8.2k followers',
-                                    },
-                                    {
-                                        name: 'CryptoKing',
-                                        subs: '5.1k followers',
-                                    },
-                                ].map((user) => (
+                                {topCreators.map((creator) => (
                                     <div
-                                        key={user.name}
+                                        key={creator.id}
                                         className="flex items-center justify-between"
                                     >
                                         <div className="flex items-center gap-3">
                                             <Avatar className="h-9 w-9 border border-zinc-800">
+                                                <AvatarImage src={creator.avatar} />
                                                 <AvatarFallback className="bg-zinc-800 text-[10px] text-zinc-500">
-                                                    TG
+                                                    {(creator.username || 'U').substring(0, 2).toUpperCase()}
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div>
                                                 <p className="text-xs font-bold text-zinc-100">
-                                                    {user.name}
+                                                    {creator.username}
                                                 </p>
                                                 <p className="font-mono text-[10px] text-zinc-500">
-                                                    {user.subs}
+                                                    {creator.polls_count} Poll Dibuat
                                                 </p>
                                             </div>
                                         </div>
@@ -184,7 +161,7 @@ export default function Index({ polls, categories }: {
                                             size="sm"
                                             className="h-8 border-zinc-800 text-[10px] font-bold hover:bg-zinc-800"
                                         >
-                                            Follow
+                                            Ikuti
                                         </Button>
                                     </div>
                                 ))}
@@ -194,35 +171,28 @@ export default function Index({ polls, categories }: {
                         {/* For You Widget */}
                         <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/30 p-5">
                             <h3 className="mb-4 text-sm font-bold tracking-tight text-white">
-                                For You
+                                Rekomendasi Untuk Anda
                             </h3>
                             <div className="space-y-2">
-                                {[
-                                    {
-                                        tag: 'Movies • Trending',
-                                        q: 'Which summer blockbuster are you most excited for?',
-                                    },
-                                    {
-                                        tag: 'Work • Hot',
-                                        q: "Remote work vs Office: What's your preference post-2024?",
-                                    },
-                                    {
-                                        tag: 'Finance • New',
-                                        q: 'Bitcoin price prediction for end of Q4?',
-                                    },
-                                ].map((item, i) => (
-                                    <div
-                                        key={i}
-                                        className="group cursor-pointer rounded-xl border border-zinc-900 bg-black/40 p-3 transition-all hover:border-zinc-800"
+                                {recommendedPolls.map((poll) => (
+                                    <Link
+                                        key={poll.id}
+                                        href={pollsRoutes.show.url(poll.id)}
+                                        className="group block cursor-pointer rounded-xl border border-zinc-900 bg-black/40 p-3 transition-all hover:border-zinc-800"
                                     >
                                         <p className="mb-1 font-mono text-[9px] tracking-widest text-rose-500 uppercase">
-                                            {item.tag}
+                                            {poll.poll_category?.label || 'General'} • Rekomendasi
                                         </p>
-                                        <p className="text-xs font-medium text-zinc-300 transition-colors group-hover:text-white">
-                                            {item.q}
+                                        <p className="text-xs font-medium text-zinc-300 transition-colors group-hover:text-white line-clamp-2">
+                                            {poll.title}
                                         </p>
-                                    </div>
+                                    </Link>
                                 ))}
+                                {recommendedPolls.length === 0 && (
+                                    <p className="text-center py-4 text-xs font-mono text-zinc-600 italic">
+                                        Belum ada rekomendasi.
+                                    </p>
+                                )}
                             </div>
                         </div>
                     </div>
