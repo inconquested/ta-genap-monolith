@@ -35,6 +35,9 @@ class AppServiceProvider extends ServiceProvider
             app(AchievementService::class)->CheckAndAward($event->user);
         });
 
+        // Persist achievement records when an achievement is broadcast/unlocked
+        Event::listen(AchievementUnlocked::class, CreateUserAchievementRecord::class);
+
         $this->configureDefaults();
         RateLimiter::for('strict-api', function (Request $req) {
             return Limit::perMinute(60)
