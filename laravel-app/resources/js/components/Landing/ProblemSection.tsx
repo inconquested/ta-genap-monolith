@@ -6,7 +6,8 @@ import { FileText, Lock, TrendingDown, LucideIcon } from 'lucide-react';
 interface ProblemItem {
     title: string;
     icon: LucideIcon;
-    iconColor: string;
+    // CSS variable to use for the icon color (uses currentColor on SVG icons)
+    iconVar: string;
     desc: string;
 }
 
@@ -14,19 +15,19 @@ const items: ProblemItem[] = [
     {
         title: "Rendahnya Partisipasi",
         icon: TrendingDown,
-        iconColor: "text-red-500",
+        iconVar: "var(--destructive)",
         desc: "Proses manual yang rumit dan metode pemungutan suara yang tidak nyaman menghambat partisipasi."
     },
     {
         title: "Kurangnya Transparansi",
         icon: Lock,
-        iconColor: "text-yellow-500",
+        iconVar: "var(--accent)",
         desc: "Sistem yang buram dan hasil yang tidak dapat diverifikasi menimbulkan ketidakpercayaan di kalangan peserta."
     },
     {
         title: "Beban Administrasi",
         icon: FileText,
-        iconColor: "text-green-500",
+        iconVar: "var(--chart-1)",
         desc: "Perhitungan manual, jejak kertas, dan organisasi yang kacau menguras waktu dan sumber daya yang berharga."
     }
 ];
@@ -55,7 +56,7 @@ function AnimatedCard({ item, index, scrollYProgress }: { item: ProblemItem, ind
             className="pl-4 md:pl-6 border-l-2 border-border/50 hover:border-border transition-colors duration-300"
         >
             <div className="flex items-center gap-3 mb-2 md:mb-4">
-                <div className={`p-2 rounded-lg bg-muted/50 ${item.iconColor}`}>
+                <div className="p-2 rounded-lg bg-muted/50" style={{ color: item.iconVar }}>
                     <item.icon className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
                 <h3 className="text-lg md:text-xl font-semibold">

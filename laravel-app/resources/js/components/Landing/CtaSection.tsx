@@ -172,7 +172,7 @@ export default function CtaSection() {
                                             rotate: idx * 8 - 8,
                                             zIndex: 3 - idx
                                         }}
-                                        className="absolute top-10 left-1/2 -translate-x-1/2 w-16 h-24 md:w-20 md:h-28 bg-white dark:bg-zinc-800 border border-primary/20 shadow-xl rounded-md flex items-center justify-center"
+                                            className="absolute top-10 left-1/2 -translate-x-1/2 w-16 h-24 md:w-20 md:h-28 bg-card border border-border shadow-xl rounded-md flex items-center justify-center"
                                     >
                                         <svg className="w-10 h-10 text-primary" viewBox="0 0 24 24" fill="none">
                                             <motion.path

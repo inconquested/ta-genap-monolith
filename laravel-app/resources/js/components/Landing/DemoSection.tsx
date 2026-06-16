@@ -5,8 +5,8 @@ export default function DemoSection() {
     const [activeNode, setActiveNode] = useState<number | null>(null);
 
     const COLORS = {
-        active: "#f43f5e", // rose-500
-        inactive: "#e2e8f0" // slate-200
+        active: "var(--destructive)",
+        inactive: "var(--muted)"
     };
 
     const nodes = [

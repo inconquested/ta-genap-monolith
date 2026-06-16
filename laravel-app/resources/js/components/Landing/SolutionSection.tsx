@@ -42,7 +42,7 @@ function MockPollCard({ title, votes, author }: { title: string, votes: string, 
 
                     <div className="space-y-3">
                         <div className="relative h-8 w-full overflow-hidden rounded bg-muted">
-                            <div className="absolute inset-y-0 left-0 bg-rose-500 w-[65%]" />
+                            <div className="absolute inset-y-0 left-0 w-[65%]" style={{ background: 'var(--destructive)' }} />
                             <div className="absolute inset-0 flex items-center justify-between px-3 text-sm font-medium">
                                 <span>Kandidat A</span>
                                 <span>65%</span>
