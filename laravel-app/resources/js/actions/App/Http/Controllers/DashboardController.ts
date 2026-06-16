@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/api/dashboard'
  */
 const index79e8db78b7285f47b9383df06923ad39 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index79e8db78b7285f47b9383df06923ad39.definition = {
 
 /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/api/dashboard'
  */
 index79e8db78b7285f47b9383df06923ad39.url = (options?: RouteQueryOptions) => {
@@ -25,7 +25,7 @@ index79e8db78b7285f47b9383df06923ad39.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/api/dashboard'
  */
 index79e8db78b7285f47b9383df06923ad39.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -34,7 +34,7 @@ index79e8db78b7285f47b9383df06923ad39.get = (options?: RouteQueryOptions): Route
 })
 /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/api/dashboard'
  */
 index79e8db78b7285f47b9383df06923ad39.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -44,7 +44,7 @@ index79e8db78b7285f47b9383df06923ad39.head = (options?: RouteQueryOptions): Rout
 
     /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/api/dashboard'
  */
     const index79e8db78b7285f47b9383df06923ad39Form = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -54,7 +54,7 @@ index79e8db78b7285f47b9383df06923ad39.head = (options?: RouteQueryOptions): Rout
 
             /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/api/dashboard'
  */
         index79e8db78b7285f47b9383df06923ad39Form.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -63,7 +63,7 @@ index79e8db78b7285f47b9383df06923ad39.head = (options?: RouteQueryOptions): Rout
         })
             /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/api/dashboard'
  */
         index79e8db78b7285f47b9383df06923ad39Form.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -79,7 +79,7 @@ index79e8db78b7285f47b9383df06923ad39.head = (options?: RouteQueryOptions): Rout
     index79e8db78b7285f47b9383df06923ad39.form = index79e8db78b7285f47b9383df06923ad39Form
     /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/dashboard'
  */
 const index42a740574ecbfbac32f8cc353fc32db9 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -94,7 +94,7 @@ index42a740574ecbfbac32f8cc353fc32db9.definition = {
 
 /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/dashboard'
  */
 index42a740574ecbfbac32f8cc353fc32db9.url = (options?: RouteQueryOptions) => {
@@ -103,7 +103,7 @@ index42a740574ecbfbac32f8cc353fc32db9.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/dashboard'
  */
 index42a740574ecbfbac32f8cc353fc32db9.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -112,7 +112,7 @@ index42a740574ecbfbac32f8cc353fc32db9.get = (options?: RouteQueryOptions): Route
 })
 /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/dashboard'
  */
 index42a740574ecbfbac32f8cc353fc32db9.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -122,7 +122,7 @@ index42a740574ecbfbac32f8cc353fc32db9.head = (options?: RouteQueryOptions): Rout
 
     /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/dashboard'
  */
     const index42a740574ecbfbac32f8cc353fc32db9Form = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -132,7 +132,7 @@ index42a740574ecbfbac32f8cc353fc32db9.head = (options?: RouteQueryOptions): Rout
 
             /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/dashboard'
  */
         index42a740574ecbfbac32f8cc353fc32db9Form.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -141,7 +141,7 @@ index42a740574ecbfbac32f8cc353fc32db9.head = (options?: RouteQueryOptions): Rout
         })
             /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see app/Http/Controllers/DashboardController.php:17
+ * @see [unknown]:0
  * @route '/dashboard'
  */
         index42a740574ecbfbac32f8cc353fc32db9Form.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
