@@ -6,7 +6,12 @@ use App\Concerns\ApiResponse;
 use App\Http\Requests\Poll\PollStoreRequest;
 use App\Http\Requests\Poll\PollUpdateRequest;
 use App\Models\Poll;
+use App\Models\PollCategory;
+use App\Models\PollResult;
+use App\Models\WinnerOption;
 use App\Services\PollService;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class PollController extends Controller
 {
@@ -16,13 +21,23 @@ class PollController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $req)
     {
-        return $this->success(
-            Poll::where('is_active', true)
-                ->with(['options', 'creator:id,username', ''])
-                ->orderBy('created_at', 'desc')->paginate(20)
-        );
+        $filters = $req->only(['category']);
+        $polls = PollService::getPaginatedPolls($filters);
+
+        // API response
+        if ($req->is('api/*') || $req->expectsJson()) {
+            return $this->success($polls);
+        }
+
+        // Web response
+        return Inertia::render('polls/index', [
+            'polls' => $polls,
+            'categories' => PollCategory::all(),
+            'topCreators' => PollService::getTopCreators(),
+            'recommendedPolls' => PollService::getRecommendedPolls(3, $polls->first()?->id)
+        ]);
     }
 
     /**
@@ -30,7 +45,9 @@ class PollController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('polls/create', [
+            'categories' => PollCategory::all()
+        ]);
     }
 
     /**
@@ -38,16 +55,39 @@ class PollController extends Controller
      */
     public function store(PollStoreRequest $req)
     {
-        $poll = PollService::CreatePoll($req->validated());
-        return $this->success(data: $poll->load(['options', 'votes', 'comments']), status: 201);
+        $pollData = PollService::CreatePoll(
+            $req->validated(),
+            \Illuminate\Support\Facades\Auth::user()->id,
+            $req->file('banner')
+        );
+
+        if ($req->is('api/*') || $req->expectsJson()) {
+            return $this->success(data: $pollData, status: 201);
+        }
+        return redirect()->route('polls.index')->with('modalData', $pollData);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Poll $poll)
+    public function show(Poll $poll, Request $req)
     {
-        return $this->success($poll->load(['options', 'creator:id,username', 'votes', 'comments']));
+        if ($req->is('api/*') || $req->expectsJson()) {
+            return $this->success($poll->load(['options', 'creator:id,username', 'votes', 'comments', 'media', 'category']));
+        }
+        if ($poll->isClosed()) {
+            return Inertia::render('polls/finalized', [
+                'poll' => $poll->load(['options']),
+                'results' => PollResult::where('poll_id', $poll->id)->get(),
+                'winners' => WinnerOption::where('poll_result_id', $poll->result?->id)->get()
+            ]);
+        }
+        return Inertia::render(
+            'polls/show',
+            [
+                'poll' => $poll->load(['options', 'creator:id,username', 'votes', 'comments', 'media', 'pollCategory', 'votes'])
+            ]
+        );
     }
 
     /**
@@ -55,7 +95,7 @@ class PollController extends Controller
      */
     public function edit(Poll $poll)
     {
-        //
+        return Inertia::render('poll/create', ['poll' => $poll->load(['options', 'creator:id,username', 'votes', 'comments'])]);
     }
 
     /**
@@ -73,5 +113,45 @@ class PollController extends Controller
     public function destroy(Poll $poll)
     {
         return response()->json($poll->delete(), 204);
+    }
+
+    /**
+     * Display a listing of finalized polls.
+     */
+    public function finalizedList(Request $req)
+    {
+        $polls = Poll::with(['options', 'creator:id,username', 'category', 'media', 'result', 'votes'])
+            ->where('is_active', false)
+            ->orWhere('end_date', '<', now())
+            ->orderBy('end_date', 'desc')
+            ->paginate(10);
+
+        if ($req->is('api/*') || $req->expectsJson()) {
+            return response()->json($polls);
+        }
+
+        return Inertia::render('polls/finalized', [
+            'polls' => $polls
+        ]);
+    }
+
+    /**
+     * Display a listing of the user's polls.
+     */
+    public function userPolls(Request $req, \App\Models\User $user)
+    {
+        $polls = Poll::where('creator_id', $user->id)
+            ->with(['media', 'pollCategory', 'options'])
+            ->withCount(['votes', 'comments'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        if ($req->is('api/*') || $req->expectsJson()) {
+            return $this->success($polls);
+        }
+
+        return Inertia::render('polls/user-polls', [
+            'polls' => $polls
+        ]);
     }
 }

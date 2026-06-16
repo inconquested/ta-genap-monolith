@@ -1,0 +1,9 @@
+# Ignore local environment files
+laravel-app/.env
+
+# Ignore node modules
+laravel-app/node_modules/
+vendor/
+
+# Ignore the old deleted windows app directory
+netwinform-app/

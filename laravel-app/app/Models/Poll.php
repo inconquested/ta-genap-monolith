@@ -9,11 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Poll extends Model
+class Poll extends Model implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\PollFactory> */
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, InteractsWithMedia;
     protected $fillable = [
         'id',
         'title',
@@ -21,8 +24,16 @@ class Poll extends Model
         'description',
         'start_date',
         'end_date',
+        'is_finalized',
+        'allow_quorum',
+        'quorum_count',
+        'category',
         'is_active',
         'allow_comments',
+    ];
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
     ];
     public function creator(): BelongsTo
     {
@@ -34,7 +45,18 @@ class Poll extends Model
     }
     public function votes(): HasManyThrough
     {
-        return $this->hasManyThrough(Vote::class, PollOption::class, 'poll_id', 'option_id', 'id', 'id');
+        return $this->hasManyThrough(
+            Vote::class,
+            PollOption::class,
+            'poll_id',   // FK on poll_options → polls.id
+            'option_id', // FK on votes → poll_options.id
+            'id',        // PK on polls
+            'id'         // PK on poll_options
+        );
+    }
+    public function pollCategory(): BelongsTo
+    {
+        return $this->belongsTo(PollCategory::class, 'category');
     }
     public function result(): HasOne
     {
@@ -43,5 +65,26 @@ class Poll extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    //Media
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('banner')
+            ->singleFile()
+            ->withResponsiveImages();
+    }
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('banner')
+            ->nonQueued()
+            ->performOnCollections('banner')
+            ->format('webp');
+    }
+
+    //General
+    public function isClosed(): bool
+    {
+        return $this->end_date <= now() || $this->is_finalized;
     }
 }

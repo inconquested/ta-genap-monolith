@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('poll_options', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('poll_id')->constrained()->onDelete('cascade');
-            $table->string('option_text');
+            $table->string('value');
             $table->unsignedTinyInteger('display_order')->default(0);
             $table->timestamps();
         });

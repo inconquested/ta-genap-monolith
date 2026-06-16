@@ -15,6 +15,14 @@ class VoteStoreRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        $poll = $this->route('poll');
+        $this->merge([
+            'poll_id' => $poll instanceof \App\Models\Poll ? $poll->id : $poll,
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

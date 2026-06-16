@@ -25,14 +25,16 @@ class PollStoreRequest extends FormRequest
         return [
             'title' => 'required|string|min:3|max:255',
             'description' => 'nullable|string',
+            'banner' => 'nullable|image|max:5120',
             'start_date' => 'required|date_format:Y-m-d H:i:s',
-            'creator_id' => 'required|exists:users,id',
             'end_date' => 'required|date_format:Y-m-d H:i:s|after:start_date',
+            'category' => 'required|exists:poll_categories,id',
+            'allow_quorum' => 'required|boolean',
+            'quorum_count'=> 'nullable|integer',
             'is_active' => 'required|boolean',
-            'is_finalized' => 'required|boolean',
             'allow_comments' => 'nullable|boolean',
             'options' => 'required|array',
-            'options.*.option_text' => 'required|string|min:1|max:16',
+            'options.*.value' => 'required|string|min:1|max:16',
             'options.*.display_order' => 'required|integer',
         ];
     }
@@ -41,11 +43,12 @@ class PollStoreRequest extends FormRequest
         return [
             'title.required' => 'Judul harus diisi',
             'start_date.required' => 'Tanggal mulai harus diisi',
+            'category.required' => 'Kategori tidak boleh kosong',
             'end_date.required' => 'Tenggat harus diisi',
-            'creator_id.required' => 'ID Pencipta tidak ada atau tidak valid',
             'end_date.after' => 'Tenggat tidak sah',
             'is_active.required' => 'Keaktifan Petisi harus diisi',
             'options.*.option_text.required' => 'Label pilihan harus diisi',
+            'allow_quorum.required' => 'Quorum Kosong',
             'options.*.option_text.max' => 'Label pilihan terlalu panjang',
             'options.*.display_order.required' => 'Urutan tampil pilihan harus diatur',
         ];

@@ -10,7 +10,7 @@ trait ApiResponse
      * @param mixed $data
      * @param string $message
      * @param int $code
-     * @return JsonResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     protected function success($data = [], $message = 'Success', int $status = 200)
     {

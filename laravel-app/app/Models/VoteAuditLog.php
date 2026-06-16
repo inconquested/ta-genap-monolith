@@ -10,6 +10,7 @@ class VoteAuditLog extends Model
 {
     const UPDATED_AT = null;
     protected $fillable = [
+        'id',
         'action',
         'vote_id',
         'performed_by_user_id',

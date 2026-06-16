@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PollResult extends Model
 {
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $fillable = [
         'id',
         'poll_id',
@@ -15,5 +17,10 @@ class PollResult extends Model
     public function winningOption()
     {
         return $this->belongsTo(PollOption::class, 'finalized_option');
+    }
+
+    public function winnerOptions()
+    {
+        return $this->hasMany(WinnerOption::class);
     }
 }

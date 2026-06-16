@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { LayoutGrid, ChartBarBig, Trophy, History } from 'lucide-react';
 
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -8,38 +8,76 @@ import {
     Sidebar,
     SidebarContent,
     SidebarFooter,
+    SidebarGroup,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+
 } from '@/components/ui/sidebar';
+import SidebarPollsMenu from '@/components/sidebar-menu';
 import { dashboard } from '@/routes';
+import polls from '@/routes/polls';
 import { type NavItem } from '@/types';
+
 
 import AppLogo from './app-logo';
 
-const mainNavItems: NavItem[] = [
+/* const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Beranda',
         href: dashboard(),
         icon: LayoutGrid,
     },
-];
-
-const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
+        title: 'Leaderboard',
+        href: '',
+        icon: Trophy
     },
     {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
+        title: 'Riwayat',
+        href: '',
+        icon: History
+    }
+]; */
+import { useActiveUrl } from '@/hooks/use-active-url';
+import votes from '@/routes/votes';
+import { usePage } from '@inertiajs/react';
+import { SharedData } from '@/types';
 
 export function AppSidebar() {
+    const { auth } = usePage<SharedData>().props;
+    const { urlIsActive } = useActiveUrl();
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: 'Beranda',
+            href: dashboard().url,
+            icon: LayoutGrid,
+        },
+        {
+            title: 'Polls',
+            icon: ChartBarBig,
+            subItems: [
+                { title: 'Jelajahi Poll', href: polls.index.url() },
+                { title: 'Buat Poll', href: polls.create.url() },
+                { title: 'Kelola Poll Saya', href: polls.user.url(auth.user.id) },
+            ],
+        },
+        {
+            title: 'Papan Peringkat',
+            href: '/leaderboard',
+            icon: Trophy,
+        },
+        {
+            title: 'Riwayat',
+            href: votes.user.url(),
+            icon: History,
+        },
+    ];
+
+    const footerNavItems: NavItem[] = [];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -54,8 +92,25 @@ export function AppSidebar() {
                 </SidebarMenu>
             </SidebarHeader>
 
+            {/* Added the missing opening tag here */}
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <SidebarGroup className="px-2 py-0">
+                    <SidebarMenu>
+                        {mainNavItems.map((item) => (
+                            <SidebarPollsMenu
+                                key={item.title}
+                                label={item.title}
+                                icon={item.icon}
+                                href={item.href}
+                                subItems={item.subItems}
+                            />
+                        ))}
+                    </SidebarMenu>
+                </SidebarGroup>
+
+                {/* Note: If NavMain also renders mainNavItems, you might want to remove it 
+                    or pass a different set of items to avoid duplication */}
+                {/* <NavMain items={otherItems} /> */}
             </SidebarContent>
 
             <SidebarFooter>

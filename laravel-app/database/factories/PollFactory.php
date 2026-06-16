@@ -17,7 +17,9 @@ class PollFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            "id" => $this->faker->uuid,
+            "title" => $this->faker->sentence,
+            
         ];
     }
 }

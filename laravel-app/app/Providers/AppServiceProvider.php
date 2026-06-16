@@ -2,10 +2,15 @@
 
 namespace App\Providers;
 
+use App\Events\AchievementUnlocked;
+use App\Events\UserActed;
+use App\Listeners\CreateUserAchievementRecord;
+use App\Services\AchievementService;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
@@ -26,6 +31,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Event::listen(UserActed::class, function (UserActed $event) {
+            app(AchievementService::class)->CheckAndAward($event->user);
+        });
+
+        // Persist achievement records when an achievement is broadcast/unlocked
+        Event::listen(AchievementUnlocked::class, CreateUserAchievementRecord::class);
+
         $this->configureDefaults();
         RateLimiter::for('strict-api', function (Request $req) {
             return Limit::perMinute(60)

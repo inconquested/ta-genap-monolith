@@ -16,7 +16,7 @@ class PollOption extends Model
         'id',
         'poll_id',
         'display_order',
-        'option_text'
+        'value'
     ];
 
     public function poll()

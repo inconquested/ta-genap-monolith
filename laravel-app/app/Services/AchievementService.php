@@ -1,6 +1,9 @@
 <?php
 
-use App\Events\AchievementEarned;
+namespace App\Services;
+use Illuminate\Support\Facades\Log;
+
+use App\Events\AchievementUnlocked;
 use App\Models\AchievementType;
 use App\Models\User;
 use App\Models\UserAchievement;
@@ -12,15 +15,18 @@ class AchievementService
      * Check users' progress and
      * award them when criteria is met
      */
-    public function CheckAndAward(User $user, string $trigger)
+    public function CheckAndAward(User $user)
     {
-        $newAchievement = [];
+        Log::info("Checking achievements for user: " . $user->id);
         $availableAchivements = AchievementType::WhereNotIn('id', function ($query) use ($user) {
             $query->select('achievement_type_id')->from('user_achievements')->where('user_id', $user->id);
         })->get();
+        /** @var AchievementType $a */
         foreach ($availableAchivements as $a) {
+            Log::debug("Checking requirement for achievement: " . $a->name);
             if ($this->meetsRequirement($user, $a)) {
-                $newAchievement[] = $this->awardAchievement($user, $a);
+                Log::info("Requirement met for achievement: " . $a->name);
+                $this->awardAchievement($user, $a);
             }
         }
     }
@@ -33,32 +39,35 @@ class AchievementService
     private function meetsRequirement(User $user, AchievementType $achievement)
     {
         return match ($achievement->requirement_type) {
-            'vote_count' => $user->votes()->count() >= $achievement->requirement_value,
-            'poll_count' => $user->polls()->count() >= $achievement->requirement_value,
-            'streak_days' => $this->checkStreak($user, $achievement->requirement_value),
-            'popular_polls' => $this->hasPopularPoll($user, $achievement->requirement_value),
+            'vote_count' => $user->votes()->count() >= (int) $achievement->requirement_value,
+            'poll_count' => $user->polls()->count() >= (int) $achievement->requirement_value,
+            'streak_days' => $this->checkStreak($user, (int) $achievement->requirement_value),
+            'popular_polls' => $this->hasPopularPoll($user, (int) $achievement->requirement_value),
             default => false
         };
     }
 
     /**
-     * Add a record to 
-     * UserAchievements
+     * Dispatch achievement unlocked event
      */
     private function awardAchievement(User $user, AchievementType $achievement)
     {
-        $userAchievement = UserAchievement::create([
-            'user_id' => $user->id,
-            'achievement_type_id' => $achievement->id,
-            'progress_data' => [
-                'current_value' => $this->getCurrentValue($user, $achievement),
-            ]
-        ]);
+        Log::debug("Attempting to award achievement: " . $achievement->name);
+        
+        try {
+            $alreadyEarned = UserAchievement::where('user_id', $user->id)
+                ->where('achievement_type_id', $achievement->id)
+                ->exists();
 
-        // Trigger notification
-        event(new AchievementEarned($user, $achievement));
-
-        return $userAchievement->load('achievementType');
+            if (!$alreadyEarned) {
+                Log::info("Awarding achievement: " . $achievement->name . " to user: " . $user->id);
+                event(new AchievementUnlocked($user, $achievement));
+            } else {
+                Log::debug("Achievement already earned: " . $achievement->name);
+            }
+        } catch (\Illuminate\Database\UniqueConstraintViolationException $e) {
+            Log::info("Handled race condition for achievement: " . $achievement->name);
+        }
     }
     private function checkStreak($user, $days)
     {
@@ -87,6 +96,11 @@ class AchievementService
         }
         return true;
     }
+    /**
+     * Check whether user has
+     * votes with counts that
+     * exceeded votes requirements
+     */
     private function hasPopularPoll(User $user, int $minVotes)
     {
         return $user->polls()
@@ -95,7 +109,8 @@ class AchievementService
             ->exists();
     }
 
-    private function getCurrentValue(User $user, AchievementType $achievement)
+    // Get user's curent actions count value
+    private static function getCurrentValue(User $user, AchievementType $achievement)
     {
         return match ($achievement->requirement_type) {
             'vote_count' => $user->votes()->count(),
@@ -105,7 +120,7 @@ class AchievementService
     }
 
     // Get user's progress toward next achievements
-    public function getProgress(User $user)
+    public static function getProgress(User $user)
     {
         $unearnedAchievements = AchievementType::whereNotIn('id', function ($query) use ($user) {
             $query->select('achievement_type_id')
@@ -113,8 +128,8 @@ class AchievementService
                 ->where('user_id', $user->id);
         })->get();
 
-        return $unearnedAchievements->map(function ($achievement) use ($user) {
-            $current = $this->getCurrentValue($user, $achievement);
+        return $unearnedAchievements->map(function (AchievementType $achievement) use ($user) {
+            $current = self::getCurrentValue($user, $achievement);
             $required = $achievement->requirement_value;
 
             return [
@@ -124,5 +139,21 @@ class AchievementService
                 'percentage' => min(100, ($current / $required) * 100),
             ];
         });
+    }
+
+    //Get achievement user has
+    public static function getUserAchievement(User $user, ?object $query = null)
+    {
+        $earned = UserAchievement::where('user_id', $user->id);
+        $types = AchievementType::all();
+        $progress = self::getProgress($user);
+        if ($query && isset($query->type)) {
+            $earned = $earned->where('achievement_type_id', $query->type);
+        }
+        return [
+            'earned' => $earned->get(),
+            'types' => $types,
+            'progress' => $progress
+        ];
     }
 }
