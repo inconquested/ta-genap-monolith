@@ -16,10 +16,13 @@ class UserAchievement extends Model
         'user_id',
         'achievement_type_id',
         'earned_at',
-        'progress_data'
+        'progress_data',
+        'revoked_at',
+        'revocation_reason'
     ];
     protected $casts = [
-        'progress_data' => 'array'
+        'progress_data' => 'array',
+        'revoked_at' => 'datetime'
     ];
 
     public function user(): BelongsTo

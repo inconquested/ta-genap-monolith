@@ -109,8 +109,8 @@ export default function Show({ poll }: { poll: Poll }) {
         }));
     }, [votes]);
 
-    // Comment form (Inertia useForm)
-    const commentForm = useForm({ content: '' });
+    // Comment form (Inertia useForm) — poll_id lets the web /comments route resolve the poll
+    const commentForm = useForm({ content: '', poll_id: poll.id });
 
     const handleCommentSubmit = (e?: React.FormEvent) => {
         e?.preventDefault()

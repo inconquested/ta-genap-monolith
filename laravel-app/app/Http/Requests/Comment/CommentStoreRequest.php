@@ -21,8 +21,9 @@ class CommentStoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        // poll_id is resolved from the {poll} route param or the body; validated in the controller.
         return [
-            //
+            'content' => ['required', 'string', 'max:2000'],
         ];
     }
 }

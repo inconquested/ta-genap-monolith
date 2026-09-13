@@ -17,21 +17,20 @@ class AchievementType extends Model implements HasMedia
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $appends = ['icon_url'];
-    protected $hidden = ['firstMedia'];
+    protected $appends = ['icon_url', 'name'];
     protected $fillable = [
         'id',
         'code',
-        'name',
+        'label',
         'description',
         'requirement_type',
         'requirement_value'
     ];
 
-
-    public function firstMedia()
+    // Column is `label`, but events/notifications/frontend historically read ->name.
+    protected function name(): Attribute
     {
-        return $this->morphOne(Media::class, 'model'); // Adjust based on your media package
+        return Attribute::make(get: fn() => $this->label);
     }
 
     protected function iconUrl(): Attribute

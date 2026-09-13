@@ -49,7 +49,7 @@ class AchievementTypeController extends Controller
      */
     public function show(AchievementType $achievementType)
     {
-        return $this->success($achievementType->load('firstMedia'));
+        return $this->success($achievementType);
     }
 
     /**

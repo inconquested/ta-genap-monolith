@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../wayfinder'
 /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
 export const index = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
 index.url = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -44,7 +44,7 @@ index.url = (args: { poll: string | number } | [poll: string | number ] | string
 
 /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
 index.get = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -53,7 +53,7 @@ index.get = (args: { poll: string | number } | [poll: string | number ] | string
 })
 /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
 index.head = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -63,7 +63,7 @@ index.head = (args: { poll: string | number } | [poll: string | number ] | strin
 
     /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
     const indexForm = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -73,7 +73,7 @@ index.head = (args: { poll: string | number } | [poll: string | number ] | strin
 
             /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
         indexForm.get = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -82,7 +82,7 @@ index.head = (args: { poll: string | number } | [poll: string | number ] | strin
         })
             /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
         indexForm.head = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -98,7 +98,7 @@ index.head = (args: { poll: string | number } | [poll: string | number ] | strin
     index.form = indexForm
 /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/api/polls/{poll}/comments'
  */
 export const store = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -113,7 +113,7 @@ store.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/api/polls/{poll}/comments'
  */
 store.url = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -141,7 +141,7 @@ store.url = (args: { poll: string | number } | [poll: string | number ] | string
 
 /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/api/polls/{poll}/comments'
  */
 store.post = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -151,7 +151,7 @@ store.post = (args: { poll: string | number } | [poll: string | number ] | strin
 
     /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/api/polls/{poll}/comments'
  */
     const storeForm = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -161,7 +161,7 @@ store.post = (args: { poll: string | number } | [poll: string | number ] | strin
 
             /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/api/polls/{poll}/comments'
  */
         storeForm.post = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -172,10 +172,10 @@ store.post = (args: { poll: string | number } | [poll: string | number ] | strin
     store.form = storeForm
 /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-export const show = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+export const show = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
@@ -187,10 +187,10 @@ show.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-show.url = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions) => {
+show.url = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     poll: args[0],
@@ -202,9 +202,7 @@ show.url = (args: { poll: string | number, comment: string | { id: string } } | 
 
     const parsedArgs = {
                         poll: args.poll,
-                                comment: typeof args.comment === 'object'
-                ? args.comment.id
-                : args.comment,
+                                comment: args.comment,
                 }
 
     return show.definition.url
@@ -215,48 +213,48 @@ show.url = (args: { poll: string | number, comment: string | { id: string } } | 
 
 /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-show.get = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show.get = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-show.head = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show.head = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-    const showForm = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const showForm = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: show.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-        showForm.get = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.get = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-        showForm.head = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        showForm.head = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -269,10 +267,10 @@ show.head = (args: { poll: string | number, comment: string | { id: string } } |
     show.form = showForm
 /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-export const update = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -284,10 +282,10 @@ update.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-update.url = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions) => {
+update.url = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     poll: args[0],
@@ -299,9 +297,7 @@ update.url = (args: { poll: string | number, comment: string | { id: string } } 
 
     const parsedArgs = {
                         poll: args.poll,
-                                comment: typeof args.comment === 'object'
-                ? args.comment.id
-                : args.comment,
+                                comment: args.comment,
                 }
 
     return update.definition.url
@@ -312,29 +308,29 @@ update.url = (args: { poll: string | number, comment: string | { id: string } } 
 
 /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-update.put = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
 /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-update.patch = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+update.patch = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(args, options),
     method: 'patch',
 })
 
     /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-    const updateForm = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -346,10 +342,10 @@ update.patch = (args: { poll: string | number, comment: string | { id: string } 
 
             /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-        updateForm.put = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -360,10 +356,10 @@ update.patch = (args: { poll: string | number, comment: string | { id: string } 
         })
             /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-        updateForm.patch = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.patch = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PATCH',
@@ -376,10 +372,10 @@ update.patch = (args: { poll: string | number, comment: string | { id: string } 
     update.form = updateForm
 /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-export const destroy = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -391,10 +387,10 @@ destroy.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-destroy.url = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions) => {
+destroy.url = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     poll: args[0],
@@ -406,9 +402,7 @@ destroy.url = (args: { poll: string | number, comment: string | { id: string } }
 
     const parsedArgs = {
                         poll: args.poll,
-                                comment: typeof args.comment === 'object'
-                ? args.comment.id
-                : args.comment,
+                                comment: args.comment,
                 }
 
     return destroy.definition.url
@@ -419,20 +413,20 @@ destroy.url = (args: { poll: string | number, comment: string | { id: string } }
 
 /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-destroy.delete = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
 
     /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-    const destroyForm = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroyForm = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -444,10 +438,10 @@ destroy.delete = (args: { poll: string | number, comment: string | { id: string 
 
             /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-        destroyForm.delete = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroyForm.delete = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

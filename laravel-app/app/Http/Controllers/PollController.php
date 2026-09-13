@@ -85,7 +85,7 @@ class PollController extends Controller
         return Inertia::render(
             'polls/show',
             [
-                'poll' => $poll->load(['options', 'creator:id,username', 'votes', 'comments', 'media', 'pollCategory', 'votes'])
+                'poll' => $poll->load(['options', 'creator:id,username', 'votes', 'comments.user:id,username', 'media', 'pollCategory'])
             ]
         );
     }

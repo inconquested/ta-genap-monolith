@@ -1,7 +1,7 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition, applyUrlDefaults } from './../../../../wayfinder'
 /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
 const index823b979d61a9096bd30f5df321c56fb5 = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -16,7 +16,7 @@ index823b979d61a9096bd30f5df321c56fb5.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
 index823b979d61a9096bd30f5df321c56fb5.url = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -44,7 +44,7 @@ index823b979d61a9096bd30f5df321c56fb5.url = (args: { poll: string | number } | [
 
 /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
 index823b979d61a9096bd30f5df321c56fb5.get = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -53,7 +53,7 @@ index823b979d61a9096bd30f5df321c56fb5.get = (args: { poll: string | number } | [
 })
 /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
 index823b979d61a9096bd30f5df321c56fb5.head = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -63,7 +63,7 @@ index823b979d61a9096bd30f5df321c56fb5.head = (args: { poll: string | number } | 
 
     /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
     const index823b979d61a9096bd30f5df321c56fb5Form = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -73,7 +73,7 @@ index823b979d61a9096bd30f5df321c56fb5.head = (args: { poll: string | number } | 
 
             /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
         index823b979d61a9096bd30f5df321c56fb5Form.get = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -82,7 +82,7 @@ index823b979d61a9096bd30f5df321c56fb5.head = (args: { poll: string | number } | 
         })
             /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/api/polls/{poll}/comments'
  */
         index823b979d61a9096bd30f5df321c56fb5Form.head = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -98,7 +98,7 @@ index823b979d61a9096bd30f5df321c56fb5.head = (args: { poll: string | number } | 
     index823b979d61a9096bd30f5df321c56fb5.form = index823b979d61a9096bd30f5df321c56fb5Form
     /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/comments'
  */
 const index89f03a1c1a5da1963f637bc35077e7a1 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -113,7 +113,7 @@ index89f03a1c1a5da1963f637bc35077e7a1.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/comments'
  */
 index89f03a1c1a5da1963f637bc35077e7a1.url = (options?: RouteQueryOptions) => {
@@ -122,7 +122,7 @@ index89f03a1c1a5da1963f637bc35077e7a1.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/comments'
  */
 index89f03a1c1a5da1963f637bc35077e7a1.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -131,7 +131,7 @@ index89f03a1c1a5da1963f637bc35077e7a1.get = (options?: RouteQueryOptions): Route
 })
 /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/comments'
  */
 index89f03a1c1a5da1963f637bc35077e7a1.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
@@ -141,7 +141,7 @@ index89f03a1c1a5da1963f637bc35077e7a1.head = (options?: RouteQueryOptions): Rout
 
     /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/comments'
  */
     const index89f03a1c1a5da1963f637bc35077e7a1Form = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -151,7 +151,7 @@ index89f03a1c1a5da1963f637bc35077e7a1.head = (options?: RouteQueryOptions): Rout
 
             /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/comments'
  */
         index89f03a1c1a5da1963f637bc35077e7a1Form.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -160,7 +160,7 @@ index89f03a1c1a5da1963f637bc35077e7a1.head = (options?: RouteQueryOptions): Rout
         })
             /**
 * @see \App\Http\Controllers\CommentController::index
- * @see app/Http/Controllers/CommentController.php:0
+ * @see app/Http/Controllers/CommentController.php:26
  * @route '/comments'
  */
         index89f03a1c1a5da1963f637bc35077e7a1Form.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
@@ -182,7 +182,7 @@ export const index = {
 
 /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/api/polls/{poll}/comments'
  */
 const store823b979d61a9096bd30f5df321c56fb5 = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -197,7 +197,7 @@ store823b979d61a9096bd30f5df321c56fb5.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/api/polls/{poll}/comments'
  */
 store823b979d61a9096bd30f5df321c56fb5.url = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions) => {
@@ -225,7 +225,7 @@ store823b979d61a9096bd30f5df321c56fb5.url = (args: { poll: string | number } | [
 
 /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/api/polls/{poll}/comments'
  */
 store823b979d61a9096bd30f5df321c56fb5.post = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -235,7 +235,7 @@ store823b979d61a9096bd30f5df321c56fb5.post = (args: { poll: string | number } | 
 
     /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/api/polls/{poll}/comments'
  */
     const store823b979d61a9096bd30f5df321c56fb5Form = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -245,7 +245,7 @@ store823b979d61a9096bd30f5df321c56fb5.post = (args: { poll: string | number } | 
 
             /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/api/polls/{poll}/comments'
  */
         store823b979d61a9096bd30f5df321c56fb5Form.post = (args: { poll: string | number } | [poll: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -256,7 +256,7 @@ store823b979d61a9096bd30f5df321c56fb5.post = (args: { poll: string | number } | 
     store823b979d61a9096bd30f5df321c56fb5.form = store823b979d61a9096bd30f5df321c56fb5Form
     /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/comments'
  */
 const store89f03a1c1a5da1963f637bc35077e7a1 = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -271,7 +271,7 @@ store89f03a1c1a5da1963f637bc35077e7a1.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/comments'
  */
 store89f03a1c1a5da1963f637bc35077e7a1.url = (options?: RouteQueryOptions) => {
@@ -280,7 +280,7 @@ store89f03a1c1a5da1963f637bc35077e7a1.url = (options?: RouteQueryOptions) => {
 
 /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/comments'
  */
 store89f03a1c1a5da1963f637bc35077e7a1.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
@@ -290,7 +290,7 @@ store89f03a1c1a5da1963f637bc35077e7a1.post = (options?: RouteQueryOptions): Rout
 
     /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/comments'
  */
     const store89f03a1c1a5da1963f637bc35077e7a1Form = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -300,7 +300,7 @@ store89f03a1c1a5da1963f637bc35077e7a1.post = (options?: RouteQueryOptions): Rout
 
             /**
 * @see \App\Http\Controllers\CommentController::store
- * @see app/Http/Controllers/CommentController.php:32
+ * @see app/Http/Controllers/CommentController.php:41
  * @route '/comments'
  */
         store89f03a1c1a5da1963f637bc35077e7a1Form.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
@@ -317,10 +317,10 @@ export const store = {
 
 /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-const show56191c27cd184d644ef8a92bf0964cff = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+const show56191c27cd184d644ef8a92bf0964cff = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show56191c27cd184d644ef8a92bf0964cff.url(args, options),
     method: 'get',
 })
@@ -332,10 +332,10 @@ show56191c27cd184d644ef8a92bf0964cff.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-show56191c27cd184d644ef8a92bf0964cff.url = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions) => {
+show56191c27cd184d644ef8a92bf0964cff.url = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     poll: args[0],
@@ -347,9 +347,7 @@ show56191c27cd184d644ef8a92bf0964cff.url = (args: { poll: string | number, comme
 
     const parsedArgs = {
                         poll: args.poll,
-                                comment: typeof args.comment === 'object'
-                ? args.comment.id
-                : args.comment,
+                                comment: args.comment,
                 }
 
     return show56191c27cd184d644ef8a92bf0964cff.definition.url
@@ -360,48 +358,48 @@ show56191c27cd184d644ef8a92bf0964cff.url = (args: { poll: string | number, comme
 
 /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-show56191c27cd184d644ef8a92bf0964cff.get = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show56191c27cd184d644ef8a92bf0964cff.get = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show56191c27cd184d644ef8a92bf0964cff.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-show56191c27cd184d644ef8a92bf0964cff.head = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show56191c27cd184d644ef8a92bf0964cff.head = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show56191c27cd184d644ef8a92bf0964cff.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-    const show56191c27cd184d644ef8a92bf0964cffForm = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const show56191c27cd184d644ef8a92bf0964cffForm = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: show56191c27cd184d644ef8a92bf0964cff.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-        show56191c27cd184d644ef8a92bf0964cffForm.get = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        show56191c27cd184d644ef8a92bf0964cffForm.get = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show56191c27cd184d644ef8a92bf0964cff.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-        show56191c27cd184d644ef8a92bf0964cffForm.head = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        show56191c27cd184d644ef8a92bf0964cffForm.head = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show56191c27cd184d644ef8a92bf0964cff.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -414,10 +412,10 @@ show56191c27cd184d644ef8a92bf0964cff.head = (args: { poll: string | number, comm
     show56191c27cd184d644ef8a92bf0964cff.form = show56191c27cd184d644ef8a92bf0964cffForm
     /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/comments/{comment}'
  */
-const show5d64e47052aad5d85efb249d157cd762 = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+const show5d64e47052aad5d85efb249d157cd762 = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show5d64e47052aad5d85efb249d157cd762.url(args, options),
     method: 'get',
 })
@@ -429,17 +427,14 @@ show5d64e47052aad5d85efb249d157cd762.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/comments/{comment}'
  */
-show5d64e47052aad5d85efb249d157cd762.url = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
+show5d64e47052aad5d85efb249d157cd762.url = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { comment: args }
     }
 
-            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
-            args = { comment: args.id }
-        }
     
     if (Array.isArray(args)) {
         args = {
@@ -450,9 +445,7 @@ show5d64e47052aad5d85efb249d157cd762.url = (args: { comment: string | { id: stri
     args = applyUrlDefaults(args)
 
     const parsedArgs = {
-                        comment: typeof args.comment === 'object'
-                ? args.comment.id
-                : args.comment,
+                        comment: args.comment,
                 }
 
     return show5d64e47052aad5d85efb249d157cd762.definition.url
@@ -462,48 +455,48 @@ show5d64e47052aad5d85efb249d157cd762.url = (args: { comment: string | { id: stri
 
 /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/comments/{comment}'
  */
-show5d64e47052aad5d85efb249d157cd762.get = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+show5d64e47052aad5d85efb249d157cd762.get = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: show5d64e47052aad5d85efb249d157cd762.url(args, options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/comments/{comment}'
  */
-show5d64e47052aad5d85efb249d157cd762.head = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+show5d64e47052aad5d85efb249d157cd762.head = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: show5d64e47052aad5d85efb249d157cd762.url(args, options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/comments/{comment}'
  */
-    const show5d64e47052aad5d85efb249d157cd762Form = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    const show5d64e47052aad5d85efb249d157cd762Form = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: show5d64e47052aad5d85efb249d157cd762.url(args, options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/comments/{comment}'
  */
-        show5d64e47052aad5d85efb249d157cd762Form.get = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        show5d64e47052aad5d85efb249d157cd762Form.get = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show5d64e47052aad5d85efb249d157cd762.url(args, options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\CommentController::show
- * @see app/Http/Controllers/CommentController.php:57
+ * @see app/Http/Controllers/CommentController.php:74
  * @route '/comments/{comment}'
  */
-        show5d64e47052aad5d85efb249d157cd762Form.head = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        show5d64e47052aad5d85efb249d157cd762Form.head = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: show5d64e47052aad5d85efb249d157cd762.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
@@ -522,10 +515,10 @@ export const show = {
 
 /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-const update56191c27cd184d644ef8a92bf0964cff = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+const update56191c27cd184d644ef8a92bf0964cff = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update56191c27cd184d644ef8a92bf0964cff.url(args, options),
     method: 'put',
 })
@@ -537,10 +530,10 @@ update56191c27cd184d644ef8a92bf0964cff.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-update56191c27cd184d644ef8a92bf0964cff.url = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions) => {
+update56191c27cd184d644ef8a92bf0964cff.url = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     poll: args[0],
@@ -552,9 +545,7 @@ update56191c27cd184d644ef8a92bf0964cff.url = (args: { poll: string | number, com
 
     const parsedArgs = {
                         poll: args.poll,
-                                comment: typeof args.comment === 'object'
-                ? args.comment.id
-                : args.comment,
+                                comment: args.comment,
                 }
 
     return update56191c27cd184d644ef8a92bf0964cff.definition.url
@@ -565,29 +556,29 @@ update56191c27cd184d644ef8a92bf0964cff.url = (args: { poll: string | number, com
 
 /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-update56191c27cd184d644ef8a92bf0964cff.put = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update56191c27cd184d644ef8a92bf0964cff.put = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update56191c27cd184d644ef8a92bf0964cff.url(args, options),
     method: 'put',
 })
 /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-update56191c27cd184d644ef8a92bf0964cff.patch = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+update56191c27cd184d644ef8a92bf0964cff.patch = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update56191c27cd184d644ef8a92bf0964cff.url(args, options),
     method: 'patch',
 })
 
     /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-    const update56191c27cd184d644ef8a92bf0964cffForm = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const update56191c27cd184d644ef8a92bf0964cffForm = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update56191c27cd184d644ef8a92bf0964cff.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -599,10 +590,10 @@ update56191c27cd184d644ef8a92bf0964cff.patch = (args: { poll: string | number, c
 
             /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-        update56191c27cd184d644ef8a92bf0964cffForm.put = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        update56191c27cd184d644ef8a92bf0964cffForm.put = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update56191c27cd184d644ef8a92bf0964cff.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -613,10 +604,10 @@ update56191c27cd184d644ef8a92bf0964cff.patch = (args: { poll: string | number, c
         })
             /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-        update56191c27cd184d644ef8a92bf0964cffForm.patch = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        update56191c27cd184d644ef8a92bf0964cffForm.patch = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update56191c27cd184d644ef8a92bf0964cff.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PATCH',
@@ -629,10 +620,10 @@ update56191c27cd184d644ef8a92bf0964cff.patch = (args: { poll: string | number, c
     update56191c27cd184d644ef8a92bf0964cff.form = update56191c27cd184d644ef8a92bf0964cffForm
     /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/comments/{comment}'
  */
-const update5d64e47052aad5d85efb249d157cd762 = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+const update5d64e47052aad5d85efb249d157cd762 = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update5d64e47052aad5d85efb249d157cd762.url(args, options),
     method: 'put',
 })
@@ -644,17 +635,14 @@ update5d64e47052aad5d85efb249d157cd762.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/comments/{comment}'
  */
-update5d64e47052aad5d85efb249d157cd762.url = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
+update5d64e47052aad5d85efb249d157cd762.url = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { comment: args }
     }
 
-            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
-            args = { comment: args.id }
-        }
     
     if (Array.isArray(args)) {
         args = {
@@ -665,9 +653,7 @@ update5d64e47052aad5d85efb249d157cd762.url = (args: { comment: string | { id: st
     args = applyUrlDefaults(args)
 
     const parsedArgs = {
-                        comment: typeof args.comment === 'object'
-                ? args.comment.id
-                : args.comment,
+                        comment: args.comment,
                 }
 
     return update5d64e47052aad5d85efb249d157cd762.definition.url
@@ -677,29 +663,29 @@ update5d64e47052aad5d85efb249d157cd762.url = (args: { comment: string | { id: st
 
 /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/comments/{comment}'
  */
-update5d64e47052aad5d85efb249d157cd762.put = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update5d64e47052aad5d85efb249d157cd762.put = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update5d64e47052aad5d85efb249d157cd762.url(args, options),
     method: 'put',
 })
 /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/comments/{comment}'
  */
-update5d64e47052aad5d85efb249d157cd762.patch = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
+update5d64e47052aad5d85efb249d157cd762.patch = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update5d64e47052aad5d85efb249d157cd762.url(args, options),
     method: 'patch',
 })
 
     /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/comments/{comment}'
  */
-    const update5d64e47052aad5d85efb249d157cd762Form = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const update5d64e47052aad5d85efb249d157cd762Form = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update5d64e47052aad5d85efb249d157cd762.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -711,10 +697,10 @@ update5d64e47052aad5d85efb249d157cd762.patch = (args: { comment: string | { id: 
 
             /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/comments/{comment}'
  */
-        update5d64e47052aad5d85efb249d157cd762Form.put = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        update5d64e47052aad5d85efb249d157cd762Form.put = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update5d64e47052aad5d85efb249d157cd762.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -725,10 +711,10 @@ update5d64e47052aad5d85efb249d157cd762.patch = (args: { comment: string | { id: 
         })
             /**
 * @see \App\Http\Controllers\CommentController::update
- * @see app/Http/Controllers/CommentController.php:65
+ * @see app/Http/Controllers/CommentController.php:88
  * @route '/comments/{comment}'
  */
-        update5d64e47052aad5d85efb249d157cd762Form.patch = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        update5d64e47052aad5d85efb249d157cd762Form.patch = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update5d64e47052aad5d85efb249d157cd762.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PATCH',
@@ -747,10 +733,10 @@ export const update = {
 
 /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-const destroy56191c27cd184d644ef8a92bf0964cff = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+const destroy56191c27cd184d644ef8a92bf0964cff = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy56191c27cd184d644ef8a92bf0964cff.url(args, options),
     method: 'delete',
 })
@@ -762,10 +748,10 @@ destroy56191c27cd184d644ef8a92bf0964cff.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-destroy56191c27cd184d644ef8a92bf0964cff.url = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions) => {
+destroy56191c27cd184d644ef8a92bf0964cff.url = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
         args = {
                     poll: args[0],
@@ -777,9 +763,7 @@ destroy56191c27cd184d644ef8a92bf0964cff.url = (args: { poll: string | number, co
 
     const parsedArgs = {
                         poll: args.poll,
-                                comment: typeof args.comment === 'object'
-                ? args.comment.id
-                : args.comment,
+                                comment: args.comment,
                 }
 
     return destroy56191c27cd184d644ef8a92bf0964cff.definition.url
@@ -790,20 +774,20 @@ destroy56191c27cd184d644ef8a92bf0964cff.url = (args: { poll: string | number, co
 
 /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-destroy56191c27cd184d644ef8a92bf0964cff.delete = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy56191c27cd184d644ef8a92bf0964cff.delete = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy56191c27cd184d644ef8a92bf0964cff.url(args, options),
     method: 'delete',
 })
 
     /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-    const destroy56191c27cd184d644ef8a92bf0964cffForm = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroy56191c27cd184d644ef8a92bf0964cffForm = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy56191c27cd184d644ef8a92bf0964cff.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -815,10 +799,10 @@ destroy56191c27cd184d644ef8a92bf0964cff.delete = (args: { poll: string | number,
 
             /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/api/polls/{poll}/comments/{comment}'
  */
-        destroy56191c27cd184d644ef8a92bf0964cffForm.delete = (args: { poll: string | number, comment: string | { id: string } } | [poll: string | number, comment: string | { id: string } ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroy56191c27cd184d644ef8a92bf0964cffForm.delete = (args: { poll: string | number, comment: string | number } | [poll: string | number, comment: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy56191c27cd184d644ef8a92bf0964cff.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',
@@ -831,10 +815,10 @@ destroy56191c27cd184d644ef8a92bf0964cff.delete = (args: { poll: string | number,
     destroy56191c27cd184d644ef8a92bf0964cff.form = destroy56191c27cd184d644ef8a92bf0964cffForm
     /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/comments/{comment}'
  */
-const destroy5d64e47052aad5d85efb249d157cd762 = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+const destroy5d64e47052aad5d85efb249d157cd762 = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy5d64e47052aad5d85efb249d157cd762.url(args, options),
     method: 'delete',
 })
@@ -846,17 +830,14 @@ destroy5d64e47052aad5d85efb249d157cd762.definition = {
 
 /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/comments/{comment}'
  */
-destroy5d64e47052aad5d85efb249d157cd762.url = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions) => {
+destroy5d64e47052aad5d85efb249d157cd762.url = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { comment: args }
     }
 
-            if (typeof args === 'object' && !Array.isArray(args) && 'id' in args) {
-            args = { comment: args.id }
-        }
     
     if (Array.isArray(args)) {
         args = {
@@ -867,9 +848,7 @@ destroy5d64e47052aad5d85efb249d157cd762.url = (args: { comment: string | { id: s
     args = applyUrlDefaults(args)
 
     const parsedArgs = {
-                        comment: typeof args.comment === 'object'
-                ? args.comment.id
-                : args.comment,
+                        comment: args.comment,
                 }
 
     return destroy5d64e47052aad5d85efb249d157cd762.definition.url
@@ -879,20 +858,20 @@ destroy5d64e47052aad5d85efb249d157cd762.url = (args: { comment: string | { id: s
 
 /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/comments/{comment}'
  */
-destroy5d64e47052aad5d85efb249d157cd762.delete = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy5d64e47052aad5d85efb249d157cd762.delete = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy5d64e47052aad5d85efb249d157cd762.url(args, options),
     method: 'delete',
 })
 
     /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/comments/{comment}'
  */
-    const destroy5d64e47052aad5d85efb249d157cd762Form = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroy5d64e47052aad5d85efb249d157cd762Form = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy5d64e47052aad5d85efb249d157cd762.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -904,10 +883,10 @@ destroy5d64e47052aad5d85efb249d157cd762.delete = (args: { comment: string | { id
 
             /**
 * @see \App\Http\Controllers\CommentController::destroy
- * @see app/Http/Controllers/CommentController.php:73
+ * @see app/Http/Controllers/CommentController.php:108
  * @route '/comments/{comment}'
  */
-        destroy5d64e47052aad5d85efb249d157cd762Form.delete = (args: { comment: string | { id: string } } | [comment: string | { id: string } ] | string | { id: string }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroy5d64e47052aad5d85efb249d157cd762Form.delete = (args: { comment: string | number } | [comment: string | number ] | string | number, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy5d64e47052aad5d85efb249d157cd762.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

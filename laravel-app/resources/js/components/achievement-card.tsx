@@ -37,7 +37,11 @@ export function AchievementCard({ achievement }: AchievementCardProps) {
         <div className="group relative flex min-w-[300px] max-w-[300px] flex-col justify-between overflow-hidden rounded-2xl border border-zinc-800 bg-natural p-5 shadow-lg transition-transform hover:-translate-y-1">
             {/* Background watermark icon */}
             <div className="absolute right-[-10px] top-[-10px] text-8xl opacity-10 grayscale pointer-events-none select-none">
-                {achievement.icon}
+                {achievement.icon_url ? (
+                    <img src={achievement.icon_url} alt="" className="h-24 w-24 object-contain opacity-60" />
+                ) : (
+                    achievement.icon
+                )}
             </div>
 
             <div className="relative z-10 flex flex-col gap-4">

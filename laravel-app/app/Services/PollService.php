@@ -186,15 +186,6 @@ class PollService
         }
     }
 
-    public static function getTrendingPoll()
-    {
-        return Poll::where('created_at', '>=', now()->modify('-7 days'))
-            ->withCount(['votes', 'comments'])
-            ->having('votes_count', '>', 100)
-            ->having('comments_count', '>', 10)
-            ->get();
-    }
-
     public static function finalizePoll(Poll $poll)
     {
         $options = $poll->options()

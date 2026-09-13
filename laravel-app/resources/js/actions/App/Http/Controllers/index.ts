@@ -2,6 +2,7 @@ import ApiAuthController from './ApiAuthController'
 import UserAchievementController from './UserAchievementController'
 import DashboardController from './DashboardController'
 import ReportController from './ReportController'
+import AnalyticsController from './AnalyticsController'
 import PollController from './PollController'
 import AchievementTypeController from './AchievementTypeController'
 import PollCategoryController from './PollCategoryController'
@@ -15,6 +16,7 @@ const Controllers = {
 UserAchievementController: Object.assign(UserAchievementController, UserAchievementController),
 DashboardController: Object.assign(DashboardController, DashboardController),
 ReportController: Object.assign(ReportController, ReportController),
+AnalyticsController: Object.assign(AnalyticsController, AnalyticsController),
 PollController: Object.assign(PollController, PollController),
 AchievementTypeController: Object.assign(AchievementTypeController, AchievementTypeController),
 PollCategoryController: Object.assign(PollCategoryController, PollCategoryController),
