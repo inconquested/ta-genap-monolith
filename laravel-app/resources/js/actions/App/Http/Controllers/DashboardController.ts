@@ -1,73 +1,73 @@
 import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFormDefinition } from './../../../../wayfinder'
 /**
-* @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\DashboardController::metrics
+ * @see app/Http/Controllers/DashboardController.php:56
  * @route '/api/dashboard'
  */
-const index79e8db78b7285f47b9383df06923ad39 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: index79e8db78b7285f47b9383df06923ad39.url(options),
+export const metrics = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: metrics.url(options),
     method: 'get',
 })
 
-index79e8db78b7285f47b9383df06923ad39.definition = {
+metrics.definition = {
     methods: ["get","head"],
     url: '/api/dashboard',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
-* @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\DashboardController::metrics
+ * @see app/Http/Controllers/DashboardController.php:56
  * @route '/api/dashboard'
  */
-index79e8db78b7285f47b9383df06923ad39.url = (options?: RouteQueryOptions) => {
-    return index79e8db78b7285f47b9383df06923ad39.definition.url + queryParams(options)
+metrics.url = (options?: RouteQueryOptions) => {
+    return metrics.definition.url + queryParams(options)
 }
 
 /**
-* @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\DashboardController::metrics
+ * @see app/Http/Controllers/DashboardController.php:56
  * @route '/api/dashboard'
  */
-index79e8db78b7285f47b9383df06923ad39.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: index79e8db78b7285f47b9383df06923ad39.url(options),
+metrics.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: metrics.url(options),
     method: 'get',
 })
 /**
-* @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\DashboardController::metrics
+ * @see app/Http/Controllers/DashboardController.php:56
  * @route '/api/dashboard'
  */
-index79e8db78b7285f47b9383df06923ad39.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: index79e8db78b7285f47b9383df06923ad39.url(options),
+metrics.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: metrics.url(options),
     method: 'head',
 })
 
     /**
-* @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\DashboardController::metrics
+ * @see app/Http/Controllers/DashboardController.php:56
  * @route '/api/dashboard'
  */
-    const index79e8db78b7285f47b9383df06923ad39Form = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: index79e8db78b7285f47b9383df06923ad39.url(options),
+    const metricsForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: metrics.url(options),
         method: 'get',
     })
 
             /**
-* @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\DashboardController::metrics
+ * @see app/Http/Controllers/DashboardController.php:56
  * @route '/api/dashboard'
  */
-        index79e8db78b7285f47b9383df06923ad39Form.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: index79e8db78b7285f47b9383df06923ad39.url(options),
+        metricsForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: metrics.url(options),
             method: 'get',
         })
             /**
-* @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+* @see \App\Http\Controllers\DashboardController::metrics
+ * @see app/Http/Controllers/DashboardController.php:56
  * @route '/api/dashboard'
  */
-        index79e8db78b7285f47b9383df06923ad39Form.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: index79e8db78b7285f47b9383df06923ad39.url({
+        metricsForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: metrics.url({
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -76,76 +76,154 @@ index79e8db78b7285f47b9383df06923ad39.head = (options?: RouteQueryOptions): Rout
             method: 'get',
         })
     
-    index79e8db78b7285f47b9383df06923ad39.form = index79e8db78b7285f47b9383df06923ad39Form
-    /**
-* @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
- * @route '/dashboard'
+    metrics.form = metricsForm
+/**
+* @see \App\Http\Controllers\DashboardController::health
+ * @see app/Http/Controllers/DashboardController.php:66
+ * @route '/api/dashboard/health'
  */
-const index42a740574ecbfbac32f8cc353fc32db9 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: index42a740574ecbfbac32f8cc353fc32db9.url(options),
+export const health = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: health.url(options),
     method: 'get',
 })
 
-index42a740574ecbfbac32f8cc353fc32db9.definition = {
+health.definition = {
+    methods: ["get","head"],
+    url: '/api/dashboard/health',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \App\Http\Controllers\DashboardController::health
+ * @see app/Http/Controllers/DashboardController.php:66
+ * @route '/api/dashboard/health'
+ */
+health.url = (options?: RouteQueryOptions) => {
+    return health.definition.url + queryParams(options)
+}
+
+/**
+* @see \App\Http\Controllers\DashboardController::health
+ * @see app/Http/Controllers/DashboardController.php:66
+ * @route '/api/dashboard/health'
+ */
+health.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: health.url(options),
+    method: 'get',
+})
+/**
+* @see \App\Http\Controllers\DashboardController::health
+ * @see app/Http/Controllers/DashboardController.php:66
+ * @route '/api/dashboard/health'
+ */
+health.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: health.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \App\Http\Controllers\DashboardController::health
+ * @see app/Http/Controllers/DashboardController.php:66
+ * @route '/api/dashboard/health'
+ */
+    const healthForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: health.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \App\Http\Controllers\DashboardController::health
+ * @see app/Http/Controllers/DashboardController.php:66
+ * @route '/api/dashboard/health'
+ */
+        healthForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: health.url(options),
+            method: 'get',
+        })
+            /**
+* @see \App\Http\Controllers\DashboardController::health
+ * @see app/Http/Controllers/DashboardController.php:66
+ * @route '/api/dashboard/health'
+ */
+        healthForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: health.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    health.form = healthForm
+/**
+* @see \App\Http\Controllers\DashboardController::index
+ * @see app/Http/Controllers/DashboardController.php:20
+ * @route '/dashboard'
+ */
+export const index = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: index.url(options),
+    method: 'get',
+})
+
+index.definition = {
     methods: ["get","head"],
     url: '/dashboard',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+ * @see app/Http/Controllers/DashboardController.php:20
  * @route '/dashboard'
  */
-index42a740574ecbfbac32f8cc353fc32db9.url = (options?: RouteQueryOptions) => {
-    return index42a740574ecbfbac32f8cc353fc32db9.definition.url + queryParams(options)
+index.url = (options?: RouteQueryOptions) => {
+    return index.definition.url + queryParams(options)
 }
 
 /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+ * @see app/Http/Controllers/DashboardController.php:20
  * @route '/dashboard'
  */
-index42a740574ecbfbac32f8cc353fc32db9.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
-    url: index42a740574ecbfbac32f8cc353fc32db9.url(options),
+index.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: index.url(options),
     method: 'get',
 })
 /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+ * @see app/Http/Controllers/DashboardController.php:20
  * @route '/dashboard'
  */
-index42a740574ecbfbac32f8cc353fc32db9.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
-    url: index42a740574ecbfbac32f8cc353fc32db9.url(options),
+index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: index.url(options),
     method: 'head',
 })
 
     /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+ * @see app/Http/Controllers/DashboardController.php:20
  * @route '/dashboard'
  */
-    const index42a740574ecbfbac32f8cc353fc32db9Form = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: index42a740574ecbfbac32f8cc353fc32db9.url(options),
+    const indexForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: index.url(options),
         method: 'get',
     })
 
             /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+ * @see app/Http/Controllers/DashboardController.php:20
  * @route '/dashboard'
  */
-        index42a740574ecbfbac32f8cc353fc32db9Form.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: index42a740574ecbfbac32f8cc353fc32db9.url(options),
+        indexForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: index.url(options),
             method: 'get',
         })
             /**
 * @see \App\Http\Controllers\DashboardController::index
- * @see [unknown]:0
+ * @see app/Http/Controllers/DashboardController.php:20
  * @route '/dashboard'
  */
-        index42a740574ecbfbac32f8cc353fc32db9Form.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: index42a740574ecbfbac32f8cc353fc32db9.url({
+        indexForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: index.url({
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'HEAD',
                             ...(options?.query ?? options?.mergeQuery ?? {}),
@@ -154,13 +232,7 @@ index42a740574ecbfbac32f8cc353fc32db9.head = (options?: RouteQueryOptions): Rout
             method: 'get',
         })
     
-    index42a740574ecbfbac32f8cc353fc32db9.form = index42a740574ecbfbac32f8cc353fc32db9Form
-
-export const index = {
-    '/api/dashboard': index79e8db78b7285f47b9383df06923ad39,
-    '/dashboard': index42a740574ecbfbac32f8cc353fc32db9,
-}
-
-const DashboardController = { index }
+    index.form = indexForm
+const DashboardController = { metrics, health, index }
 
 export default DashboardController

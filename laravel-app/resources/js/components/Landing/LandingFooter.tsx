@@ -162,11 +162,11 @@ export default function Footer() {
                     >
                         <motion.div className="space-y-2" variants={itemVariants}>
                             <p className="text-xs text-foreground/60">© 2025 Electa</p>
-                            <p className="text-xs text-foreground/50">Made by <span className="text-primary">rynnaulia</span></p>
+                            <p className="text-xs text-foreground/50">Made by <span className="text-primary">rvnnaulia</span></p>
                         </motion.div>
 
                         <motion.div className="text-xs text-foreground/50 space-y-1" variants={itemVariants}>
-                            <p>Instagram: <a href="https://instagram.com/rynnaulia" className="text-primary hover:text-primary/80 transition-colors">@rynnaulia</a></p>
+                            <p>Instagram: <a href="https://instagram.com/rvnnaulia" className="text-primary hover:text-primary/80 transition-colors">@rvnnaulia</a></p>
                         </motion.div>
                     </motion.div>
                 </div>

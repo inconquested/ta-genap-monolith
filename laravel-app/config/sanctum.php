@@ -30,7 +30,10 @@ return [
      |
      */
 
-    'guard' => ['api', 'web'],
+    // Only session-based guards may be listed here. Listing 'api' — whose driver is 'sanctum'
+    // (see config/auth.php) — makes Sanctum's guard recursively invoke itself until the process
+    // runs out of memory. These guards are a pre-check before falling back to bearer-token auth.
+    'guard' => ['web'],
 
     /*
      |--------------------------------------------------------------------------

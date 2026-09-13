@@ -7,6 +7,7 @@ use App\Events\AchievementUnlocked;
 use App\Models\AchievementType;
 use App\Models\User;
 use App\Models\UserAchievement;
+use App\Notifications\AchievementRevokedNotification;
 use Carbon\Carbon;
 
 class AchievementService
@@ -141,10 +142,52 @@ class AchievementService
         });
     }
 
+    /**
+     * Revoke a user's achievement. The row is kept (revoked_at set) so the
+     * user_achievement_unique constraint still blocks CheckAndAward from
+     * re-awarding it on the next UserActed.
+     */
+    public function revoke(UserAchievement $userAchievement, ?string $reason = null): UserAchievement
+    {
+        if ($userAchievement->revoked_at) {
+            // already revoked — allow correcting the reason, no second notification
+            $userAchievement->revocation_reason = $reason;
+            $userAchievement->save();
+            return $userAchievement;
+        }
+
+        $userAchievement->revoked_at = now();
+        $userAchievement->revocation_reason = $reason;
+        $userAchievement->save();
+
+        $label = $userAchievement->achievementType->label;
+        $message = $reason
+            ? "Pencapaian \"{$label}\" Anda telah dicabut oleh admin. Alasan: {$reason}"
+            : "Pencapaian \"{$label}\" Anda telah dicabut oleh admin.";
+        $userAchievement->user->notify(
+            new AchievementRevokedNotification($userAchievement->achievement_type_id, $label, $message)
+        );
+
+        return $userAchievement;
+    }
+
+    /**
+     * Undo a revocation: nulls revoked_at so the achievement shows as earned
+     * again (the row was kept, so no re-award pass is needed).
+     */
+    public function restore(UserAchievement $userAchievement): UserAchievement
+    {
+        $userAchievement->revoked_at = null;
+        $userAchievement->revocation_reason = null;
+        $userAchievement->save();
+
+        return $userAchievement;
+    }
+
     //Get achievement user has
     public static function getUserAchievement(User $user, ?object $query = null)
     {
-        $earned = UserAchievement::where('user_id', $user->id);
+        $earned = UserAchievement::where('user_id', $user->id)->whereNull('revoked_at');
         $types = AchievementType::all();
         $progress = self::getProgress($user);
         if ($query && isset($query->type)) {

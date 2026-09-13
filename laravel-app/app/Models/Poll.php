@@ -71,8 +71,7 @@ class Poll extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('banner')
-            ->singleFile()
-            ->withResponsiveImages();
+            ->singleFile();
     }
     public function registerMediaConversions(?Media $media = null): void
     {

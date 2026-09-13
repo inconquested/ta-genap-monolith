@@ -1,0 +1,214 @@
+{
+  "info": {
+    "name": "TA Genap — Dashboard Checks (localhost)",
+    "_postman_id": "b7e1a3c2-0d44-4f2a-9c11-dashboardchecks01",
+    "description": "Admin dashboard endpoints (auth:sanctum + admin).\n\nAUTH: Run 'Login (admin)' first — it POSTs the seeded admin creds and saves the returned Sanctum bearer token into the {{token}} collection variable. Every other request inherits `Authorization: Bearer {{token}}` from collection-level auth.\n\nSEED THE ADMIN FIRST (if not already):\n  php artisan db:seed        # creates admin123@mail.com / password123 (role=ADMIN)\nThe admin user must have role=ADMIN or the dashboard routes return 403.\n\nAlso a regression harness for two fixed OOM bugs:\n 1. Unbounded `time_frame` bucket loop in DashboardService::getAdminMetrics — see 'OOM regression'.\n 2. Sanctum guard self-recursion — any 200 here proves auth no longer recurses (token path).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{token}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8000", "type": "string" },
+    { "key": "adminEmail", "value": "admin123@mail.com", "type": "string" },
+    { "key": "adminPassword", "value": "password123", "type": "string" },
+    { "key": "token", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Login (admin) → sets {{token}}",
+      "request": {
+        "auth": { "type": "noauth" },
+        "method": "POST",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "login"]
+        },
+        "description": "POST /api/login with the seeded admin creds. Saves data.token → {{token}}."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const b = pm.response.json();",
+              "const token = b.data && b.data.token;",
+              "pm.test('Got a bearer token', () => pm.expect(token, 'data.token missing').to.be.a('string').and.not.empty);",
+              "if (token) { pm.collectionVariables.set('token', token); console.log('Saved token to {{token}}'); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard Metrics — default (7d)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "X-Requested-With", "value": "XMLHttpRequest" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/dashboard",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "dashboard"]
+        },
+        "description": "GET /api/dashboard with defaults (time_frame=7 days, poll table + poll chart)."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200 (not 401/403/500)', () => pm.response.to.have.status(200));",
+              "pm.test('Not a 500 OOM', () => pm.expect(pm.response.code).to.not.equal(500));",
+              "const b = pm.response.json();",
+              "pm.test('Has metrics envelope', () => { pm.expect(b).to.have.property('success', true); pm.expect(b.data).to.have.property('chart_data'); });",
+              "pm.test('chart_data is bounded (<= 5000 buckets)', () => pm.expect(b.data.chart_data.length).to.be.at.most(5000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard Metrics — 24h hourly",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "X-Requested-With", "value": "XMLHttpRequest" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/dashboard?time_frame=24h",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "dashboard"],
+          "query": [{ "key": "time_frame", "value": "24h" }]
+        },
+        "description": "Hourly bucketing branch (time_frame ends with 'h')."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const b = pm.response.json();",
+              "pm.test('chart_data present and bounded', () => pm.expect(b.data.chart_data.length).to.be.at.most(5000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard Metrics — vote table + vote chart",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "X-Requested-With", "value": "XMLHttpRequest" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/dashboard?time_frame=30&table_type=vote&chart_type=vote",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "dashboard"],
+          "query": [
+            { "key": "time_frame", "value": "30" },
+            { "key": "table_type", "value": "vote" },
+            { "key": "chart_type", "value": "vote" }
+          ]
+        },
+        "description": "Exercises the vote branch of the table + chart switch."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200', () => pm.response.to.have.status(200));",
+              "const b = pm.response.json();",
+              "pm.test('Has table_data + chart_data', () => { pm.expect(b.data).to.have.property('table_data'); pm.expect(b.data).to.have.property('chart_data'); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "OOM regression — huge time_frame (must NOT crash)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "X-Requested-With", "value": "XMLHttpRequest" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/dashboard?time_frame=100000000",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "dashboard"],
+          "query": [{ "key": "time_frame", "value": "100000000" }]
+        },
+        "description": "Before the fix this allocated ~100M array entries and OOM-killed the server. The clamp (365 days) + loop cap (5000) must keep it a fast, bounded 200."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200 (no OOM 500)', () => pm.response.to.have.status(200));",
+              "pm.test('Responds quickly (< 3s)', () => pm.expect(pm.response.responseTime).to.be.below(3000));",
+              "const b = pm.response.json();",
+              "pm.test('chart_data clamped (<= 5000)', () => pm.expect(b.data.chart_data.length).to.be.at.most(5000));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard Health",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Accept", "value": "application/json" },
+          { "key": "X-Requested-With", "value": "XMLHttpRequest" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/dashboard/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "dashboard", "health"]
+        },
+        "description": "GET /api/dashboard/health — platform health report (admin only)."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status is 200 (not 403/500)', () => pm.response.to.have.status(200));",
+              "pm.test('Sanctum guard did not recurse (no 500)', () => pm.expect(pm.response.code).to.not.equal(500));",
+              "const b = pm.response.json();",
+              "pm.test('Has health payload', () => pm.expect(b).to.have.property('success', true));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -2,17 +2,17 @@
 
 namespace App\Http\Requests\Comment;
 
-
 use Illuminate\Foundation\Http\FormRequest;
 
 class CommentUpdateRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Authenticated via route middleware; author/admin ownership is enforced in the controller
+     * (the comment resolves reliably there, unlike via route binding on these nested routes).
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class CommentUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'content' => ['required', 'string', 'max:2000'],
         ];
     }
 }

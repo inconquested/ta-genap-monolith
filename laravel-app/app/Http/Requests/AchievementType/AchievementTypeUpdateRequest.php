@@ -23,7 +23,7 @@ class AchievementTypeUpdateRequest extends FormRequest
     {
         return [
             'code' => 'sometimes|string|min:2|max:16',
-            'name' => 'sometimes|string',
+            'label' => 'sometimes|string',
             'description' => 'sometimes|string',
             'requirement_type' => 'sometimes|string',
             'requirement_value' => 'sometimes|integer',
@@ -35,7 +35,7 @@ class AchievementTypeUpdateRequest extends FormRequest
         return [
             'code.min' => 'Kode achievement harus terdiri dari minimal 2 karakter.',
             'code.max' => 'Kode achievement tidak boleh lebih dari 16 karakter.',
-            'name.required' => 'Nama achievement harus diisi.',
+            'label.required' => 'Nama achievement harus diisi.',
             'description.required' => 'Deskripsi achievement harus diisi.',
             'requirement_type.required' => 'Tipe requirement harus diisi.',
             'requirement_value.required' => 'Nilai requirement harus diisi.',

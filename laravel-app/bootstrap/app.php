@@ -26,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'accept-json' => \App\Http\Middleware\AcceptJson::class,
+            'admin' => \App\Http\Middleware\EnsureAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

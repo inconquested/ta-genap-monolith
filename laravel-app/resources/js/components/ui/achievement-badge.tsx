@@ -41,16 +41,23 @@ const AchievementBadge: React.FC<AchievementBadgeProps> = ({
                 ${isEarned ? 'opacity-100 grayscale-0' : 'opacity-40 grayscale'}
                 flex items-center justify-center rounded-full border-4 shadow-lg 
                 transition-all duration-300 transform group-hover:scale-110
+                overflow-hidden
             `}>
-                
-                {/* --- CUSTOMIZE: Render different icons based on type.code --- */}
-                <span className="font-bold text-center px-1">
-                    {type.code === 'VOTES' && '👟'}
-                    {type.code === 'POLLS' && '👟'}
-                    {type.code === 'POPULAR_VOTES' && '🤝'}
-                    {type.code === 'STREAK' && '🔥'}
-                    {!['STEPS', 'SOCIAL', 'STREAK'].includes(type.code) && '🏆'}
-                </span>
+                {type.icon_url ? (
+                    <img
+                        src={type.icon_url}
+                        alt={type.name}
+                        className="h-full w-full object-cover"
+                    />
+                ) : (
+                    <span className="font-bold text-center px-1">
+                        {type.code === 'VOTES' && '👟'}
+                        {type.code === 'POLLS' && '👟'}
+                        {type.code === 'POPULAR_VOTES' && '🤝'}
+                        {type.code === 'STREAK' && '🔥'}
+                        {!['STEPS', 'SOCIAL', 'STREAK'].includes(type.code) && '🏆'}
+                    </span>
+                )}
 
                 {/* --- CUSTOMIZE: Add a Ribbon or Overlay --- */}
                 {isEarned && (

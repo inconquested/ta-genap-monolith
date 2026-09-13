@@ -5,12 +5,19 @@ import { toast } from 'sonner';
 import { type SharedData } from '@/types';
 
 interface AchievementPayload {
-    name: string;
-    description: string;
-    icon_url: string;
+    user_id: string;
+    achievement: {
+        id: string;
+        code: string;
+        name: string;
+        description: string;
+        icon_url: string;
+        requirement_value: number;
+    };
 }
 
-const handleAchievementNotification = (achievement: AchievementPayload) => {
+const handleAchievementNotification = (payload: AchievementPayload) => {
+    const { achievement } = payload;
     toast.success(`🏆 Achievement Unlocked: ${achievement.name}`, {
         description: achievement.description,
         icon: achievement.icon_url ? (

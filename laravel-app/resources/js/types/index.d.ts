@@ -156,6 +156,7 @@ export interface AchievementType {
     description: string;
     requirement_type: string;
     requirement_value: number;
+    icon_url?: string;
     created_at: string;
     updated_at: string;
 }

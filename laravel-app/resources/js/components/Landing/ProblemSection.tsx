@@ -21,7 +21,7 @@ const items: ProblemItem[] = [
     {
         title: "Kurangnya Transparansi",
         icon: Lock,
-        iconVar: "var(--accent)",
+        iconVar: "var(--chart-3)",
         desc: "Sistem yang buram dan hasil yang tidak dapat diverifikasi menimbulkan ketidakpercayaan di kalangan peserta."
     },
     {
