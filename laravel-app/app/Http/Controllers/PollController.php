@@ -23,7 +23,8 @@ class PollController extends Controller
      */
     public function index(Request $req)
     {
-        $filters = $req->only(['category']);
+        // search/status/sort/per_page feed the desktop dashboard poll picker; web passes category only.
+        $filters = $req->only(['category', 'search', 'status', 'sort', 'per_page']);
         $polls = PollService::getPaginatedPolls($filters);
 
         // API response

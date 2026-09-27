@@ -3,6 +3,7 @@
 use App\Http\Controllers\AchievementTypeController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\PollController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserAchievementController;
@@ -40,11 +41,17 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         ->name('api.user-achievements.revoke');
     Route::post('/user-achievements/{userAchievement}/restore', [UserAchievementController::class, 'restore'])
         ->name('api.user-achievements.restore');
+
+    // Real-time application log tail for the desktop client (admin only).
+    Route::get('/logs/tail', [LogController::class, 'tail'])
+        ->middleware('throttle:strict-api')
+        ->name('api.logs.tail');
 });
 
 // Provider-facing per-poll analytics (admin only). End-user report above is untouched.
 Route::middleware(['auth:sanctum', 'admin'])->prefix('analytics')->group(function () {
     Route::get('/polls/{poll}', [AnalyticsController::class, 'show'])->name('api.analytics.polls.show');
+    Route::get('/polls/{poll}/options', [AnalyticsController::class, 'options'])->name('api.analytics.polls.options');
     Route::get('/polls/{poll}/comments', [AnalyticsController::class, 'comments'])->name('api.analytics.polls.comments');
 });
 

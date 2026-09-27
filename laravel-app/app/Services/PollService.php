@@ -16,11 +16,19 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class PollService
 {
     /**
-     * Get paginated active polls with filters.
+     * Get paginated polls with dashboard filters.
+     *
+     * Filters (all optional, additive — web callers pass category only):
+     *  search   substring match on title (poll picker)
+     *  status   active|closed|finalized|all (default active, legacy behaviour)
+     *  sort     latest|most_voted|most_commented|ending_soon (default latest)
+     *  per_page clamped 1..100 (default 5, legacy page size)
      */
     public static function getPaginatedPolls(array $filters = [], int $perPage = 5): LengthAwarePaginator
     {
-        $query = Poll::where('is_active', true)
+        $perPage = isset($filters['per_page']) ? min(max(1, (int) $filters['per_page']), 100) : $perPage;
+
+        $query = Poll::query()
             ->with([
                 'options:id,poll_id,value',
                 'creator:id,username',
@@ -28,8 +36,26 @@ class PollService
                 'votes',
                 'media'
             ])
-            ->withCount(['votes', 'comments'])
-            ->orderBy('created_at', 'desc');
+            ->withCount(['votes', 'comments']);
+
+        $status = $filters['status'] ?? 'active';
+        match ($status) {
+            'all' => null,
+            'closed' => $query->where(fn ($q) => $q->where('end_date', '<', now())->orWhere('is_finalized', true)),
+            'finalized' => $query->where('is_finalized', true),
+            default => $query->where('is_active', true),
+        };
+
+        if (! empty($filters['search'])) {
+            $query->where('title', 'like', '%' . $filters['search'] . '%');
+        }
+
+        match ($filters['sort'] ?? 'latest') {
+            'most_voted' => $query->orderByDesc('votes_count'),
+            'most_commented' => $query->orderByDesc('comments_count'),
+            'ending_soon' => $query->orderBy('end_date'),
+            default => $query->orderBy('created_at', 'desc'),
+        };
 
         if (!empty($filters['category'])) {
             $catParam = $filters['category'];

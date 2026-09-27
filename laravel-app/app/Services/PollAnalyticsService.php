@@ -6,6 +6,7 @@ use App\Models\Poll;
 use App\Models\User;
 use App\Models\Vote;
 use App\Models\VoteAuditLog;
+use App\Services\Reports\ReportWindow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -18,16 +19,29 @@ class PollAnalyticsService
 {
     public static function generate(Request $req, Poll $poll): array
     {
-        $bucket = in_array($req->query('bucket'), ['hour', 'day'], true) ? $req->query('bucket') : null;
+        $validated = $req->validate([
+            'from' => ['nullable', 'date'],
+            'to' => ['nullable', 'date', 'after_or_equal:from'],
+            'bucket' => ['nullable', 'in:hour,day,week'],
+        ]);
+
+        // Optional desktop time-picker window; omitted → whole poll lifetime (legacy shape).
+        $window = ! empty($validated['from']) && ! empty($validated['to'])
+            ? ReportWindow::make($validated['from'], $validated['to'], $validated['bucket'] ?? null, false)
+            : null;
+        $bucket = $window?->bucket
+            ?? (in_array($validated['bucket'] ?? null, ['hour', 'day'], true) ? $validated['bucket'] : null);
 
         // ponytail: finalized polls are immutable → cache 1h; live polls 30s (KPI staleness is fine).
         $ttl = $poll->is_finalized ? 3600 : 30;
-        $key = "poll:{$poll->id}:analytics:" . ($bucket ?? 'auto') . ":{$poll->updated_at}";
+        $key = "poll:{$poll->id}:analytics:" . ($bucket ?? 'auto') . ':'
+            . ($window ? "{$window->from->getTimestamp()}:{$window->to->getTimestamp()}:" : '')
+            . "{$poll->updated_at}";
 
-        return Cache::remember($key, $ttl, fn () => self::compute($poll, $bucket));
+        return Cache::remember($key, $ttl, fn () => self::compute($poll, $bucket, $window, $ttl));
     }
 
-    private static function compute(Poll $poll, ?string $bucket): array
+    private static function compute(Poll $poll, ?string $bucket, ?ReportWindow $window, int $ttl): array
     {
         $result       = $poll->result; // PollResult|null (winner/total_votes precomputed at finalize)
         $totalVotes   = $result?->total_votes ?? Vote::where('poll_id', $poll->id)->count();
@@ -53,12 +67,30 @@ class PollAnalyticsService
         $votesPerHour = round($totalVotes / ($activeMin / 60), 2);
 
         // Time buckets (reuses DashboardService::getAdminMetrics grouping pattern).
-        $bucket   = $bucket ?? ($durationMin <= 2880 ? 'hour' : 'day'); // <=48h window → hourly
-        $dbFormat = $bucket === 'hour' ? '%Y-%m-%d %H:00:00' : '%Y-%m-%d';
-        $series   = Vote::where('poll_id', $poll->id)
-            ->selectRaw('DATE_FORMAT(created_at, ?) as bucket, count(*) as votes', [$dbFormat])
-            ->groupBy('bucket')->orderBy('bucket')->pluck('votes', 'bucket');
-        $peak = $series->isNotEmpty() ? $series->sortDesc()->keys()->first() : null;
+        // Windowed (desktop time picker) → voted_at in bounds, bucketed in PHP so MySQL and
+        // SQLite agree; legacy path keeps the created_at DATE_FORMAT query untouched.
+        if ($window) {
+            $bucket = $window->bucket;
+            $map = [];
+            Vote::where('poll_id', $poll->id)
+                ->whereBetween('voted_at', $window->bounds())
+                ->pluck('voted_at')
+                ->each(function ($instant) use (&$map, $bucket) {
+                    $key = PollOptionSeriesService::bucketKey($instant, $bucket);
+                    $map[$key] = ($map[$key] ?? 0) + 1;
+                });
+            $points = $window->fillSeries(['votes' => $map]);
+            $series = collect($points)->mapWithKeys(fn ($p) => [$p['bucket'] => $p['votes']]);
+            $peakPoint = collect($points)->sortByDesc('votes')->first();
+            $peak = ($peakPoint['votes'] ?? 0) > 0 ? $peakPoint['bucket'] : null;
+        } else {
+            $bucket   = $bucket ?? ($durationMin <= 2880 ? 'hour' : 'day'); // <=48h window → hourly
+            $dbFormat = $bucket === 'hour' ? '%Y-%m-%d %H:00:00' : '%Y-%m-%d';
+            $series   = Vote::where('poll_id', $poll->id)
+                ->selectRaw('DATE_FORMAT(created_at, ?) as bucket, count(*) as votes', [$dbFormat])
+                ->groupBy('bucket')->orderBy('bucket')->pluck('votes', 'bucket');
+            $peak = $series->isNotEmpty() ? $series->sortDesc()->keys()->first() : null;
+        }
 
         $metrics = [];
         $push = function (array $m) use (&$metrics) { $metrics[] = $m; };
@@ -117,7 +149,9 @@ class PollAnalyticsService
                 'end_date' => $end?->toIso8601String(),
                 'duration_minutes' => $durationMin,
             ],
+            'window' => $window?->toArray(),
             'generated_at' => now()->toIso8601String(),
+            'refresh_after_seconds' => $ttl,
             'metrics' => $metrics,
             'timeseries' => [
                 'bucket' => $bucket,
