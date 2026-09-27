@@ -110,6 +110,8 @@ class IntegrityReportService
     {
         return DB::table('vote_audit_logs')
             ->where('action', VoteActions::CREATED->value)
+            // Poll/comment lifecycle rows share this table — integrity is vote-only.
+            ->whereNotNull('vote_id')
             ->whereBetween('created_at', [$from, $to]);
     }
 

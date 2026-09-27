@@ -115,6 +115,7 @@ class PollController extends Controller
             'is_finalized' => $validated['is_finalized'] ?? $poll->is_finalized,
             'category' => $validated['category'] ?? $poll->category,
             'quorum_count' => $validated['quorum_count'] ?? $poll->quorum_count,
+            'actor_id' => \Illuminate\Support\Facades\Auth::id(),
         ]));
 
         if ($req->is('api/*') || $req->expectsJson()) {
@@ -129,6 +130,13 @@ class PollController extends Controller
      */
     public function destroy(Poll $poll, Request $req)
     {
+        // Record BEFORE delete: poll_id FK set-nulls on delete, the snapshot keeps the row meaningful.
+        \App\Services\ActionLogService::record(
+            \App\Enums\VoteActions::DELETED,
+            actorId: \Illuminate\Support\Facades\Auth::id(),
+            pollId: $poll->id,
+            new: $poll->only(['id', 'title', 'creator_id', 'category']),
+        );
         $poll->delete();
 
         if ($req->is('api/*') || $req->expectsJson()) {

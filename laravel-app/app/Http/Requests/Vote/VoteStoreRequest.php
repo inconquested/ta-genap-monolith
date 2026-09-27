@@ -32,7 +32,7 @@ class VoteStoreRequest extends FormRequest
     {
         return [
             'poll_id' => 'required|exists:polls,id',
-            'user_id' => 'nullable|exists:users,id',
+            // No user_id: the voter is always Auth::id() (see VoteService::CastVote).
             'option_id' => 'required|exists:poll_options,id',
         ];
     }
@@ -40,7 +40,6 @@ class VoteStoreRequest extends FormRequest
     {
         return [
             'poll_id.required' => 'Polling tidak ada atau tidak valid',
-            'user_id.exists' => 'User tidak valid',
             'option_id.required' => 'Pilihan ada atau tidak valid',
         ];
     }

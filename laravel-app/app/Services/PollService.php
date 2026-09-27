@@ -129,6 +129,12 @@ class PollService
                         'display_order' => $index
                     ]);
                 }
+                ActionLogService::record(
+                    \App\Enums\VoteActions::CREATED,
+                    actorId: $userId,
+                    pollId: $poll->id,
+                    new: $poll->only(['id', 'title', 'creator_id', 'category', 'is_active']),
+                );
                 \App\Jobs\FinalizePolls::dispatch($poll)->delay($poll->end_date);
                 return $poll;
             });
@@ -148,6 +154,9 @@ class PollService
     {
         try {
             return DB::transaction(function () use ($data) {
+                // Snapshot for the audit trail before overwriting.
+                $old = Poll::where('id', $data['poll_id'] ?? null)->first()?->toArray();
+
                 // 1. Update or Create Poll
                 $poll = Poll::updateOrCreate(
                     ['id' => $data['poll_id'] ?? null],
@@ -207,7 +216,16 @@ class PollService
                 }
 
                 // Return the poll with fresh options
-                return $poll->fresh();
+                $fresh = $poll->fresh();
+                ActionLogService::record(
+                    $poll->wasRecentlyCreated ? \App\Enums\VoteActions::CREATED : \App\Enums\VoteActions::UPDATED,
+                    actorId: $data['actor_id'] ?? null,
+                    pollId: $fresh->id,
+                    old: $old,
+                    new: $fresh->only(['id', 'title', 'creator_id', 'category', 'is_active', 'is_finalized']),
+                );
+
+                return $fresh;
             });
         } catch (\Exception $e) {
             throw $e;

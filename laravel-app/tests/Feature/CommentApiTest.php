@@ -51,7 +51,9 @@ class CommentApiTest extends TestCase
 
         $this->actingAs($user, 'sanctum')
             ->postJson("/api/polls/{$poll->id}/comments", ['content' => 'Hi'])
-            ->assertStatus(403);
+            // App convention: HTTP 200 with the real code in the body `status` field.
+            ->assertOk()
+            ->assertJsonPath('status', 403);
 
         $this->assertDatabaseCount('comments', 0);
     }
@@ -73,7 +75,8 @@ class CommentApiTest extends TestCase
 
         $this->actingAs($stranger, 'sanctum')
             ->putJson("/api/polls/{$poll->id}/comments/{$comment->id}", ['content' => 'hijacked'])
-            ->assertStatus(403);
+            ->assertOk()
+            ->assertJsonPath('status', 403);
 
         $this->actingAs($author, 'sanctum')
             ->putJson("/api/polls/{$poll->id}/comments/{$comment->id}", ['content' => 'edited'])
@@ -91,7 +94,8 @@ class CommentApiTest extends TestCase
 
         $this->actingAs($stranger, 'sanctum')
             ->deleteJson("/api/polls/{$poll->id}/comments/{$comment->id}")
-            ->assertStatus(403);
+            ->assertOk()
+            ->assertJsonPath('status', 403);
         $this->assertDatabaseHas('comments', ['id' => $comment->id]);
 
         $this->actingAs($author, 'sanctum')

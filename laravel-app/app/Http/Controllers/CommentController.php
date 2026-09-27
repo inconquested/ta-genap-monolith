@@ -15,6 +15,8 @@ use Inertia\Inertia;
 /**
  * Poll-scoped comment CRUD. Route params ({poll}, {comment}) are resolved by id here rather than via
  * implicit model binding, which does not resolve reliably on these nested API routes.
+ * Both segments must stay in the signature: leftover params arrive positionally, so a lone
+ * `string $comment` would receive the {poll} id.
  */
 class CommentController extends Controller
 {
@@ -46,10 +48,20 @@ class CommentController extends Controller
             return $this->reject($req, 'Comments are disabled for this poll.');
         }
 
-        $comment = $poll->comments()->create([
-            'content' => $req->validated('content'),
-            'user_id' => $req->user()->id,
-        ]);
+        $comment = \Illuminate\Support\Facades\DB::transaction(function () use ($poll, $req) {
+            $comment = $poll->comments()->create([
+                'content' => $req->validated('content'),
+                'user_id' => $req->user()->id,
+            ]);
+            \App\Services\ActionLogService::record(
+                \App\Enums\VoteActions::CREATED,
+                actorId: $req->user()->id,
+                pollId: $poll->id,
+                new: ['comment_id' => $comment->id, 'content' => $comment->content],
+            );
+
+            return $comment;
+        });
 
         // Notify poll creator when someone else comments.
         if ($poll->creator_id !== $req->user()->id && $poll->creator) {
@@ -71,7 +83,7 @@ class CommentController extends Controller
     /**
      * Display a single comment.
      */
-    public function show(Request $req, string $comment)
+    public function show(Request $req, string $poll, string $comment)
     {
         $comment = Comment::with('user:id,username')->findOrFail($comment);
 
@@ -85,7 +97,7 @@ class CommentController extends Controller
     /**
      * Update a comment — author or admin only.
      */
-    public function update(CommentUpdateRequest $req, string $comment)
+    public function update(CommentUpdateRequest $req, string $poll, string $comment)
     {
         $comment = Comment::findOrFail($comment);
 
@@ -93,7 +105,17 @@ class CommentController extends Controller
             return $this->reject($req, 'You cannot edit this comment.');
         }
 
-        $comment->update($req->validated());
+        $old = $comment->only(['id', 'content', 'user_id']);
+        \Illuminate\Support\Facades\DB::transaction(function () use ($req, $comment, $old) {
+            $comment->update($req->validated());
+            \App\Services\ActionLogService::record(
+                \App\Enums\VoteActions::UPDATED,
+                actorId: $req->user()->id,
+                pollId: $comment->poll_id,
+                old: $old,
+                new: ['comment_id' => $comment->id, 'content' => $comment->fresh()->content],
+            );
+        });
 
         if ($this->wantsJson($req)) {
             return $this->success($comment->fresh()->load('user:id,username'));
@@ -105,7 +127,7 @@ class CommentController extends Controller
     /**
      * Delete a comment — author or admin only.
      */
-    public function destroy(Request $req, string $comment)
+    public function destroy(Request $req, string $poll, string $comment)
     {
         $comment = Comment::findOrFail($comment);
 
@@ -113,7 +135,17 @@ class CommentController extends Controller
             return $this->reject($req, 'You cannot delete this comment.');
         }
 
-        $comment->delete();
+        $snapshot = $comment->only(['id', 'content', 'user_id']);
+        $pollId = $comment->poll_id;
+        \Illuminate\Support\Facades\DB::transaction(function () use ($req, $comment, $snapshot, $pollId) {
+            $comment->delete();
+            \App\Services\ActionLogService::record(
+                \App\Enums\VoteActions::DELETED,
+                actorId: $req->user()->id,
+                pollId: $pollId,
+                new: ['comment_id' => $snapshot['id'], 'content' => $snapshot['content']],
+            );
+        });
 
         if ($this->wantsJson($req)) {
             return $this->success([], 'Comment deleted');

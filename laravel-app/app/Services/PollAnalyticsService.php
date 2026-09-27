@@ -131,9 +131,9 @@ class PollAnalyticsService
         $engagement = $uniqueVoters > 0 ? round($comments / $uniqueVoters, 2) : 0;
         $push(['key' => 'comment_engagement', 'label' => 'Keterlibatan Komentar', 'value' => $engagement, 'type' => 'number']);
 
-        // ponytail: counts audit-log rows per platform (all actions) — approximates channel mix.
-        // Filter ->where('action', VoteActions::CAST) if you need vote-only attribution.
+        // ponytail: vote rows only — poll/comment lifecycle rows share this table.
         $platforms = VoteAuditLog::where('poll_id', $poll->id)
+            ->whereNotNull('vote_id')
             ->selectRaw('platform, count(*) as c')->groupBy('platform')->pluck('c', 'platform');
         $push(['key' => 'platform_split', 'label' => 'Distribusi Platform', 'value' => $platforms, 'type' => 'breakdown']);
 
