@@ -20,6 +20,7 @@ export default function Pagination({ paginated }: Props) {
     // decode common HTML entities used by Laravel paginator and strip tags
     const decoded = label
       .replace(/&laquo;/g, '«')
+      .replace(/&ndash;/g, '–')
       .replace(/&raquo;/g, '»')
       .replace(/&nbsp;/g, ' ')
       .replace(/&ndash;/g, '–')

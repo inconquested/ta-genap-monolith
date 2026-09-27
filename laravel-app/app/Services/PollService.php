@@ -130,10 +130,12 @@ class PollService
                         'title' => $data['title'],
                         'description' => $data['description'],
                         'creator_id' => $data['creator_id'],
+                        'category' => $data['category'],
                         'start_date' => $data['start_date'],
                         'end_date' => $data['end_date'],
                         'is_active' => $data['is_active'],
                         'allow_quorum' => $data['allow_quorum'],
+                        'quorum_count' => $data['quorum_count'],
                         'allow_comments' => $data['allow_comments'],
                         'is_finalized' => $data['is_finalized']
                     ]

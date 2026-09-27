@@ -48,6 +48,10 @@
     --color-input: var(--input);
     --color-ring: var(--ring);
 
+    --color-ember-deep: oklch(0.278 0.033 256.848);
+    --color-signal-rose: oklch(0.645 0.246 16.439);
+    --color-ember-orange: oklch(0.75 0.183 55.934);
+
     --color-chart-1: var(--chart-1);
     --color-chart-2: var(--chart-2);
     --color-chart-3: var(--chart-3);
@@ -140,17 +144,30 @@
         @apply border-border;
     }
 
+    html {
+        scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+    }
+
     body {
         @apply bg-background text-foreground;
     }
 }
 
 #nprogress .bar {
-    background: linear-gradient(to right,
-            theme('colors.gray.700'),
-            theme('colors.rose.500'),
-            theme('colors.orange.400')) !important;
-    /* Indigo to Purple */
+    background: linear-gradient(
+        135deg,
+        var(--color-ember-deep),
+        var(--color-signal-rose) 20%,
+        var(--color-signal-rose) 50%,
+        var(--color-ember-orange)
+    ) !important;
+    /* Ember gradient: Ballot Ink -> Signal Rose (20-50% band) -> Ember Orange */
     height: 2px !important;
     /* Make it a bit thicker to see the gradient */
 }
@@ -158,8 +175,8 @@
 /* The glowing shadow at the tip */
 #nprogress .peg {
     box-shadow:
-        0 0 10px theme('colors.neutral.100'),
-        0 0 5px ('colors.orange.300') !important;
+        0 0 10px var(--color-signal-rose),
+        0 0 5px var(--color-ember-orange) !important;
 }
 
 @keyframes slide {
@@ -178,6 +195,12 @@
     animation: slide 1s linear infinite;
 }
 
+@layer components {
+    .recharts-cartesian-axis-tick text {
+        fill: var(--muted-foreground);
+    }
+}
+
 @layer utilities {
     .no-scrollbar::-webkit-scrollbar {
         display: none;
@@ -189,5 +212,10 @@
         /* IE and Edge */
         scrollbar-width: none;
         /* Firefox */
+    }
+
+    [data-dragging='true'] {
+        cursor: grabbing;
+        user-select: none;
     }
 }

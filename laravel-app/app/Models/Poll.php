@@ -37,7 +37,7 @@ class Poll extends Model implements HasMedia
     ];
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'creator_id');
     }
     public function options(): HasMany
     {

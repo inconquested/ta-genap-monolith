@@ -111,7 +111,7 @@ const navItems: NavSection[] = [
     },
     {
         title: 'Dokumentasi',
-        href: '#docs',
+        href: '#features',
     },
 ];
 

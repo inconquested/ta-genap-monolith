@@ -1,10 +1,8 @@
-'use client';
-
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import VoteComponent from '@/components/vote/vote-component';
-import { VoteVelocityChart } from '@/components/vote/vote-velocity-chart';
+import VoteComponent from '@/components/polls/vote-component';
+import { VoteVelocityChart } from '@/components/polls/vote-velocity-chart';
 import AppLayout from '@/layouts/app-layout';
 import polls from '@/routes/polls';
 import { Poll } from '@/types';
@@ -74,7 +72,6 @@ const recentVoters = [
 
 export default function Show({ poll }: { poll: Poll }) {
     const categoryObj = (poll as any).poll_category || poll.category;
-    console.log(poll)
     const page = usePage().props as any
     const currentUser = page?.auth?.user
 

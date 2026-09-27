@@ -1,6 +1,6 @@
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { PollFeedCard } from '@/components/vote/poll-feed-card';
+import { PollFeedCard } from '@/components/polls/poll-feed-card';
 import { History as HistoryIcon } from 'lucide-react';
 import { PageHeader } from '@/components/shared/page-header';
 import { BreadcrumbItem, Vote, Poll } from '@/types';

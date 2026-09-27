@@ -1,6 +1,6 @@
 
-import { useForm } from '@inertiajs/react';
-import { Check, ChevronRight, Cross, Minus, Plus, X } from 'lucide-react';
+import { Link, useForm } from '@inertiajs/react';
+import { Check, ChevronRight, Minus, Plus, X } from 'lucide-react';
 import React from 'react';
 
 import { useImageCropper } from '@/components/image-cropper';
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxList, ComboboxItem, ComboboxInput } from '@/components/ui/combobox';
 import { DatePickerTime } from '@/components/ui/datetime-picker';
 import { safeParse } from '@/lib/utils';
+import { index } from '@/routes/polls';
 import { PollCategory } from '@/types';
 import { PollOption, UUID } from '@/types';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
@@ -38,6 +39,11 @@ interface CreatePollFormProps {
     categories: PollCategory[]
 }
 
+const FIELD_LABEL = 'mb-2 block text-sm font-medium text-foreground';
+const FIELD_INPUT =
+    'w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:border-destructive';
+const FIELD_ERROR = 'mt-2 ps-1 text-xs text-rose-700 dark:text-rose-300';
+
 
 export default function CreatePollForm({
     data,
@@ -51,8 +57,12 @@ export default function CreatePollForm({
 
     // --- 2. Refactored Handlers using setData ---
 
+    // Inertia returns nested keys (e.g. `options.0.value`) outside the form-state type
+    const nestedErrors = errors as Partial<Record<string, string>>;
+    const optionErrors = (key: string) => nestedErrors[key];
+
     const handleAddOption = () => {
-        if (data.options.length == 5) return;
+        if (data.options.length >= 5) return;
         const newOption: PollOption = {
             poll_id: crypto.randomUUID() as UUID,
             id: crypto.randomUUID() as UUID,
@@ -92,48 +102,56 @@ export default function CreatePollForm({
     return (
         <form
             onSubmit={onSubmit}
-            className="flex w-full justify-center font-sans text-muted-foreground"
+            className="flex w-full justify-center font-sans"
         >
             <div className="w-full">
-                <div className="rounded-xl border border-zinc-800 p-4 md:p-6 lg:p-8 dark:bg-zinc-950/50">
-                    {/* Section 01: Title */}
+                <div className="rounded-xl border border-border bg-card p-4 shadow-sm md:p-6 lg:p-8">
+                    {/* Title */}
                     <div className="mb-6">
-                        <label className="mb-2 block font-mono text-sm text-zinc-500">
-                            01 // Judul Polling
+                        <label htmlFor="poll-title" className={FIELD_LABEL}>
+                            Judul polling
                         </label>
                         <input
+                            id="poll-title"
                             type="text"
                             value={data.title}
                             onChange={(e) => setData('title', e.target.value)}
-                            className="w-full rounded-md border border-zinc-700 p-4 font-mono focus:border-rose-500 focus:shadow-[0px_0px_4px_rgba(255,32,86,1)] focus:outline-none dark:bg-black dark:text-white"
+                            aria-invalid={!!errors.title}
+                            className={FIELD_INPUT}
                             placeholder="Masukkan judul polling..."
                         />
                         {errors.title && (
-                            <div className="mt-2 ps-1 text-xs text-rose-500">
+                            <div role="alert" className={FIELD_ERROR}>
                                 {errors.title}
                             </div>
                         )}
                     </div>
 
-                    {/* Section 02: Description */}
+                    {/* Description */}
                     <div className="mb-6">
-                        <label className="mb-2 block font-mono text-sm text-zinc-500">
-                            02 // Deskripsi
+                        <label htmlFor="poll-description" className={FIELD_LABEL}>
+                            Deskripsi
                         </label>
                         <textarea
+                            id="poll-description"
                             placeholder="Masukkan deskripsi"
                             rows={4}
                             value={data.description}
                             onChange={(e) =>
                                 setData('description', e.target.value)
                             }
-                            className="w-full resize-none rounded-md border border-zinc-700 p-4 font-mono text-sm focus:border-rose-500 focus:shadow-[0px_0px_4px_rgba(255,32,86,1)] focus:outline-none dark:bg-black dark:text-neutral-50"
+                            className={`${FIELD_INPUT} resize-none`}
                         />
+                        {errors.description && (
+                            <div role="alert" className={FIELD_ERROR}>
+                                {errors.description}
+                            </div>
+                        )}
                     </div>
-                    {/**Section 3: Category*/}
+                    {/**Category*/}
                     <div className="mb-6">
-                        <label className="mb-2 block font-mono text-sm text-zinc-500">
-                            03 // Kategori
+                        <label htmlFor="poll-category" className={FIELD_LABEL}>
+                            Kategori
                         </label>
                         <Combobox
                             items={categories}
@@ -143,6 +161,7 @@ export default function CreatePollForm({
                             itemToStringValue={(cat: PollCategory) => cat.label}
                         >
                             <ComboboxInput
+                                id="poll-category"
                                 placeholder="Pilih Kategori"
                                 className="focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                             />
@@ -153,7 +172,6 @@ export default function CreatePollForm({
                                 <ComboboxList>
                                     {categories.map((cat) => (
                                         <ComboboxItem
-                                            className={`font-mono`}
                                             key={cat.id}
                                             value={cat}
                                             onChange={() =>
@@ -167,82 +185,111 @@ export default function CreatePollForm({
                             </ComboboxContent>
                         </Combobox>
                         {errors.category && (
-                            <div className="mt-2 text-xs text-rose-500">
+                            <div
+                                role="alert"
+                                className="mt-2 text-xs text-rose-700 dark:text-rose-300"
+                            >
                                 {errors.category}
                             </div>
                         )}
                     </div>
-                    {/**Section 04: Time */}
-                    <div className="mb-6">
-                        <label className="mb-2 block font-mono text-sm text-zinc-500">
-                            04 // Waktu
-                        </label>
-                        <div className="flex w-full flex-col items-center justify-between gap-6 md:flex-row">
-                            <DatePickerTime
-                                label="Waktu Mulai"
-                                onChange={(val) => setData('start_date', val)}
-                            />
-                            <DatePickerTime
-                                label="Waktu Selesai"
-                                onChange={(val) => setData('end_date', val)}
-                            />
+                    {/**Time */}
+                    <fieldset className="mb-6">
+                        <legend className="mb-2 text-sm font-medium text-foreground">
+                            Waktu
+                        </legend>
+                        <div className="flex w-full flex-col items-stretch justify-between gap-4 md:flex-row md:gap-6">
+                            <div className="flex-1">
+                                <DatePickerTime
+                                    label="Waktu Mulai"
+                                    onChange={(val) => setData('start_date', val)}
+                                />
+                                {errors.start_date && (
+                                    <div role="alert" className={FIELD_ERROR}>
+                                        {errors.start_date}
+                                    </div>
+                                )}
+                            </div>
+                            <div className="flex-1">
+                                <DatePickerTime
+                                    label="Waktu Selesai"
+                                    onChange={(val) => setData('end_date', val)}
+                                />
+                                {errors.end_date && (
+                                    <div role="alert" className={FIELD_ERROR}>
+                                        {errors.end_date}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    {/* Section 05: Options */}
-                    <div className="mb-6">
-                        <label className="mb-2 block font-mono text-sm text-zinc-500">
-                            05 // Opsi Polling
-                        </label>
+                    {/* Options */}
+                    <fieldset className="mb-6">
+                        <legend className="mb-2 block text-sm font-medium text-foreground">
+                            Opsi polling
+                        </legend>
+                        {errors.options && (
+                            <div role="alert" className={`${FIELD_ERROR} mb-3`}>
+                                {errors.options}
+                            </div>
+                        )}
                         <div className="space-y-3">
-                            {data.options.map((option) => (
-                                <div
-                                    key={option.id}
-                                    className="group flex gap-2"
-                                >
-                                    <input
-                                        type="text"
-                                        value={option.value}
-                                        onChange={(e) =>
-                                            handleOptionChange(
-                                                option.id,
-                                                e.target.value,
-                                            )
-                                        }
-                                        className="flex-1 rounded-md border border-zinc-700 px-4 py-3 font-mono text-gray-900 focus:border-rose-500 focus:shadow-[0px_0px_4px_rgba(255,32,86,1)] focus:outline-none dark:bg-black dark:text-neutral-50"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() =>
-                                            handleRemoveOption(option.id)
-                                        }
-                                        className="flex w-12 items-center justify-center rounded-md border border-zinc-700 hover:bg-zinc-800 hover:text-red-400"
-                                    >
-                                        <X size={18} />
-                                    </button>
+                            {data.options.map((option, i) => (
+                                <div key={option.id}>
+                                    <div className="group flex gap-2">
+                                        <input
+                                            type="text"
+                                            aria-label={`Opsi ${i + 1}`}
+                                            value={option.value}
+                                            onChange={(e) =>
+                                                handleOptionChange(
+                                                    option.id,
+                                                    e.target.value,
+                                                )
+                                            }
+                                            aria-invalid={!!optionErrors(`options.${i}.value`)}
+                                            className={FIELD_INPUT}
+                                        />
+                                        <button
+                                            type="button"
+                                            aria-label={`Hapus opsi ${i + 1}`}
+                                            onClick={() =>
+                                                handleRemoveOption(option.id)
+                                            }
+                                            className="flex w-12 shrink-0 items-center justify-center rounded-md border border-input text-muted-foreground transition-colors outline-none hover:border-destructive/50 hover:text-destructive focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                                        >
+                                            <X size={18} />
+                                        </button>
+                                    </div>
+                                    {optionErrors(`options.${i}.value`) && (
+                                        <div role="alert" className={FIELD_ERROR}>
+                                            {optionErrors(`options.${i}.value`)}
+                                        </div>
+                                    )}
                                 </div>
                             ))}
 
                             <button
                                 type="button"
                                 onClick={handleAddOption}
-                                className="flex w-full items-center justify-center gap-2 rounded-md border border-dashed border-zinc-700 p-3 font-mono text-sm text-zinc-600 hover:border-zinc-500 hover:text-zinc-400"
+                                className="flex w-full items-center justify-center gap-2 rounded-md border border-dashed border-border p-3 text-sm font-medium text-muted-foreground transition-colors outline-none hover:border-muted-foreground/50 hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
                             >
                                 <Plus size={16} /> Tambah Opsi Baru
                             </button>
                         </div>
-                    </div>
+                    </fieldset>
 
-                    {/**Section 06: Banner File Picker */}
+                    {/**Banner File Picker */}
                     <div className="mb-6">
-                        <label className="mb-4 block font-mono text-sm text-zinc-500">
-                            06 // Gambar Banner
+                        <label htmlFor="poll-banner" className="mb-4 block text-sm font-medium text-foreground">
+                            Gambar banner
                         </label>
-                        <InputGroup className='cursor-pointer'>
+                        <InputGroup>
                             <InputGroupInput
+                                id="poll-banner"
                                 type="file"
                                 accept="image/*"
-                                className='cursor-pointer'
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
                                     if (!file) return;
@@ -250,19 +297,27 @@ export default function CreatePollForm({
                                 }}
                             />
                             <InputGroupAddon align={'inline-end'}>
-                                <Button variant={'ghost'} className='hover:text-rose-500'>
-                                    <X size={18} />
-                                </Button>
+                                <span
+                                    className="text-xs text-muted-foreground"
+                                    aria-live="polite"
+                                >
+                                    {data.banner ? data.banner.name : 'Belum ada file'}
+                                </span>
                             </InputGroupAddon>
                         </InputGroup>
+                        {errors.banner && (
+                            <div role="alert" className={FIELD_ERROR}>
+                                {errors.banner}
+                            </div>
+                        )}
                         {CropperUI}
                     </div>
 
-                    {/* Section 07: Advanced Settings */}
-                    <div className="mb-6">
-                        <label className="mb-4 block font-mono text-sm text-zinc-500">
-                            07 // Pengaturan Tambahan
-                        </label>
+                    {/* Advanced Settings */}
+                    <fieldset className="mb-6">
+                        <legend className="mb-4 text-sm font-medium text-foreground">
+                            Pengaturan tambahan
+                        </legend>
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <SettingCard
                                 label="Visibilitas"
@@ -292,14 +347,15 @@ export default function CreatePollForm({
                                 }
                             />
                             {/* Counter: Jumlah Quorum */}
-                            <div className="flex h-full items-center justify-between rounded-md border border-zinc-800 p-4 dark:bg-black">
-                                <span className="font-mono text-sm font-bold text-wrap dark:text-neutral-50">
+                            <div className="flex h-full items-center justify-between rounded-md border border-border bg-card p-4">
+                                <span className="text-sm font-bold text-foreground">
                                     Jumlah Quorum
                                 </span>
 
                                 <div className="flex items-center gap-4">
                                     <Button
                                         type="button"
+                                        aria-label="Kurangi quorum"
                                         disabled={!data.allow_quorum}
                                         onClick={() => {
                                             if (!data.allow_quorum) return null;
@@ -317,6 +373,8 @@ export default function CreatePollForm({
                                     </Button>
 
                                     <input
+                                        aria-label="Jumlah quorum"
+                                        inputMode="numeric"
                                         disabled={!data.allow_quorum}
                                         value={data.quorum_count}
                                         onChange={(
@@ -332,20 +390,21 @@ export default function CreatePollForm({
                                                 ),
                                             );
                                         }}
-                                        className={`w-8 text-center font-mono text-lg font-bold ${data.allow_quorum
-                                            ? 'text-gray-900 dark:text-neutral-50'
-                                            : ''
-                                            } border-0! focus:outline-none`}
+                                        className="w-12 bg-transparent text-center font-mono text-lg font-bold text-foreground tabular-nums focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:opacity-50"
                                     />
 
                                     <Button
                                         type="button"
+                                        aria-label="Tambah quorum"
                                         disabled={!data.allow_quorum}
                                         onClick={() => {
                                             if (!data.allow_quorum) return null;
                                             setData(
                                                 'quorum_count',
-                                                data.quorum_count + 1,
+                                                Math.min(
+                                                    1_000_000,
+                                                    data.quorum_count + 1,
+                                                ),
                                             );
                                         }}
                                         variant="outline"
@@ -355,12 +414,12 @@ export default function CreatePollForm({
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
 
                     {/* Action Buttons */}
-                    <div className="mt-12 flex justify-end gap-4 border-t border-zinc-800 pt-6">
-                        <Button type="button" variant={'outline'}>
-                            Batal
+                    <div className="mt-8 flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end">
+                        <Button asChild variant={'outline'}>
+                            <Link href={index.url()}>Batal</Link>
                         </Button>
                         <Button
                             disabled={processing}
@@ -368,10 +427,10 @@ export default function CreatePollForm({
                             className="group"
                             variant={'brand'}
                         >
-                            {processing ? 'Processing...' : 'Buat Poll'}{' '}
+                            {processing ? 'Memproses...' : 'Buat Poll'}{' '}
                             <ChevronRight
                                 size={16}
-                                className="transition-all ease-in-out group-hover:translate-x-0.5"
+                                className="transition-transform ease-out group-hover:translate-x-0.5"
                             />
                         </Button>
                     </div>
@@ -393,24 +452,25 @@ function SettingCard({
     onToggle: () => void;
 }) {
     return (
-        <div className="group flex items-center justify-between rounded-md border border-zinc-800 dark:bg-black p-3 transition-colors hover:border-zinc-700">
+        <div className="group flex items-center justify-between rounded-md border border-border bg-card p-3 transition-colors hover:border-muted-foreground/30">
             <div className="flex flex-col">
-                <span className="mb-1 font-mono text-sm font-bold dark:text-neutral-50">
+                <span className="mb-1 text-sm font-bold text-foreground">
                     {label}
                 </span>
-                <span className="text-xs text-zinc-500">{subtext}</span>
+                <span className="text-xs text-muted-foreground">{subtext}</span>
             </div>
             <Button
                 type="button"
                 onClick={onToggle}
                 size={'sm'}
-                className='p-2!'
-                variant={'ctasec'}
+                aria-pressed={active}
+                aria-label={label}
+                variant={active ? 'ctasec' : 'outline'}
             >
                 {active ? (
-                    <Check size={14} className="dark:text-neutral-50" />
+                    <Check size={14} />
                 ) : (
-                    <X size={14} className='dark:text-neutral-50' />
+                    <X size={14} />
                 )}
             </Button>
         </div>
