@@ -6,6 +6,7 @@ import { AppShell } from '@/components/app-shell';
 import { AppSidebar } from '@/components/app-sidebar';
 import { AppSidebarHeader } from '@/components/app-sidebar-header';
 import AchievementListener from '@/components/achievement-listener';
+import FlashListener from '@/components/flash-listener';
 import { type BreadcrumbItem } from '@/types';
 
 export default function AppSidebarLayout({
@@ -20,6 +21,7 @@ export default function AppSidebarLayout({
                 {children}
             </AppContent>
             <AchievementListener />
+            <FlashListener />
             <Toaster position="bottom-right" richColors />
         </AppShell>
     );
