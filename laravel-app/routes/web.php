@@ -13,6 +13,23 @@ use Laravel\Socialite\Facades\Socialite;
 
 Broadcast::routes(['middleware' => ['auth']]);
 
+// Served by route (not static files) so Sitemap/loc URLs are always absolute.
+Route::get('/robots.txt', function () {
+    return response(
+        "User-agent: *\n" .
+        "Disallow: /dashboard\n" .
+        "Disallow: /settings\n" .
+        "Disallow: /broadcasting/\n" .
+        "\nSitemap: " . url('/sitemap.xml') . "\n",
+        200,
+        ['Content-Type' => 'text/plain'],
+    );
+})->name('robots');
+
+Route::get('/sitemap.xml', function () {
+    return response()->view('sitemap', [], 200, ['Content-Type' => 'application/xml']);
+})->name('sitemap');
+
 
 Route::get('/', function () {
     if (Auth::check()) {
