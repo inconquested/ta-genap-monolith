@@ -47,9 +47,10 @@ class PollStoreRequest extends FormRequest
             'end_date.required' => 'Tenggat harus diisi',
             'end_date.after' => 'Tenggat tidak sah',
             'is_active.required' => 'Keaktifan Petisi harus diisi',
-            'options.*.option_text.required' => 'Label pilihan harus diisi',
+            'options.required' => 'Tambahkan minimal satu opsi polling',
+            'options.*.value.required' => 'Label pilihan harus diisi',
             'allow_quorum.required' => 'Quorum Kosong',
-            'options.*.option_text.max' => 'Label pilihan terlalu panjang',
+            'options.*.value.max' => 'Label pilihan terlalu panjang',
             'options.*.display_order.required' => 'Urutan tampil pilihan harus diatur',
         ];
     }

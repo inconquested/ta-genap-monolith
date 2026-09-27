@@ -174,7 +174,6 @@ export default function Login({
                                 <TextLink
                                     href={register()}
                                     tabIndex={7}
-                                    className="bg-linear-to-r from-gray-800 via-rose-500 via-20% to-orange-400 bg-clip-text text-transparent!"
                                 >
                                     Sign up
                                 </TextLink>

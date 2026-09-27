@@ -1,17 +1,14 @@
 import { Head } from '@inertiajs/react';
 import LandingNavbar from '@/components/landing/landing-navbar';
-import HeroSection from '@/components/landing/HeroSection';
-import ProblemSection from '@/components/landing/ProblemSection';
-import SolutionSection from '@/components/landing/SolutionSection';
-import DemoSection from '@/components/landing/DemoSection';
-import FeatureSection from '@/components/landing/FeatureSection';
-import CtaSection from '@/components/landing/CtaSection';
-import LandingFooter from '@/components/landing/LandingFooter';
-import { usePage } from '@inertiajs/react';
-import { SharedData } from '@/types';
+import HeroSection from '@/components/landing/hero-section';
+import ProblemSection from '@/components/landing/problem-section';
+import SolutionSection from '@/components/landing/solution-section';
+import DemoSection from '@/components/landing/demo-section';
+import FeatureSection from '@/components/landing/feature-section';
+import CtaSection from '@/components/landing/cta-section';
+import LandingFooter from '@/components/landing/landing-footer';
 
 export default function Welcome() {
-    const { props } = usePage<SharedData>();
     return (
         <>
             <Head>
@@ -28,8 +25,8 @@ export default function Welcome() {
                 <DemoSection />
                 <FeatureSection />
                 <CtaSection />
-                <LandingFooter />
             </main>
+            <LandingFooter />
         </>
     );
 }

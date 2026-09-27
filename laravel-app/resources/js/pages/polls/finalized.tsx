@@ -1,15 +1,14 @@
 import AppLayout from '@/layouts/app-layout';
 import { PollResultCard } from '@/components/polls/poll-result-card';
 import { Head, Link } from '@inertiajs/react';
-import { Trophy, ChevronLeft, LayoutGrid, Clock } from 'lucide-react';
+import { Trophy, LayoutGrid, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { PaginatedPolls, Poll, PollResult, WinnerOption } from '@/types';
 import Pagination from '@/components/ui/pagination';
 import { motion } from 'framer-motion';
-import { Badge } from '@/components/ui/badge';
 import { makeBreadCrumbs } from '@/lib/utils';
 import { PageHeader } from '@/components/shared/page-header';
-import { index as indexRoute } from '@/routes/polls';
+import { index as indexRoute, create as createRoute } from '@/routes/polls';
 
 interface FinalizedPollsPageProps {
     poll?: Poll;
@@ -49,7 +48,7 @@ export default function FinalizedPollsPage({ poll, results, winners, polls }: Fi
                                     <p className="text-zinc-500 font-mono text-sm">
                                         Polling ini telah berakhir. Hasil di atas adalah keputusan final komunitas.
                                     </p>
-                                    <Link href="/polls" className="mt-4 inline-block">
+                                    <Link href={indexRoute.url()} className="mt-4 inline-block">
                                         <Button variant="ctasec">Jelajahi Polling Aktif Lainnya</Button>
                                     </Link>
                                 </div>
@@ -96,7 +95,7 @@ export default function FinalizedPollsPage({ poll, results, winners, polls }: Fi
                             <div className="rounded-2xl border border-zinc-800/50 bg-linear-to-br from-rose-500/10 to-amber-500/10 p-6">
                                 <h3 className="text-sm font-bold tracking-tight text-white mb-2">Punya Pertanyaan?</h3>
                                 <p className="text-xs text-zinc-400 mb-4 font-mono">Ingin membuat polling serupa atau butuh klarifikasi tentang hasil?</p>
-                                <Link href="/polls/create">
+                                <Link href={createRoute.url()}>
                                     <Button variant="outline" size="sm" className="w-full text-xs">Buat Polling Baru</Button>
                                 </Link>
                             </div>

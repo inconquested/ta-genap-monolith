@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import { ChartBarBig, Plus } from 'lucide-react';
 import AppLayout from '@/layouts/app-layout';
-import { PollFeedCard } from '@/components/vote/poll-feed-card';
+import { PollFeedCard } from '@/components/polls/poll-feed-card';
 import { BreadcrumbItem, Poll } from '@/types';
 import Pagination from '@/components/ui/pagination';
 import { router } from '@inertiajs/react';

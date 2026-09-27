@@ -1,7 +1,7 @@
 import { Head, router, useForm } from '@inertiajs/react';
 import { useEffect } from 'react';
 
-import PollPreview from '@/components/vote/poll-preview';
+import PollPreview from '@/components/polls/poll-preview';
 import AppLayout from '@/layouts/app-layout';
 import { update, destroy } from '@/routes/polls';
 import { Poll, PollCategory, PollOption, UUID } from '@/types';
@@ -13,6 +13,16 @@ interface EditProps {
     categories: PollCategory[];
     poll: Poll;
 }
+
+// Backend serializes datetimes as ISO; the update endpoint requires `Y-m-d H:i:s`.
+// Normalize on hydration so an untouched form still submits valid dates.
+const toFormDate = (value?: string | null) => {
+    if (!value) return '';
+    const parsed = new Date(value.includes(' ') ? value.replace(' ', 'T') : value);
+    if (Number.isNaN(parsed.getTime())) return value;
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${parsed.getFullYear()}-${pad(parsed.getMonth() + 1)}-${pad(parsed.getDate())} ${pad(parsed.getHours())}:${pad(parsed.getMinutes())}:${pad(parsed.getSeconds())}`;
+};
 
 export default function Edit({ categories, poll }: EditProps) {
     const { data, setData, processing, errors, put } = useForm<EditPollFormState>({
@@ -37,13 +47,14 @@ export default function Edit({ categories, poll }: EditProps) {
             title: poll.title ?? '',
             description: poll.description ?? '',
             options: poll.options ?? [],
+            deleted_option_ids: [],
             is_active: poll.is_active ?? true,
-            start_date: poll.start_date ?? '',
-            end_date: poll.end_date ?? '',
+            start_date: toFormDate(poll.start_date),
+            end_date: toFormDate(poll.end_date),
             allow_comments: poll.allow_comments ?? true,
             allow_quorum: poll.allow_quorum ?? true,
             quorum_count: poll.quorum_count ?? 0,
-            category: poll.category ?? '',
+            category: typeof poll.category === 'string' ? poll.category : (poll.category?.id ?? ''),
         });
     }, [poll, setData]);
 
@@ -54,9 +65,6 @@ export default function Edit({ categories, poll }: EditProps) {
 
         put(action.url, {
             preserveScroll: true,
-            onSuccess: () => {
-                console.log('Poll updated');
-            },
         });
     };
 
@@ -72,13 +80,18 @@ export default function Edit({ categories, poll }: EditProps) {
         <AppLayout>
             <Head title="Edit Poll" />
 
-            <div className="flex min-h-screen justify-center p-4 lg:p-8">
-                <div className="grid w-screen grid-cols-1 gap-8 lg:grid-cols-12">
+            <div className="flex min-h-screen justify-center p-4 md:p-6 lg:p-8">
+                <div className="grid w-full max-w-7xl grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12">
                     {/* Form */}
-                    <div className="lg:col-span-8">
-                        <h1 className="mb-6 font-mono text-2xl font-bold tracking-tight md:text-4xl">
-                            Edit Poll
-                        </h1>
+                    <div className="lg:col-span-7">
+                        <div className="mb-8 space-y-1">
+                            <h1 className="text-3xl font-bold tracking-tight text-foreground text-balance md:text-4xl">
+                                Edit poll
+                            </h1>
+                            <p className="text-sm text-muted-foreground md:text-base">
+                                Perbarui detail polling Anda di bawah ini.
+                            </p>
+                        </div>
 
                         <UpdatePollForm
                             data={data}
@@ -92,8 +105,13 @@ export default function Edit({ categories, poll }: EditProps) {
                     </div>
 
                     {/* Live Preview */}
-                    <div className="lg:col-span-4">
-                        <PollPreview data={data} />
+                    <div className="lg:col-span-5">
+                        <div className="sticky top-8 space-y-4">
+                            <h3 className="font-mono text-xs font-bold tracking-widest text-muted-foreground uppercase">
+                                Preview real-time
+                            </h3>
+                            <PollPreview data={data} />
+                        </div>
                     </div>
                 </div>
             </div>

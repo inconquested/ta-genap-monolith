@@ -31,6 +31,7 @@ export function DatePickerTime({
   const [open, setOpen] = React.useState(false)
   const [date, setDate] = React.useState<Date | undefined>(value)
   const [time, setTime] = React.useState<string>(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }))
+  const pickerId = React.useId().replace(/:/g, '')
 
   const handleUpdate = (newDate: Date | undefined, newTime: string) => {
     if (!newDate) {
@@ -87,11 +88,11 @@ export function DatePickerTime({
       </Field>
 
       <Field className="w-36">
-        <FieldLabel className="sr-only">Time</FieldLabel>
+        <FieldLabel htmlFor={pickerId} className="sr-only">Time</FieldLabel>
         <InputGroup>
           <InputGroupInput
             type="time"
-            id="time-picker-optional"
+            id={pickerId}
             step="1"
             defaultValue={time}
             className="bg-background appearance-none"

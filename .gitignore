@@ -1,9 +1,33 @@
-# Ignore local environment files
+# Env – never commit real credentials
 laravel-app/.env
+laravel-app/.env.backup
+laravel-app/.env.production
 
-# Ignore node modules
+# Dependencies
 laravel-app/node_modules/
-vendor/
+laravel-app/vendor/
+
+# Frontend builds (Vite)
+laravel-app/public/build/
+laravel-app/public/hot
+laravel-app/public/storage
+laravel-app/bootstrap/ssr/
+laravel-app/bootstrap/cache/*.php
+
+# Laravel storage caches
+laravel-app/storage/*.key
+laravel-app/storage/pail
+laravel-app/storage/framework/cache/data/*
+laravel-app/storage/framework/sessions/*
+laravel-app/storage/framework/views/*
+laravel-app/storage/logs/*.log
+
+# Test / debug caches
+laravel-app/.phpunit.cache/
+laravel-app/.phpunit.result.cache
+laravel-app/php_errors.log
+laravel-app/npm-debug.log
+laravel-app/yarn-error.log
 
 # Ignore the old deleted windows app directory
 netwinform-app/

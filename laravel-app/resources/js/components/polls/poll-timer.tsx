@@ -85,10 +85,10 @@ export function PollTimer({ endDate, variant = 'detail', className, onEnd }: Pol
     if (variant === 'card') {
         return (
             <div className={cn(
-                "flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-rose-500",
+                "flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-rose-700 dark:text-signal-rose",
                 className
             )}>
-                <Clock size={12} className="animate-pulse" />
+                <Clock size={12} className="animate-pulse motion-reduce:animate-none" />
                 <span>
                     {timeLeft.days > 0 && `${timeLeft.days}H `}
                     {formatNumber(timeLeft.hours)}:{formatNumber(timeLeft.minutes)}:{formatNumber(timeLeft.seconds)}

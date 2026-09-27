@@ -64,7 +64,7 @@ class PollController extends Controller
         if ($req->is('api/*') || $req->expectsJson()) {
             return $this->success(data: $pollData, status: 201);
         }
-        return redirect()->route('polls.index')->with('modalData', $pollData);
+        return redirect()->route('polls.index')->with('success', 'Polling berhasil dibuat!');
     }
 
     /**
@@ -73,7 +73,7 @@ class PollController extends Controller
     public function show(Poll $poll, Request $req)
     {
         if ($req->is('api/*') || $req->expectsJson()) {
-            return $this->success($poll->load(['options', 'creator:id,username', 'votes', 'comments', 'media', 'category']));
+            return $this->success($poll->load(['options', 'creator:id,username', 'votes', 'comments', 'media', 'pollCategory']));
         }
         if ($poll->isClosed()) {
             return Inertia::render('polls/finalized', [
@@ -95,7 +95,10 @@ class PollController extends Controller
      */
     public function edit(Poll $poll)
     {
-        return Inertia::render('poll/create', ['poll' => $poll->load(['options', 'creator:id,username', 'votes', 'comments'])]);
+        return Inertia::render('polls/edit', [
+            'poll' => $poll->load(['options', 'creator:id,username', 'votes', 'comments']),
+            'categories' => PollCategory::all(),
+        ]);
     }
 
     /**
@@ -103,16 +106,35 @@ class PollController extends Controller
      */
     public function update(PollUpdateRequest $req, Poll $poll)
     {
-        $poll = PollService::UpdatePoll(array_merge($req->validated(), ['poll_id' => $poll->id]));
-        return response()->json($poll->load('options'));
+        $validated = $req->validated();
+        $updated = PollService::UpdatePoll(array_merge($validated, [
+            'poll_id' => $poll->id,
+            // Authoritative values from the route model, never the client
+            'creator_id' => $poll->creator_id,
+            'is_finalized' => $validated['is_finalized'] ?? $poll->is_finalized,
+            'category' => $validated['category'] ?? $poll->category,
+            'quorum_count' => $validated['quorum_count'] ?? $poll->quorum_count,
+        ]));
+
+        if ($req->is('api/*') || $req->expectsJson()) {
+            return response()->json($updated->load('options'));
+        }
+
+        return redirect()->route('polls.show', $poll->id)->with('success', 'Perubahan polling berhasil disimpan!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Poll $poll)
+    public function destroy(Poll $poll, Request $req)
     {
-        return response()->json($poll->delete(), 204);
+        $poll->delete();
+
+        if ($req->is('api/*') || $req->expectsJson()) {
+            return response()->json(null, 204);
+        }
+
+        return redirect()->route('polls.index')->with('success', 'Polling berhasil dihapus!');
     }
 
     /**
